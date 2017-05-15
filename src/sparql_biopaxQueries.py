@@ -6,18 +6,20 @@ This module contains a list of functions to request Reactome
 import sparql_wrapper
 from collections import defaultdict
 
-def getPathways(graphUri):
+def getPathways(listOfGraphUri):
 	query = """
 		PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 		PREFIX biopax3: <http://www.biopax.org/release/biopax-level3.owl#>
 
-		SELECT DISTINCT ?pathway ?pathwayname 
+		SELECT DISTINCT ?pathway ?displayName
+	"""
+	for graphUri in listOfGraphUri:
+		query += "FROM <"+graphUri+">\n"
+	query += """ 
 		WHERE 
 		{
-			GRAPH <"""+graphUri+"""> {
-				?pathway rdf:type biopax3:Pathway .
-				?pathway biopax3:displayName ?displayName 
-			}
+			?pathway rdf:type biopax3:Pathway .
+			?pathway biopax3:displayName ?displayName .
 		}
 	"""
 	
@@ -27,21 +29,23 @@ def getPathways(graphUri):
 	return pathwayToName
 
 
-def getPathwayAncestorsHierarchy(graphUri):
+def getPathwayAncestorsHierarchy(listOfGraphUri):
 	query = """
 		PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 		PREFIX biopax3: <http://www.biopax.org/release/biopax-level3.owl#>
 
 		SELECT DISTINCT ?pathway ?superPathway 
+	"""
+	for graphUri in listOfGraphUri:
+		query += "FROM <"+graphUri+">\n"
+	query += """ 
 		WHERE
 		{
-			GRAPH <"""+graphUri+"""> {
-				?superPathway rdf:type biopax3:Pathway .
-				?superPathway biopax3:pathwayComponent ?pathway .
-				?pathway rdf:type biopax3:Pathway .
-				?pathway biopax3:pathwayComponent* ?subPathway .
-				?subPathway rdf:type biopax3:Pathway .
-			}
+			?superPathway rdf:type biopax3:Pathway .
+			?superPathway biopax3:pathwayComponent ?pathway .
+			?pathway rdf:type biopax3:Pathway .
+			?pathway biopax3:pathwayComponent* ?subPathway .
+			?subPathway rdf:type biopax3:Pathway .
 		}
 	"""
 	print(query)
@@ -53,24 +57,26 @@ def getPathwayAncestorsHierarchy(graphUri):
 	return pathwayToSuperPathways
 
 
-def getReactions(graphUri):
+def getReactions(listOfGraphUri):
 	query = """
 		PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 		PREFIX biopax3: <http://www.biopax.org/release/biopax-level3.owl#>
 
 		SELECT DISTINCT ?reaction ?nameReaction ?reactionType ?pathway ?leftComponent ?rightComponent ?productComponent ?participantComponent
+	"""
+	for graphUri in listOfGraphUri:
+		query += "FROM <"+graphUri+">\n"
+	query += """ 
 		WHERE 
 		{
-			GRAPH <"""+graphUri+"""> {
-				?reaction rdf:type ?reactionType . 
-				VALUES ?reactionType { biopax3:BiochemicalReaction biopax3:TemplateReaction biopax3:Degradation }
-				OPTIONAL { ?reaction biopax3:displayName ?nameReaction . }
-				OPTIONAL { ?pathway biopax3:pathwayComponent ?reaction . }
-				OPTIONAL { ?reaction biopax3:left ?leftComponent . }
-				OPTIONAL { ?reaction biopax3:right ?rightComponent . }
-				OPTIONAL { ?reaction biopax3:product ?productComponent . }
-				OPTIONAL { ?reaction biopax3:participant ?participantComponent . } # idem que product...
-			}
+			?reaction rdf:type ?reactionType . 
+			VALUES ?reactionType { biopax3:BiochemicalReaction biopax3:TemplateReaction biopax3:Degradation }
+			OPTIONAL { ?reaction biopax3:displayName ?nameReaction . }
+			OPTIONAL { ?pathway biopax3:pathwayComponent ?reaction . }
+			OPTIONAL { ?reaction biopax3:left ?leftComponent . }
+			OPTIONAL { ?reaction biopax3:right ?rightComponent . }
+			OPTIONAL { ?reaction biopax3:product ?productComponent . }
+			OPTIONAL { ?reaction biopax3:participant ?participantComponent . }
 		}
 	"""
 	
@@ -95,29 +101,31 @@ def getReactions(graphUri):
 	return dictReaction
 
 
-def getPhysicalEntities(graphUri):
+def getPhysicalEntities(listOfGraphUri):
 	query = """
 		PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 		PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 		PREFIX biopax3: <http://www.biopax.org/release/biopax-level3.owl#>
 
 		SELECT DISTINCT ?entity ?name ?synonym ?location ?type ?component ?member ?entityRef ?dbRef ?idRef
+	"""
+	for graphUri in listOfGraphUri:
+		query += "FROM <"+graphUri+">\n"
+	query += """ 
 		WHERE 
 		{
-			GRAPH <"""+graphUri+"""> {
-				?entity rdf:type ?type.
-				?type rdfs:subClassOf* biopax3:PhysicalEntity.
-				OPTIONAL { ?entity biopax3:displayName ?name . }
-				OPTIONAL { ?entity biopax3:name ?synonym . }
-				OPTIONAL { ?entity biopax3:cellularLocation ?location . }
-				OPTIONAL { ?entity biopax3:component ?component . }
-				OPTIONAL { ?entity biopax3:memberPhysicalEntity ?member . }
-				OPTIONAL { ?entity biopax3:entityReference ?entityRef . }
-				OPTIONAL { 
-					?entity biopax3:xref ?ref .
-					?ref biopax3:db ?dbRef .
-					?ref biopax3:id ?idRef .
-				}
+			?entity rdf:type ?type.
+			?type rdfs:subClassOf* biopax3:PhysicalEntity.
+			OPTIONAL { ?entity biopax3:displayName ?name . }
+			OPTIONAL { ?entity biopax3:name ?synonym . }
+			OPTIONAL { ?entity biopax3:cellularLocation ?location . }
+			OPTIONAL { ?entity biopax3:component ?component . }
+			OPTIONAL { ?entity biopax3:memberPhysicalEntity ?member . }
+			OPTIONAL { ?entity biopax3:entityReference ?entityRef . }
+			OPTIONAL { 
+				?entity biopax3:xref ?ref .
+				?ref biopax3:db ?dbRef .
+				?ref biopax3:id ?idRef .
 			}
 		}
 	"""
@@ -145,21 +153,23 @@ def getPhysicalEntities(graphUri):
 	
 	return dictPhysicalEntity
 
-def getLocations(graphUri):
+def getLocations(listOfGraphUri):
 	query = """
 		PREFIX biopax3: <http://www.biopax.org/release/biopax-level3.owl#>
 		
 		SELECT DISTINCT ?location ?locationTerm ?dbRef ?idRef
+	"""
+	for graphUri in listOfGraphUri:
+		query += "FROM <"+graphUri+">\n"
+	query += """ 
 		WHERE 
 		{
-			GRAPH <"""+graphUri+"""> {
-				?entity biopax3:cellularLocation ?location .
-				?location biopax3:term ?locationTerm .
-				OPTIONAL {
-					?location biopax3:xref ?ref .
-					?ref biopax3:db ?dbRef .
-					?ref biopax3:id ?idRef .
-				}
+			?entity biopax3:cellularLocation ?location .
+			?location biopax3:term ?locationTerm .
+			OPTIONAL {
+				?location biopax3:xref ?ref .
+				?ref biopax3:db ?dbRef .
+				?ref biopax3:id ?idRef .
 			}
 		}
 	"""
@@ -171,22 +181,24 @@ def getLocations(graphUri):
 	return dictLocation
 
 
-def getControls(graphUri):
+def getControls(listOfGraphUri):
 	query = """
 		PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 		PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 		PREFIX biopax3: <http://www.biopax.org/release/biopax-level3.owl#>
 
 		SELECT DISTINCT ?control ?type ?controlType ?reaction ?controller
+	"""
+	for graphUri in listOfGraphUri:
+		query += "FROM <"+graphUri+">\n"
+	query += """ 
 		WHERE 
 		{
-			GRAPH <"""+graphUri+"""> {
-				?control rdf:type ?type.
-				?type rdfs:subClassOf* biopax3:Control .
-				OPTIONAL { ?control biopax3:controlled ?reaction . }
-				OPTIONAL { ?control biopax3:controlType ?controlType . }
-				OPTIONAL { ?control biopax3:controller ?controller . }
-			}
+			?control rdf:type ?type.
+			?type rdfs:subClassOf* biopax3:Control .
+			OPTIONAL { ?control biopax3:controlled ?reaction . }
+			OPTIONAL { ?control biopax3:controlType ?controlType . }
+			OPTIONAL { ?control biopax3:controller ?controller . }
 		}
 	"""
 	

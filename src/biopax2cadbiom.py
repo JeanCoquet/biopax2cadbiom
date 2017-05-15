@@ -19,7 +19,7 @@ def addReactionToEntities(dictReaction, dictControl, dictPhysicalEntity):
 	:type dictReaction: dict
 	:type dictControl: dict
 	:type dictPhysicalEntity: dict
-        """
+	"""
 	for reaction in dictReaction:
 		if dictReaction[reaction]['productComponent'] != None:
 			entity = dictReaction[reaction]['productComponent']
@@ -32,8 +32,9 @@ def addReactionToEntities(dictReaction, dictControl, dictPhysicalEntity):
 	
 	for control in dictControl:
 		entity = dictControl[control]['controller']
-		reaction = dictControl[control]['reaction']
-		dictPhysicalEntity[entity]['reactions'].add(reaction)
+		if entity != None:
+			reaction = dictControl[control]['reaction']
+			dictPhysicalEntity[entity]['reactions'].add(reaction)
 
 
 def detectMembersUsedInEntities(dictPhysicalEntity):
@@ -41,7 +42,7 @@ def detectMembersUsedInEntities(dictPhysicalEntity):
 	
 	:param dictPhysicalEntity: the dictionnary of biopax physicalEntities created by the function query.getPhysicalEntities()
 	:type dictPhysicalEntity: dict
-        """
+	"""
 	for entity in dictPhysicalEntity:
 		dictPhysicalEntity[entity]['membersUsed'] = False
 		for subEntity in dictPhysicalEntity[entity]['members']:
@@ -55,7 +56,7 @@ def developComplexs(dictPhysicalEntity):
 	
 	:param dictPhysicalEntity: the dictionnary of biopax physicalEntities created by the function query.getPhysicalEntities()
 	:type dictPhysicalEntity: dict
-        """
+	"""
 	for entity in dictPhysicalEntity:
 		typeName = dictPhysicalEntity[entity]['type'].rsplit("#", 1)[1]
 		if typeName == "Complex":
@@ -70,7 +71,7 @@ def developComplexEntity(complexEntity, dictPhysicalEntity):
 	:param dictPhysicalEntity: the dictionnary of biopax physicalEntities created by the function query.getPhysicalEntities()
 	:type complexEntity: string
 	:type dictPhysicalEntity: dict
-        """
+	"""
 	listOfFlatComponents = list()
 	for component in dictPhysicalEntity[complexEntity]['components']:
 		typeName = dictPhysicalEntity[component]['type'].rsplit("#", 1)[1]
@@ -99,7 +100,7 @@ def addControllersToReactions(dictReaction, dictControl):
 	:param dictControl: the dictionnary of biopax controls created by the function query.getControls()
 	:type dictReaction: dict
 	:type dictControl: dict
-        """
+	"""
 	for control in dictControl:
 		reaction = dictControl[control]['reaction']
 		physicalEntity = dictControl[control]['controller']
@@ -111,9 +112,9 @@ def numerotateLocations(dictLocation):
 	
 	:param dictLocation: the dictionnary of biopax reactions created by the function query.getLocations()
 	:type dictLocation: dict
-        :returns: idLocationToLocation
-        :rtype: dict
-        """
+	:returns: idLocationToLocation
+	:rtype: dict
+	"""
 	idLocationToLocation = {}
 	
 	currentId = 0
@@ -135,9 +136,9 @@ def getPathwayToPhysicalEntities(dictReaction, dictControl, dictPhysicalEntity):
 	:type dictReaction: dict
 	:type dictControl: dict
 	:type dictPhysicalEntity: dict
-        :returns: pathwayToPhysicalEntities
-        :rtype: dict
-        """
+	:returns: pathwayToPhysicalEntities
+	:rtype: dict
+	"""
 	pathwayToPhysicalEntities = defaultdict(set)
 	allPhysicalEntities = set(dictPhysicalEntity.keys())
 	
@@ -197,9 +198,9 @@ def addCadbiomNameToEntities(dictPhysicalEntity, dictLocation):
 	:param dictLocation: the dictionnary of biopax reactions created by the function query.getLocations()
 	:type dictPhysicalEntity: dict
 	:type dictLocation: dict
-        :returns: cadbiomNameToPhysicalEntity
-        :rtype: dict
-        """
+	:returns: cadbiomNameToPhysicalEntity
+	:rtype: dict
+	"""
 	cadbiomNameToPhysicalEntities = defaultdict(set)
 	
 	for entity in dictPhysicalEntity:
@@ -236,9 +237,9 @@ def findUniqueSynonym(entities, dictPhysicalEntity):
 	:param dictPhysicalEntity: the dictionnary of biopax reactions created by the function query.getPhysicalEntities()
 	:type entities: set
 	:type dictPhysicalEntity: dict
-        :returns: entityToUniqueSynonym
-        :rtype: dict
-        """	
+	:returns: entityToUniqueSynonym
+	:rtype: dict
+	"""	
 	entityToUniqueSynonym = {}
 	
 	while len(entities) != len(entityToUniqueSynonym):
@@ -398,12 +399,12 @@ def getTransitions(dictReaction, dictPhysicalEntity):
 	#tree.write(filePath)
 
 if __name__ == "__main__" :
-	graphUri = sys.argv[1]
+	listOfGraphUri = sys.argv[1:]
 	
-	dictPhysicalEntity = query.getPhysicalEntities(graphUri)
-	dictReaction = query.getReactions(graphUri)
-	dictControl = query.getControls(graphUri)
-	dictLocation = query.getLocations(graphUri)
+	dictPhysicalEntity = query.getPhysicalEntities(listOfGraphUri)
+	dictReaction = query.getReactions(listOfGraphUri)
+	dictControl = query.getControls(listOfGraphUri)
+	dictLocation = query.getLocations(listOfGraphUri)
 	
 	addReactionToEntities(dictReaction, dictControl, dictPhysicalEntity)
 	detectMembersUsedInEntities(dictPhysicalEntity)
