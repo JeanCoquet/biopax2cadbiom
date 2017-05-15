@@ -319,7 +319,7 @@ def formatCadbiomSympyCond(cadbiomSympyCond):
 	return str(cadbiomSympyCond)
 
 
-def getTransitions2(dictReaction, dictPhysicalEntity):
+def getTransitions(dictReaction, dictPhysicalEntity):
 	dictTransition = defaultdict(lambda: defaultdict(list))
 	
 	for reaction in reactionToEventAndCond:
@@ -398,11 +398,12 @@ def getTransitions2(dictReaction, dictPhysicalEntity):
 	#tree.write(filePath)
 
 if __name__ == "__main__" :
+	graphUri = sys.argv[1]
 	
-	dictPhysicalEntity = query.getPhysicalEntities()
-	dictReaction = query.getReactions()
-	dictControl = query.getControls()
-	dictLocation = query.getLocations()
+	dictPhysicalEntity = query.getPhysicalEntities(graphUri)
+	dictReaction = query.getReactions(graphUri)
+	dictControl = query.getControls(graphUri)
+	dictLocation = query.getLocations(graphUri)
 	
 	addReactionToEntities(dictReaction, dictControl, dictPhysicalEntity)
 	detectMembersUsedInEntities(dictPhysicalEntity)
@@ -410,13 +411,7 @@ if __name__ == "__main__" :
 	addControllersToReactions(dictReaction, dictControl)
 	idLocationToLocation = numerotateLocations(dictLocation)
 	cadbiomNameToPhysicalEntity = addCadbiomNameToEntities(dictPhysicalEntity, dictLocation)
-	addCadbiomSympyCondToReactions(dictReaction, dictPhysicalEntity)
+	#addCadbiomSympyCondToReactions(dictReaction, dictPhysicalEntity)
 	#addEventAndCondToReactions(dictReaction, dictPhysicalEntity)
 	#dictTransition = getTransitions(dictReaction, dictPhysicalEntity)
 	
-	exit()
-	
-	#pathwayToPhysicalEntities = getPathwayToPhysicalEntities(dictReaction, dictControl, dictPhysicalEntity)
-	#createGraph(pathwayToName, pathwayToSuperPathways, pathwayToPhysicalEntities, dictPhysicalEntity, pathGraphFile)
-	
-	createCadbiomFile(dictTransition, dictPhysicalEntity, "test", "test.bcx")
