@@ -3,7 +3,7 @@
 This module is used to translate biopax to a cadbiom model
 """
 
-import sys, itertools, copy
+import sys, itertools, copy, pickle
 import sparql_biopaxQueries as query
 from collections import defaultdict
 import networkx as nx
@@ -32,8 +32,8 @@ def addReactionToEntities(dictReaction, dictControl, dictPhysicalEntity):
 	
 	for control in dictControl:
 		entity = dictControl[control]['controller']
-		if entity != None:
-			reaction = dictControl[control]['reaction']
+		reaction = dictControl[control]['reaction']
+		if entity != None and reaction != None:
 			dictPhysicalEntity[entity]['reactions'].add(reaction)
 
 
@@ -104,7 +104,8 @@ def addControllersToReactions(dictReaction, dictControl):
 	for control in dictControl:
 		reaction = dictControl[control]['reaction']
 		physicalEntity = dictControl[control]['controller']
-		dictReaction[reaction]['controllers'].add((physicalEntity,dictControl[control]['controlType']))
+		if reaction != None and physicalEntity != None:
+			dictReaction[reaction]['controllers'].add((physicalEntity,dictControl[control]['controlType']))
 
 
 def numerotateLocations(dictLocation):
@@ -223,9 +224,12 @@ def addCadbiomNameToEntities(dictPhysicalEntity, dictLocation):
 	
 	for entity in dictPhysicalEntity:
 		dictPhysicalEntity[entity]['listOfCadiomNames'] = []
-		for flatComponents in dictPhysicalEntity[entity]['listOfFlatComponents']:
-			s = "_".join(dictPhysicalEntity[entity]['cadbiomName'] for subEntity in flatComponents)
-			dictPhysicalEntity[entity]['listOfCadiomNames'].append(s)
+		if len(dictPhysicalEntity[entity]['listOfFlatComponents']) == 1:
+			dictPhysicalEntity[entity]['listOfCadiomNames'].append(dictPhysicalEntity[entity]['cadbiomName'])
+		else:
+			for flatComponents in dictPhysicalEntity[entity]['listOfFlatComponents']:
+				s = "_".join(dictPhysicalEntity[subEntity]['cadbiomName'] for subEntity in flatComponents)
+				dictPhysicalEntity[entity]['listOfCadiomNames'].append(s)
 	
 	return cadbiomNameToPhysicalEntity
 
@@ -286,26 +290,27 @@ def getListOfCadbiomPossibilities(entity, dictPhysicalEntity):
 	return cadbiomPossibilities
 
 def addCadbiomSympyCondToReactions(dictReaction, dictPhysicalEntity):
-	for reaction in sorted(dictReaction.keys()):
+	for reaction in dictReaction:
 		controllers = dictReaction[reaction]['controllers']
 		
 		cadbiomSympyCond = None
 		for entity, controlType in controllers:
 			cadbiomPossibilities = getListOfCadbiomPossibilities(entity, dictPhysicalEntity)
 			if controlType == "ACTIVATION" :
-				subCadbiomSympyCond = sympy.Or(sympy.symbols(cadbiomPossibilities.pop()))
+				subCadbiomSympyCond = sympy.Or(sympy.Symbol(cadbiomPossibilities.pop()))
 				for cadbiom in cadbiomPossibilities:
-					subCadbiomSympyCond = sympy.Or(subCadbiomSympyCond,sympy.symbols(cadbiom))
+					subCadbiomSympyCond = sympy.Or(subCadbiomSympyCond,sympy.Symbol(cadbiom))
 			elif controlType == "INHIBITION":
-				subCadbiomSympyCond = sympy.Not(sympy.symbols(cadbiomPossibilities.pop()))
+				subCadbiomSympyCond = sympy.Not(sympy.Symbol(cadbiomPossibilities.pop()))
 				for cadbiom in cadbiomPossibilities:
-					subCadbiomSympyCond = sympy.Or(subCadbiomSympyCond,sympy.Not(sympy.symbols(cadbiom)))
+					subCadbiomSympyCond = sympy.Or(subCadbiomSympyCond,sympy.Not(sympy.Symbol(cadbiom)))
 			
 			if cadbiomSympyCond ==  None: cadbiomSympyCond = subCadbiomSympyCond
 			else: cadbiomSympyCond = sympy.And(cadbiomSympyCond, subCadbiomSympyCond)
 		
 		if cadbiomSympyCond ==  None: dictReaction[reaction]['cadbiomSympyCond'] = ""
 		else: dictReaction[reaction]['cadbiomSympyCond'] = sympy.simplify_logic(cadbiomSympyCond)
+
 
 def formatCadbiomSympyCond(cadbiomSympyCond):
 	if type(cadbiomSympyCond) == sympy.Or:
@@ -401,7 +406,7 @@ def getTransitions(dictReaction, dictPhysicalEntity):
 if __name__ == "__main__" :
 	listOfGraphUri = sys.argv[1:]
 	
-	dictPhysicalEntity = query.getPhysicalEntities(listOfGraphUri)
+	dictPhysicalEntity = query.getPhysicalEntities(listOfGraphUri)	
 	dictReaction = query.getReactions(listOfGraphUri)
 	dictControl = query.getControls(listOfGraphUri)
 	dictLocation = query.getLocations(listOfGraphUri)
@@ -412,7 +417,8 @@ if __name__ == "__main__" :
 	addControllersToReactions(dictReaction, dictControl)
 	idLocationToLocation = numerotateLocations(dictLocation)
 	cadbiomNameToPhysicalEntity = addCadbiomNameToEntities(dictPhysicalEntity, dictLocation)
-	#addCadbiomSympyCondToReactions(dictReaction, dictPhysicalEntity)
+	addCadbiomSympyCondToReactions(dictReaction, dictPhysicalEntity)
+	
 	#addEventAndCondToReactions(dictReaction, dictPhysicalEntity)
 	#dictTransition = getTransitions(dictReaction, dictPhysicalEntity)
 	
