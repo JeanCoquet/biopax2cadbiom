@@ -1,0 +1,1 @@
+Convert Biopax data (http://biopax.org) to Cabiom model (http://cadbiom.genouest.org).
