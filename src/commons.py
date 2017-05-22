@@ -9,7 +9,7 @@ from collections import defaultdict
 # Paths
 DIR_LOGS            = 'logs/'
 DIR_DATA            = 'data/'
-DIR_PICKLE          = 'backupPidckle/'
+DIR_PICKLE          = 'backupPickle/'
 DIR_OUTPUT          = 'output/'
 
 # Logging
