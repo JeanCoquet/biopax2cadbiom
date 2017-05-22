@@ -14,4 +14,4 @@ venv/
 pip-selfcheck.json
 logs/*
 .cache/*
-
+backupPickle/*

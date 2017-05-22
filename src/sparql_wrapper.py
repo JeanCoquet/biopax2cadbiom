@@ -40,7 +40,7 @@ def load_sparql_endpoint():
 
     """
     
-    return SPARQLWrapper("http://localhost:8890/sparql/", 'POST') # CHECK THIS
+    return SPARQLWrapper("https://openstack-192-168-100-241.genouest.org/sparql/", 'POST') # CHECK THIS
 
 
 @auto_add_prefixes
