@@ -321,14 +321,22 @@ def createCadbiomFile(dictTransition,
         if len(dictTransition[(cadbiomL,cadbiomR)]['reactionAndSympyCond']) == 1:
             reaction, cond = list(dictTransition[(cadbiomL,cadbiomR)]['reactionAndSympyCond'])[0]
             event = dictReaction[reaction]['event']
-            ET.SubElement(model, "transition", ori=cadbiomL, ext=cadbiomR, event=event, condition=formatCadbiomSympyCond(cond), action="", fact_ids="[]").text = "reaction = "+reaction
+            ET.SubElement(
+                model, "transition",
+                ori=cadbiomL, ext=cadbiomR,
+                event=event, condition=formatCadbiomSympyCond(cond),
+                action="", fact_ids="[]").text = "reaction = "+reaction
         else:
             setOfEventAndCond = set([])
             for reaction, cond in dictTransition[(cadbiomL,cadbiomR)]['reactionAndSympyCond']:
                 event = dictReaction[reaction]['event']
                 setOfEventAndCond.add((event,cond))
             eventAndCondStr = formatEventAndCond(setOfEventAndCond)
-            ET.SubElement(model, "transition", ori=cadbiomL, ext=cadbiomR, event=eventAndCondStr, condition="", action="", fact_ids="[]").text = "reaction = "+reaction
+            ET.SubElement(
+                model, "transition",
+                ori=cadbiomL, ext=cadbiomR,
+                event=eventAndCondStr, condition="",
+                action="", fact_ids="[]").text = "reaction = "+reaction
 
     tree = ET.ElementTree(model)
     tree.write(filePath, pretty_print=True)
