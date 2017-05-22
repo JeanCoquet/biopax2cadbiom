@@ -4,7 +4,7 @@ This module is used to translate biopax to a cadbiom model
 """
 
 import sys, itertools, copy, dill, sympy, argparse, os
-import sparql_biopaxQueries as query
+from src import sparql_biopaxQueries as query
 from collections import defaultdict
 import networkx as nx
 import xml.etree.ElementTree as ET
@@ -350,52 +350,59 @@ def formatCadbiomSympyCond(cadbiomSympyCond):
 	return str(cadbiomSympyCond)
 
 #def createCadbiomFile(dictTransition, dictPhysicalEntity, nameModel, filePath):
-	#model = ET.Element("model", xmlns="http://cadbiom", name=nameModel)
-	
-	#for entity in dictPhysicalEntity:
-		#if len(dictPhysicalEntity[entity]['members']) == 0:
-			#cadbiomName = dictPhysicalEntity[entity]['cadbiomName']
-			#ET.SubElement(model, "CSimpleNode", name=cadbiomName, xloc="0.0", yloc="0.0")
-	
-	#for cadbiomL,cadbiomR in dictTransition:
-		#for i in range(len(dictTransition[(cadbiomL,cadbiomR)]['eventAndCond'])):
-			#event, cond = dictTransition[(cadbiomL,cadbiomR)]['eventAndCond'][i]
-			#reaction = dictTransition[(cadbiomL,cadbiomR)]['reactions'][i]
-			#ET.SubElement(model, "transition", ori=cadbiomL, ext=cadbiomR, event=event, condition=cond, action="", fact_ids="[]").text = "reaction = "+reaction
-	
-	#tree = ET.ElementTree(model)
-	#tree.write(filePath)
+    #model = ET.Element("model", xmlns="http://cadbiom", name=nameModel)
 
-if __name__ == "__main__" :
-	parser = argparse.ArgumentParser(description='biopax2cabiom.py is a script to transforme a Biopax data from a RDBMS to a Cabiom model')
-	parser.add_argument('--pickleBackup', type=str, help=' enter a file path to save the script variables.')
-	parser.add_argument('--listOfGraphUri', nargs='+', help=' enter a list of RDF graph.')
-	args = parser.parse_args()
-	
-	if not os.path.isfile(args.pickleBackup):
-	
-		dictPhysicalEntity = query.getPhysicalEntities(args.listOfGraphUri)
-		dictReaction = query.getReactions(args.listOfGraphUri)
-		
-		#getTransitions(dictReaction, dictPhysicalEntity)
-		#exit()
-		
-		dictControl = query.getControls(args.listOfGraphUri)
-		dictLocation = query.getLocations(args.listOfGraphUri)
-		
-		addReactionToEntities(dictReaction, dictControl, dictPhysicalEntity)
-		detectMembersUsedInEntities(dictPhysicalEntity)
-		developComplexs(dictPhysicalEntity)
-		addControllersToReactions(dictReaction, dictControl)
-		idLocationToLocation = numerotateLocations(dictLocation)
-		cadbiomNameToPhysicalEntity = addCadbiomNameToEntities(dictPhysicalEntity, dictLocation)
-		addCadbiomSympyCondToReactions(dictReaction, dictPhysicalEntity)
-		
-		dill.dump([dictPhysicalEntity, dictReaction, dictControl, dictLocation, idLocationToLocation, cadbiomNameToPhysicalEntity], open(args.pickleBackup, "wb"))
-	
-	else:
-		dictPhysicalEntity, dictReaction, dictControl, dictLocation, idLocationToLocation, cadbiomNameToPhysicalEntity = dill.load(open(args.pickleBackup, "rb"))
-	
-	#addEventAndCondToReactions(dictReaction, dictPhysicalEntity)
-	#dictTransition = getTransitions(dictReaction, dictPhysicalEntity)
-	
+    #for entity in dictPhysicalEntity:
+        #if len(dictPhysicalEntity[entity]['members']) == 0:
+            #cadbiomName = dictPhysicalEntity[entity]['cadbiomName']
+            #ET.SubElement(model, "CSimpleNode", name=cadbiomName, xloc="0.0", yloc="0.0")
+
+    #for cadbiomL,cadbiomR in dictTransition:
+        #for i in range(len(dictTransition[(cadbiomL,cadbiomR)]['eventAndCond'])):
+            #event, cond = dictTransition[(cadbiomL,cadbiomR)]['eventAndCond'][i]
+            #reaction = dictTransition[(cadbiomL,cadbiomR)]['reactions'][i]
+            #ET.SubElement(model, "transition", ori=cadbiomL, ext=cadbiomR, event=event, condition=cond, action="", fact_ids="[]").text = "reaction = "+reaction
+
+    #tree = ET.ElementTree(model)
+    #tree.write(filePath)
+
+def main(args):
+
+    if not os.path.isfile(args.pickleBackup):
+
+        dictPhysicalEntity = query.getPhysicalEntities(args.listOfGraphUri)
+        dictReaction = query.getReactions(args.listOfGraphUri)
+
+        #getTransitions(dictReaction, dictPhysicalEntity)
+        #exit()
+
+        dictControl = query.getControls(args.listOfGraphUri)
+        dictLocation = query.getLocations(args.listOfGraphUri)
+
+        addReactionToEntities(dictReaction, dictControl, dictPhysicalEntity)
+        detectMembersUsedInEntities(dictPhysicalEntity)
+        developComplexs(dictPhysicalEntity)
+        addControllersToReactions(dictReaction, dictControl)
+        idLocationToLocation = numerotateLocations(dictLocation)
+        cadbiomNameToPhysicalEntity = addCadbiomNameToEntities(dictPhysicalEntity, dictLocation)
+        addCadbiomSympyCondToReactions(dictReaction, dictPhysicalEntity)
+
+        dill.dump(
+            [
+                dictPhysicalEntity, dictReaction, dictControl, dictLocation,
+                idLocationToLocation, cadbiomNameToPhysicalEntity
+            ],
+            open(args.pickleBackup, "wb")
+        )
+
+    else:
+        dictPhysicalEntity, dictReaction, dictControl, \
+        dictLocation, idLocationToLocation, cadbiomNameToPhysicalEntity \
+            = dill.load(open(args.pickleBackup, "rb"))
+
+#    print(dictPhysicalEntity)
+
+    #addEventAndCondToReactions(dictReaction, dictPhysicalEntity)
+    dictTransition = getTransitions(dictReaction, dictPhysicalEntity)
+
+

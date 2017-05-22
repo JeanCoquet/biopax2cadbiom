@@ -3,7 +3,7 @@
 This module contains a list of functions to request Reactome
 """
 
-import sparql_wrapper
+from src import sparql_wrapper
 from collections import defaultdict
 
 def getPathways(listOfGraphUri):

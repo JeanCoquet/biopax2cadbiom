@@ -3,8 +3,7 @@
 
 """
 
-# Standard imports
-from collections import defaultdict
+from src.commons import SPARQL_PATH
 
 try:
     from SPARQLWrapper import SPARQLWrapper, JSON
@@ -17,14 +16,14 @@ except ImportError:
 
 # Custom imports
 #from rdfstore import commons as cm
-import namespaces as nm
+from src import namespaces as nm
 
 # TODO revoir le json avec sparqlwrapper2
 def auto_add_prefixes(func):
     """Decorator: Add all prefixes to the SPARQL query at first argument
     of sparql_query()
     """
-    
+
     def fonction_modifiee(*args, **kwargs):
         return func(nm.get_RDF_prefixes() + args[0], **kwargs)
 
@@ -39,8 +38,8 @@ def load_sparql_endpoint():
     :rtype: <SPARQLWrapper2>
 
     """
-    
-    return SPARQLWrapper("http://localhost:8890/sparql/", 'POST') # CHECK THIS
+
+    return SPARQLWrapper(SPARQL_PATH, 'POST') # CHECK THIS
 
 
 @auto_add_prefixes
