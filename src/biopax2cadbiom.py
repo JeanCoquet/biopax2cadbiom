@@ -7,7 +7,8 @@ import itertools, copy, dill, sympy, os
 from src import sparql_biopaxQueries as query
 from collections import defaultdict
 import networkx as nx
-import xml.etree.ElementTree as ET
+#import xml.etree.ElementTree as ET
+from lxml import etree as ET
 
 def addReactionToEntities(dictReaction, dictControl, dictPhysicalEntity):
     """This procedure adds the key 'reactions' to the dictionnary dictPhysicalEntity[entity]. The value corresponds to a set of reactions involving entity.
@@ -301,7 +302,11 @@ def formatEventAndCond(setOfEventAndCond):
     else:
         return "("+s+") default ("+formatEventAndCond(setOfEventAndCond)+")"
 
-def createCadbiomFile(dictTransition, dictPhysicalEntity, nameModel, filePath):
+def createCadbiomFile(dictTransition,
+                      dictPhysicalEntity,
+                      dictReaction,
+                      nameModel,
+                      filePath):
     model = ET.Element("model", xmlns="http://cadbiom", name=nameModel)
 
     cadbiomNodes = set()
@@ -326,7 +331,7 @@ def createCadbiomFile(dictTransition, dictPhysicalEntity, nameModel, filePath):
             ET.SubElement(model, "transition", ori=cadbiomL, ext=cadbiomR, event=eventAndCondStr, condition="", action="", fact_ids="[]").text = "reaction = "+reaction
 
     tree = ET.ElementTree(model)
-    tree.write(filePath)
+    tree.write(filePath, pretty_print=True)
 
 
 def main(args):
@@ -364,6 +369,7 @@ def main(args):
     createCadbiomFile(
         dictTransition,
         dictPhysicalEntity,
+        dictReaction,
         cadbiomModelName,
         args.cadbiomFile
     )
