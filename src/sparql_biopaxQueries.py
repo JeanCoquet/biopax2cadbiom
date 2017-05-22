@@ -48,8 +48,6 @@ def getPathwayAncestorsHierarchy(listOfGraphUri):
 			?subPathway rdf:type biopax3:Pathway .
 		}
 	"""
-	print(query)
-	
 	
 	pathwayToSuperPathways = defaultdict(set)
 	for pathway, superPathway in sparql_wrapper.sparql_query(query):
@@ -70,7 +68,7 @@ def getReactions(listOfGraphUri):
 		WHERE 
 		{
 			?reaction rdf:type ?reactionType . 
-			VALUES ?reactionType { biopax3:BiochemicalReaction biopax3:TemplateReaction biopax3:Degradation }
+			?reactionType rdfs:subClassOf* biopax3:Interaction .
 			OPTIONAL { ?reaction biopax3:displayName ?nameReaction . }
 			OPTIONAL { ?pathway biopax3:pathwayComponent ?reaction . }
 			OPTIONAL { ?reaction biopax3:left ?leftComponent . }
