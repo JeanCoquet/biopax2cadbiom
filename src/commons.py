@@ -9,7 +9,8 @@ from collections import defaultdict
 # Paths
 DIR_LOGS            = 'logs/'
 DIR_DATA            = 'data/'
-DIR_PICKLE          = 'backupPickle/'
+DIR_PICKLE          = 'backupPidckle/'
+DIR_OUTPUT          = 'output/'
 
 # Logging
 LOGGER_NAME         = "biopax2cadbiom"

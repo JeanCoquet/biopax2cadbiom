@@ -3,7 +3,7 @@
 This module is used to translate biopax to a cadbiom model
 """
 
-import sys, itertools, copy, dill, sympy, argparse, os
+import itertools, copy, dill, sympy, os
 from src import sparql_biopaxQueries as query
 from collections import defaultdict
 import networkx as nx
@@ -24,7 +24,7 @@ def addReactionToEntities(dictReaction, dictControl, dictPhysicalEntity):
             entity = dictReaction[reaction]['productComponent']
             dictPhysicalEntity[entity]['reactions'].add(reaction)
         if dictReaction[reaction]['participantComponent'] != None:
-            entity = dictReaction[reaction]['productComponent']
+            entity = dictReaction[reaction]['participantComponent']
             dictPhysicalEntity[entity]['reactions'].add(reaction)
         for entity in dictReaction[reaction]['leftComponents']|dictReaction[reaction]['rightComponents']:
             dictPhysicalEntity[entity]['reactions'].add(reaction)
@@ -49,49 +49,6 @@ def detectMembersUsedInEntities(dictPhysicalEntity):
                 dictPhysicalEntity[entity]['membersUsed'] = True
                 break
 
-# TODO: Test this function
-def developComplexs(dictPhysicalEntity):
-    """This procedure adds the key 'listOfFlatComponents' to the dictionnary dictPhysicalEntity[entity]. The value corresponds to a list of component sets.
-
-    :param dictPhysicalEntity: the dictionnary of biopax physicalEntities created by the function query.getPhysicalEntities()
-    :type dictPhysicalEntity: dict
-    """
-    for entity in dictPhysicalEntity:
-        typeName = dictPhysicalEntity[entity]['type'].rsplit("#", 1)[1]
-        if typeName == "Complex":
-            if len(dictPhysicalEntity[entity]['listOfFlatComponents']) == 0:
-                developComplexEntity(entity, dictPhysicalEntity)
-
-
-def developComplexEntity(complexEntity, dictPhysicalEntity):
-    """This procedure fills the value of dictPhysicalEntity[entity]['listOfFlatComponents'].
-
-    :param complexEntity: the biopax id of a complex entity
-    :param dictPhysicalEntity: the dictionnary of biopax physicalEntities created by the function query.getPhysicalEntities()
-    :type complexEntity: string
-    :type dictPhysicalEntity: dict
-    """
-    listOfFlatComponents = list()
-    for component in dictPhysicalEntity[complexEntity]['components']:
-        typeName = dictPhysicalEntity[component]['type'].rsplit("#", 1)[1]
-        if typeName == "Complex":
-            if len(dictPhysicalEntity[component]['listOfFlatComponents']) == 0:
-                developComplexEntity(component, dictPhysicalEntity)
-            listOfFlatComponents.append(dictPhysicalEntity[component]['listOfFlatComponents'])
-        elif len(dictPhysicalEntity[component]['members']) != 0 and dictPhysicalEntity[component]['membersUsed']:
-            listOfFlatComponents.append(list(dictPhysicalEntity[component]['members']))
-        else:
-            listOfFlatComponents.append([component])
-
-    if len(listOfFlatComponents) != 0:
-        dictPhysicalEntity[complexEntity]['listOfFlatComponents'] = []
-        for elements in itertools.product(*listOfFlatComponents):
-            l = []
-            for e in elements:
-                if isinstance(e, tuple): l += e
-                else: l.append(e)
-            dictPhysicalEntity[complexEntity]['listOfFlatComponents'].append(tuple(l))
-
 def addControllersToReactions(dictReaction, dictControl):
     """This procedure adds the key 'controllers' to the dictionnary dictReaction[reaction]. The value corresponds to a set of controller entities involved in reaction.
 
@@ -104,8 +61,8 @@ def addControllersToReactions(dictReaction, dictControl):
         reaction = dictControl[control]['reaction']
         physicalEntity = dictControl[control]['controller']
         if reaction != None and physicalEntity != None:
-            dictReaction[reaction]['controllers'].add((physicalEntity,dictControl[control]['controlType']))
-
+            if reaction in dictReaction:
+                dictReaction[reaction]['controllers'].add((physicalEntity,dictControl[control]['controlType']))
 
 def numerotateLocations(dictLocation):
     """This function creates an cadbiom ID for each location. It adds the key 'cadbiomId' to the dictionnary dictLocation[location].
@@ -221,15 +178,6 @@ def addCadbiomNameToEntities(dictPhysicalEntity, dictLocation):
                 cadbiomNameToPhysicalEntity[cadbiomName] = entity
                 dictPhysicalEntity[entity]['cadbiomName'] = cadbiomName
 
-    for entity in dictPhysicalEntity:
-        dictPhysicalEntity[entity]['listOfCadiomNames'] = []
-        if len(dictPhysicalEntity[entity]['listOfFlatComponents']) == 1:
-            dictPhysicalEntity[entity]['listOfCadiomNames'].append(dictPhysicalEntity[entity]['cadbiomName'])
-        else:
-            for flatComponents in dictPhysicalEntity[entity]['listOfFlatComponents']:
-                s = "_".join(dictPhysicalEntity[subEntity]['cadbiomName'] for subEntity in flatComponents)
-                dictPhysicalEntity[entity]['listOfCadiomNames'].append(s)
-
     return cadbiomNameToPhysicalEntity
 
 
@@ -270,79 +218,65 @@ def findUniqueSynonym(entities, dictPhysicalEntity):
 
 
 def getCadbiomName(entity, dictPhysicalEntity, dictLocation, synonym=None):
-    if synonym == None: name = dictPhysicalEntity[entity]['name']
-    else: name = synonym
-    location = dictPhysicalEntity[entity]['location']
-    locationId = dictLocation[location]['cadbiomId']
-    return name.replace(' ','_')+"_"+locationId
-
-def getListOfCadbiomPossibilities(entity, dictPhysicalEntity):
-    cadbiomPossibilities = set()
-
-    if len(dictPhysicalEntity[entity]['listOfFlatComponents']) != 0:
-        cadbiomPossibilities = set(dictPhysicalEntity[entity]['listOfCadiomNames'])
-    elif len(dictPhysicalEntity[entity]['members']) != 0:
-        for subEntity in dictPhysicalEntity[entity]['members']:
-            cadbiomPossibilities |= getListOfCadbiomPossibilities(subEntity, dictPhysicalEntity)
+    if synonym == None:
+        name = dictPhysicalEntity[entity]['name']
     else:
-        cadbiomPossibilities.add(dictPhysicalEntity[entity]['cadbiomName'])
+        name = synonym
 
-    return cadbiomPossibilities
+    location = dictPhysicalEntity[entity]['location']
+    if location != None:
+        locationId = dictLocation[location]['cadbiomId']
+        return name.replace(' ','_')+"_"+locationId
+    else:
+        return name.replace(' ','_')
+
 
 def addCadbiomSympyCondToReactions(dictReaction, dictPhysicalEntity):
+    nbEvent = 0
     for reaction in dictReaction:
         controllers = dictReaction[reaction]['controllers']
 
-        cadbiomSympyCond = None
+        cadbiomSympyCond = sympy.sympify(True)
         for entity, controlType in controllers:
-            cadbiomPossibilities = getListOfCadbiomPossibilities(entity, dictPhysicalEntity)
+            sympySymbol = sympy.Symbol(dictPhysicalEntity[entity]['cadbiomName'])
             if controlType == "ACTIVATION" :
-                subCadbiomSympyCond = sympy.Or(sympy.Symbol(cadbiomPossibilities.pop()))
-                for cadbiom in cadbiomPossibilities:
-                    subCadbiomSympyCond = sympy.Or(subCadbiomSympyCond,sympy.Symbol(cadbiom))
+                cadbiomSympyCond = sympy.And(cadbiomSympyCond, sympySymbol)
             elif controlType == "INHIBITION":
-                subCadbiomSympyCond = sympy.Not(sympy.Symbol(cadbiomPossibilities.pop()))
-                for cadbiom in cadbiomPossibilities:
-                    subCadbiomSympyCond = sympy.Or(subCadbiomSympyCond,sympy.Not(sympy.Symbol(cadbiom)))
+                cadbiomSympyCond = sympy.And(cadbiomSympyCond, sympy.Not(sympySymbol))
 
-            if cadbiomSympyCond ==  None: cadbiomSympyCond = subCadbiomSympyCond
-            else: cadbiomSympyCond = sympy.And(cadbiomSympyCond, subCadbiomSympyCond)
-
-        if cadbiomSympyCond ==  None: dictReaction[reaction]['cadbiomSympyCond'] = ""
-        else: dictReaction[reaction]['cadbiomSympyCond'] = cadbiomSympyCond
+        dictReaction[reaction]['cadbiomSympyCond'] = cadbiomSympyCond
+        dictReaction[reaction]['event'] = "h_"+str(nbEvent)
+        nbEvent += 1
 
 
 def getTransitions(dictReaction, dictPhysicalEntity):
     dictTransition = defaultdict(lambda: defaultdict(set))
 
-    for reaction in sorted(dictReaction.keys()):
-        typeName = dictReaction[reaction]['type'].rsplit("#", 1)[1]
-
+    for reaction in sorted(list(dictReaction.keys()))[:100]:
+        typeName = dictReaction[reaction]['type'].rsplit("#", 1)[1].split('_',1)[0]
 
         if typeName == "BiochemicalReaction" :
-            print("reaction:", reaction)
-            print("control", dictReaction[reaction]['controllers'])
-            print()
-
             for entityL in dictReaction[reaction]['leftComponents']:
-                print("input", entityL, dictPhysicalEntity[entityL]["cadbiomName"])
+                for entityR in dictReaction[reaction]['rightComponents']:
 
-            for entityR in dictReaction[reaction]['rightComponents']:
-                print("output", entityR, dictPhysicalEntity[entityR]["cadbiomName"])
+                    transitionSympyCond = dictReaction[reaction]['cadbiomSympyCond']
+                    for otherEntityL in dictReaction[reaction]['leftComponents']-set([entityL]):
+                        sympySymbol = sympy.Symbol(dictPhysicalEntity[otherEntityL]['cadbiomName'])
+                        transitionSympyCond = sympy.And(transitionSympyCond, sympySymbol)
 
-            input("PAUSE")
+                    cadbiomL = dictPhysicalEntity[entityL]['cadbiomName']
+                    cadbiomR = dictPhysicalEntity[entityR]['cadbiomName']
+                    dictTransition[(cadbiomL,cadbiomR)]['reactionAndSympyCond'].add((reaction,transitionSympyCond))
 
-        continue
         if typeName == "Degradation":
             for entityL in dictReaction[reaction]['leftComponents']: # Normally there is just one component
-                cadbiomPossibilities = getListOfCadbiomPossibilities(entity, dictPhysicalEntity)
-                for cadbiomL in cadbiomPossibilities:
-                    dictTransition[(cadbiomL,"#TRASH")]['reactions'].add(reaction)
+                cadbiomL = dictPhysicalEntity[entityL]['cadbiomName']
+                dictTransition[(cadbiomL,"#TRASH")]['reactionAndSympyCond'].add((reaction,dictReaction[reaction]['cadbiomSympyCond']))
 
         elif typeName == "TemplateReaction":
-            cadbiomPossibilities = getListOfCadbiomPossibilities(dictReaction[reaction]['productComponent'], dictPhysicalEntity)
-            for cadbiomR in cadbiomPossibilities:
-                dictTransition[(cadbiomR+"_gene",cadbiomR)]['reactions'].add(reaction)
+            entityR = dictReaction[reaction]['productComponent']
+            cadbiomR = dictPhysicalEntity[entityR]['cadbiomName']
+            dictTransition[(cadbiomR+"_gene",cadbiomR)]['reactionAndSympyCond'].add((reaction,dictReaction[reaction]['cadbiomSympyCond']))
 
     return dictTransition
 
@@ -359,22 +293,41 @@ def formatCadbiomSympyCond(cadbiomSympyCond):
 
     return str(cadbiomSympyCond)
 
-#def createCadbiomFile(dictTransition, dictPhysicalEntity, nameModel, filePath):
-    #model = ET.Element("model", xmlns="http://cadbiom", name=nameModel)
+def formatEventAndCond(setOfEventAndCond):
+    event, cond = setOfEventAndCond.pop()
+    s = "("+event+") when ("+formatCadbiomSympyCond(cond)+")"
+    if len(setOfEventAndCond) == 0:
+        return s
+    else:
+        return "("+s+") default ("+formatEventAndCond(setOfEventAndCond)+")"
 
-    #for entity in dictPhysicalEntity:
-        #if len(dictPhysicalEntity[entity]['members']) == 0:
-            #cadbiomName = dictPhysicalEntity[entity]['cadbiomName']
-            #ET.SubElement(model, "CSimpleNode", name=cadbiomName, xloc="0.0", yloc="0.0")
+def createCadbiomFile(dictTransition, dictPhysicalEntity, nameModel, filePath):
+    model = ET.Element("model", xmlns="http://cadbiom", name=nameModel)
 
-    #for cadbiomL,cadbiomR in dictTransition:
-        #for i in range(len(dictTransition[(cadbiomL,cadbiomR)]['eventAndCond'])):
-            #event, cond = dictTransition[(cadbiomL,cadbiomR)]['eventAndCond'][i]
-            #reaction = dictTransition[(cadbiomL,cadbiomR)]['reactions'][i]
-            #ET.SubElement(model, "transition", ori=cadbiomL, ext=cadbiomR, event=event, condition=cond, action="", fact_ids="[]").text = "reaction = "+reaction
+    cadbiomNodes = set()
+    for cadbiomL,cadbiomR in dictTransition:
+        cadbiomNodes.add(cadbiomL)
+        cadbiomNodes.add(cadbiomR)
 
-    #tree = ET.ElementTree(model)
-    #tree.write(filePath)
+    for cadbiomName in cadbiomNodes:
+        ET.SubElement(model, "CSimpleNode", name=cadbiomName, xloc="0.0", yloc="0.0")
+
+    for cadbiomL,cadbiomR in dictTransition:
+        if len(dictTransition[(cadbiomL,cadbiomR)]['reactionAndSympyCond']) == 1:
+            reaction, cond = list(dictTransition[(cadbiomL,cadbiomR)]['reactionAndSympyCond'])[0]
+            event = dictReaction[reaction]['event']
+            ET.SubElement(model, "transition", ori=cadbiomL, ext=cadbiomR, event=event, condition=formatCadbiomSympyCond(cond), action="", fact_ids="[]").text = "reaction = "+reaction
+        else:
+            setOfEventAndCond = set([])
+            for reaction, cond in dictTransition[(cadbiomL,cadbiomR)]['reactionAndSympyCond']:
+                event = dictReaction[reaction]['event']
+                setOfEventAndCond.add((event,cond))
+            eventAndCondStr = formatEventAndCond(setOfEventAndCond)
+            ET.SubElement(model, "transition", ori=cadbiomL, ext=cadbiomR, event=eventAndCondStr, condition="", action="", fact_ids="[]").text = "reaction = "+reaction
+
+    tree = ET.ElementTree(model)
+    tree.write(filePath)
+
 
 def main(args):
 
@@ -382,16 +335,11 @@ def main(args):
 
         dictPhysicalEntity = query.getPhysicalEntities(args.listOfGraphUri)
         dictReaction = query.getReactions(args.listOfGraphUri)
-
-        #getTransitions(dictReaction, dictPhysicalEntity)
-        #exit()
-
         dictControl = query.getControls(args.listOfGraphUri)
         dictLocation = query.getLocations(args.listOfGraphUri)
 
         addReactionToEntities(dictReaction, dictControl, dictPhysicalEntity)
         detectMembersUsedInEntities(dictPhysicalEntity)
-        developComplexs(dictPhysicalEntity)
         addControllersToReactions(dictReaction, dictControl)
         idLocationToLocation = numerotateLocations(dictLocation)
         cadbiomNameToPhysicalEntity = addCadbiomNameToEntities(dictPhysicalEntity, dictLocation)
@@ -410,9 +358,12 @@ def main(args):
         dictLocation, idLocationToLocation, cadbiomNameToPhysicalEntity \
             = dill.load(open(args.pickleBackup, "rb"))
 
-#    print(dictPhysicalEntity)
-
-    #addEventAndCondToReactions(dictReaction, dictPhysicalEntity)
     dictTransition = getTransitions(dictReaction, dictPhysicalEntity)
 
-
+    cadbiomModelName = args.cadbiomFile.rsplit('/',1)[-1].rsplit('.',1)[0]
+    createCadbiomFile(
+        dictTransition,
+        dictPhysicalEntity,
+        cadbiomModelName,
+        args.cadbiomFile
+    )
