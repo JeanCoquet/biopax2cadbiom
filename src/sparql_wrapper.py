@@ -94,16 +94,16 @@ def get_all_names():
     """Get all entities with names in graph"""
 
     query = """
-	PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-	PREFIX biopax3: <http://www.biopax.org/release/biopax-level3.owl#>
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX biopax3: <http://www.biopax.org/release/biopax-level3.owl#>
 
-	SELECT DISTINCT ?pathway ?pathwayname 
-	WHERE 
-	{
-		?pathway rdf:type biopax3:Pathway .
-		?pathway biopax3:displayName ?pathwayname 
-	}
-	LIMIT 100
+    SELECT DISTINCT ?pathway ?pathwayname
+    WHERE
+    {
+        ?pathway rdf:type biopax3:Pathway .
+        ?pathway biopax3:displayName ?pathwayname
+    }
+    LIMIT 100
     """
 
     for tab in sparql_query(query): print("ORIG:   ", tab)
