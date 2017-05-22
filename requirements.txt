@@ -1,0 +1,5 @@
+dill==0.2.6
+lxml==3.7.3
+SPARQLWrapper==1.8.0
+sympy==1.0
+networkx==1.11
