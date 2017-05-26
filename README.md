@@ -28,7 +28,7 @@ Convert Biopax data (http://biopax.org) to Cabiom model (http://cadbiom.genouest
 
 ## Test cases
 
-### Reactome - Homarus_americanus.owl
+### {+ Reactome - Homarus_americanus.owl +}
 __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/homarus`
   * [x] Expected result
   * [x] No errors
@@ -38,7 +38,7 @@ __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reac
 
 <br/>
 
-### Reactome - Crithidia_fasciculata.owl
+### {+ Reactome - Crithidia_fasciculata.owl +}
 __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/crithidia`
   * [x] Expected result
   * [x] No errors
@@ -48,7 +48,7 @@ __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reac
 
 <br/>
 
-### Reactome - Vigna_radiata_var._radiata.owl
+### {+ Reactome - Vigna_radiata_var._radiata.owl +}
 __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/vigna`
   * [x] Expected result
   * [x] No errors
@@ -58,7 +58,7 @@ __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reac
 
 <br/>
 
-### Reactome - Triticum_aestivum.owl
+### {+ Reactome - Triticum_aestivum.owl +}
 __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/triticum`
   * [x] Expected result
   * [x] No errors
@@ -68,7 +68,7 @@ __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reac
 
 <br/>
 
-### Reactome - Cavia_porcellus.owl
+### {- Reactome - Cavia_porcellus.owl -}
 __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/cavia`
   * [ ] Expected result
   * [x] No errors
