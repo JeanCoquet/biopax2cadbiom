@@ -165,7 +165,7 @@ def getLocations(listOfGraphUri):
 		WHERE
 		{
 			?entity biopax3:cellularLocation ?location .
-			?location biopax3:term ?locationTerm .
+			OPTIONAL { ?location biopax3:term ?locationTerm . }
 			OPTIONAL {
 				?location biopax3:xref ?ref .
 				?ref biopax3:db ?dbRef .

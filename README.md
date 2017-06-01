@@ -68,15 +68,31 @@ __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reac
 
 <br/>
 
-### {- Reactome - Cavia_porcellus.owl -}
-__Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/cavia`
-  * [ ] Expected result
+### {+ Reactome - Cavia_porcellus.owl +}
+__Command__: `python3 -m src --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/cavia`
+  * [x] Expected result
   * [x] No errors
   * [x] No unexpected transitions
 
-__Comments__:
-  * A transition without condition must be empty (there is a 'True')
-  * How to process the 'members' in this case?
-
 ![ImageOfCaviaTestCase](img/testCases/cavia.png)
+
+<br/>
+
+### {+ Virtual Cases - virtualCase1.owl +}
+__Command__: `python3 -m src --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 http://virtualcases.org/1`
+  * [x] Expected result
+  * [x] No errors
+  * [x] No unexpected transitions
+
+![ImageOfCaviaTestCase](img/testCases/virtualCase1.png)
+
+<br/>
+
+### {+ Virtual Cases - virtualCase2.owl +}
+__Command__: `python3 -m src --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 http://virtualcases.org/2`
+  * [x] Expected result
+  * [x] No errors
+  * [x] No unexpected transitions
+
+![ImageOfCaviaTestCase](img/testCases/virtualCase2.png)
 
