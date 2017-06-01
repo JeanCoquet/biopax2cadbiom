@@ -32,7 +32,7 @@ Convert Biopax data (http://biopax.org) to Cabiom model (http://cadbiom.genouest
 __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/homarus`
   * [x] Expected result
   * [x] No errors
-  * [x] No unexpected transitions
+  * [x] No unexpected reactions
 
 ![ImageOfHomarusTestCase](img/testCases/homarus.png)
 
@@ -42,7 +42,7 @@ __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reac
 __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/crithidia`
   * [x] Expected result
   * [x] No errors
-  * [x] No unexpected transitions
+  * [x] No unexpected reactions
 
 ![ImageOfCrithidiaTestCase](img/testCases/crithidia.png)
 
@@ -52,7 +52,7 @@ __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reac
 __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/vigna`
   * [x] Expected result
   * [x] No errors
-  * [x] No unexpected transitions
+  * [x] No unexpected reactions
 
 ![ImageOfVignaTestCase](img/testCases/vigna.png)
 
@@ -62,7 +62,7 @@ __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reac
 __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/triticum`
   * [x] Expected result
   * [x] No errors
-  * [x] No unexpected transitions
+  * [x] No unexpected reactions
 
 ![ImageOfTriticumTestCase](img/testCases/triticum.png)
 
@@ -72,7 +72,7 @@ __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reac
 __Command__: `python3 -m src --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/cavia`
   * [x] Expected result
   * [x] No errors
-  * [x] No unexpected transitions
+  * [x] No unexpected reactions
 
 ![ImageOfCaviaTestCase](img/testCases/cavia.png)
 
@@ -82,7 +82,7 @@ __Command__: `python3 -m src --convertFullGraph --listOfGraphUri http://biopax.o
 __Command__: `python3 -m src --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 http://virtualcases.org/1`
   * [x] Expected result
   * [x] No errors
-  * [x] No unexpected transitions
+  * [x] No unexpected reactions
 
 ![ImageOfCaviaTestCase](img/testCases/virtualCase1.png)
 
@@ -92,7 +92,7 @@ __Command__: `python3 -m src --convertFullGraph --listOfGraphUri http://biopax.o
 __Command__: `python3 -m src --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 http://virtualcases.org/2`
   * [x] Expected result
   * [x] No errors
-  * [x] No unexpected transitions
+  * [x] No unexpected reactions
 
 ![ImageOfCaviaTestCase](img/testCases/virtualCase2.png)
 
