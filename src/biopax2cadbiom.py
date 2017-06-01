@@ -475,10 +475,11 @@ def updateTransitions(reaction, dictPhysicalEntity, dictReaction, dictTransition
 				})
 				subH += 1
 	
+	currentKeys = list(subDictTransition.keys())
 	for entityL in leftEntities:
 		if entityToEntitiesMatched[entityL] == set(): 
 			for equisL,cadbiomL in entityToListOfEquivalentsAndCadbiomName[entityL]:
-				for left,right in list(subDictTransition.keys()):
+				for left,right in currentKeys:
 					for transition in subDictTransition[(left,right)]:
 						transitionSympyCond = transition['sympyCond']
 						sympySymbol = sympy.Symbol(left)
@@ -500,7 +501,7 @@ def updateTransitions(reaction, dictPhysicalEntity, dictReaction, dictTransition
 			dictTransition[(left,right)].append({
 				'event': event,
 				'reaction': reaction,
-				'sympyCond': transitionSympyCond
+				'sympyCond': transition['sympyCond']
 			})
 
 
