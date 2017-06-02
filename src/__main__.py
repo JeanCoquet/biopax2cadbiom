@@ -21,11 +21,13 @@ if __name__ == "__main__" :
 						default=DIR_OUTPUT + 'model.bcx',
 						help='enter a file path to generate the Cadbiom model.'
 	)
+	parser.add_argument('--convertFullGraph', action='store_true',
+						help='convert all entities to cadbiom nodes, even the entities not used.')
 	parser.set_defaults(func=main)
 
 	# get program args and launch associated command
 	args = parser.parse_args()
-
+	
 	# Set log level
 	#LOGGER.setLevel(cm.LOG_LEVELS[vars(args)['verbose']])
 	# launch associated command

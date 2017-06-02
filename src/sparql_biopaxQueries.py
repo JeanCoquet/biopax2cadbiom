@@ -77,7 +77,8 @@ def getReactions(listOfGraphUri):
 			OPTIONAL { ?reaction biopax3:participant ?participantComponent . }
 		}
 	"""
-
+	# ATTENTION: si on fait 'rdfs:subClassOf* biopax3:Interaction' alors on recupere aussi les 'Control', ce qui est doit etre fait par getControls(listOfGraphUri)
+	
 	dictReaction = defaultdict(lambda: defaultdict(set))
 	for reaction, \
 		nameReaction, \
@@ -164,7 +165,7 @@ def getLocations(listOfGraphUri):
 		WHERE
 		{
 			?entity biopax3:cellularLocation ?location .
-			?location biopax3:term ?locationTerm .
+			OPTIONAL { ?location biopax3:term ?locationTerm . }
 			OPTIONAL {
 				?location biopax3:xref ?ref .
 				?ref biopax3:db ?dbRef .

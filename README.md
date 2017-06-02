@@ -1,5 +1,6 @@
-Convert Biopax data (http://biopax.org) to Cabiom model (http://cadbiom.genouest.org).
+# biopax2cadbiom
 
+Convert Biopax data (http://biopax.org) to Cabiom model (http://cadbiom.genouest.org).
 
 ## Help
 
@@ -21,11 +22,78 @@ Convert Biopax data (http://biopax.org) to Cabiom model (http://cadbiom.genouest
 							enter a file path to generate the Cadbiom model.
 
 
-## Example of command line :
+## Examples of command line
 
 	python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://www.pathwaycommons.org/reactome_v56
-
-<br>
-or
-
 	python3 -m src --pickleBackup backupPickle/backup.p --cadbiomFile output/tgfBetaTestModel.bcx --listOfGraphUri http://biopax.org/lvl3 http://www.pathwaycommons.org/tgfbrpathway
+
+## Test cases
+
+### {+ Reactome - Homarus_americanus.owl +}
+__Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/homarus`
+  * [x] Expected result
+  * [x] No errors
+  * [x] No unexpected reactions
+
+![ImageOfHomarusTestCase](img/testCases/homarus.png)
+
+<br/>
+
+### {+ Reactome - Crithidia_fasciculata.owl +}
+__Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/crithidia`
+  * [x] Expected result
+  * [x] No errors
+  * [x] No unexpected reactions
+
+![ImageOfCrithidiaTestCase](img/testCases/crithidia.png)
+
+<br/>
+
+### {+ Reactome - Vigna_radiata_var._radiata.owl +}
+__Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/vigna`
+  * [x] Expected result
+  * [x] No errors
+  * [x] No unexpected reactions
+
+![ImageOfVignaTestCase](img/testCases/vigna.png)
+
+<br/>
+
+### {+ Reactome - Triticum_aestivum.owl +}
+__Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/triticum`
+  * [x] Expected result
+  * [x] No errors
+  * [x] No unexpected reactions
+
+![ImageOfTriticumTestCase](img/testCases/triticum.png)
+
+<br/>
+
+### {+ Reactome - Cavia_porcellus.owl +}
+__Command__: `python3 -m src --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/cavia`
+  * [x] Expected result
+  * [x] No errors
+  * [x] No unexpected reactions
+
+![ImageOfCaviaTestCase](img/testCases/cavia.png)
+
+<br/>
+
+### {+ Virtual Cases - virtualCase1.owl +}
+__Command__: `python3 -m src --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 http://virtualcases.org/1`
+  * [x] Expected result
+  * [x] No errors
+  * [x] No unexpected reactions
+
+![ImageOfCaviaTestCase](img/testCases/virtualCase1.png)
+
+<br/>
+
+### {+ Virtual Cases - virtualCase2.owl +}
+__Command__: `python3 -m src --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 http://virtualcases.org/2`
+  * [x] Expected result
+  * [x] No errors
+  * [x] No unexpected reactions
+
+![ImageOfCaviaTestCase](img/testCases/virtualCase2.png)
+
