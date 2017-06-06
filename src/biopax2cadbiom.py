@@ -264,23 +264,44 @@ def findUniqueSynonym(entities, dictPhysicalEntity):
 		for entity1,entity2 in itertools.combinations(entityToUniqueSynonyms.keys(),2):
 			entityToUniqueSynonyms[entity1] -= dictPhysicalEntity[entity2]['synonyms']
 			entityToUniqueSynonyms[entity2] -= dictPhysicalEntity[entity1]['synonyms']
-		
+
 		nbEntitiesSelected = 0
 		for entity in entityToUniqueSynonyms:
 			if len(entityToUniqueSynonyms[entity]) > 0:
 				entityToUniqueSynonym[entity] = dictPhysicalEntity[entity]['name']+"_("+entityToUniqueSynonyms[entity].pop()+")"
 				nbEntitiesSelected += 1
-		
+
 		if nbEntitiesSelected == 0:
 			vI = 1
 			for entity in entityToUniqueSynonyms:
 				entityToUniqueSynonym[entity] = dictPhysicalEntity[entity]['name']+"_(v"+str(vI)+")"
 				vI += 1
-	
+
 	return entityToUniqueSynonym
 
 
 def getCadbiomName(entity, dictPhysicalEntity, dictLocation, synonym=None):
+	"""Get entity name formatted for Cadbiom.
+
+	:param arg1:
+	:param arg2:
+	:param arg3:
+	:param arg4:
+	:type arg1:
+	:type arg2:
+	:type arg3:
+	:type arg4:
+	:return: Encoded name with location if it exists.
+	:rtype: <str>
+	"""
+
+	def clean_name(name):
+		"""Clean name for correct cadbiom parsing."""
+
+		for char in ['(', ')', ':']:
+			name.replace(char, '_')
+
+
 	if synonym == None:
 		if 'name' in dictPhysicalEntity[entity]:
 			name = dictPhysicalEntity[entity]['name']
@@ -288,18 +309,19 @@ def getCadbiomName(entity, dictPhysicalEntity, dictLocation, synonym=None):
 			name = entity.rsplit("#", 1)[1]
 	else:
 		name = synonym
-	
+
+	# Add location info if exists
 	location = dictPhysicalEntity[entity]['location']
 	if location != None and location != set():
 		locationId = dictLocation[location]['cadbiomId']
-		return name.replace(' ','_')+"_"+locationId
+		return clean_name(name) + "_" + locationId
 	else:
-		return name.replace(' ','_')
+		return clean_name(name)
 
 
 def getSetOfCadbiomPossibilities(entity, dictPhysicalEntity):
 	cadbiomPossibilities = set()
-	
+
 	if len(dictPhysicalEntity[entity]['listOfFlatComponents']) != 0:
 		cadbiomPossibilities = set(dictPhysicalEntity[entity]['listOfCadiomNames'])
 	elif len(dictPhysicalEntity[entity]['members']) != 0 and dictPhysicalEntity[entity]['membersUsed']:
