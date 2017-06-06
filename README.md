@@ -28,6 +28,7 @@ Convert Biopax data (http://biopax.org) to Cabiom model (http://cadbiom.genouest
 
 ## Test cases
 
+[//]: # (TESTS_START)
 ### {+ Reactome - Homarus_americanus.owl +}
 __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/homarus`
   * [x] Expected result
@@ -84,7 +85,7 @@ __Command__: `python3 -m src --convertFullGraph --listOfGraphUri http://biopax.o
   * [x] No errors
   * [x] No unexpected transitions
 
-![ImageOfCaviaTestCase](img/testCases/virtualCase1.png)
+![ImageOfVirtualCase1](img/testCases/virtualCase1.png)
 
 <br/>
 
@@ -94,5 +95,6 @@ __Command__: `python3 -m src --convertFullGraph --listOfGraphUri http://biopax.o
   * [x] No errors
   * [x] No unexpected transitions
 
-![ImageOfCaviaTestCase](img/testCases/virtualCase2.png)
+![ImageOfVirtualCase2](img/testCases/virtualCase2.png)
 
+[//]: # (TESTS_END)

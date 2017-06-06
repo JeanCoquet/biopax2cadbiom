@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 # Standard imports
 import argparse
-from src.biopax2cadbiom import main
-from src.commons import DIR_PICKLE, DIR_OUTPUT
+import src.biopax2cadbiom as biopax2cadbiom
+import src.testCases as testCases
+from src.commons import DIR_PICKLE, DIR_OUTPUT, DIR_TEST_CASES
 
 
 if __name__ == "__main__" :
 	parser = argparse.ArgumentParser(
-		description='biopax2cabiom.py is a script to transforme a Biopax data \
+		description='biopax2cabiom.py is a script to transform a Biopax data \
 		from a RDBMS to a Cabiom model.'
 	)
 	parser.add_argument('--pickleBackup', type=str, nargs='?',
@@ -22,13 +23,26 @@ if __name__ == "__main__" :
 						help='enter a file path to generate the Cadbiom model.'
 	)
 	parser.add_argument('--convertFullGraph', action='store_true',
-						help='convert all entities to cadbiom nodes, even the entities not used.')
-	parser.set_defaults(func=main)
+						help='converts all entities to cadbiom nodes, even the entities not used.'
+	)
+	parser.add_argument('--testCases', action='store_true',
+						help='translates Biopax test cases to cadbiom models and compares them with the cadbiom model reference (if it exists).'
+	)
+	parser.add_argument('--testCasesDir', type=str, nargs='?',
+						default=DIR_TEST_CASES,
+						help='Directory of test cases.'
+	)
+	
+	parser.set_defaults(func=biopax2cadbiom.main)
 
 	# get program args and launch associated command
 	args = parser.parse_args()
 	
-	# Set log level
-	#LOGGER.setLevel(cm.LOG_LEVELS[vars(args)['verbose']])
-	# launch associated command
-	args.func(args)
+	if args.listOfGraphUri:
+		# Set log level
+		#LOGGER.setLevel(cm.LOG_LEVELS[vars(args)['verbose']])
+		# launch associated command
+		args.func(args)
+	
+	if args.testCases:
+		testCases.main(args)
