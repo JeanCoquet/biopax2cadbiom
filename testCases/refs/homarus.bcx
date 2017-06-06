@@ -1,0 +1,7 @@
+<model name="homarus" xmlns="http://cadbiom">
+  <CSimpleNode name="Activated_cGMP-dependent_protein_kinase_(PKG)_0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="cGMP_0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="PKG_0" xloc="0.0" yloc="0.0"/>
+  <transition action="" condition="cGMP_0" event="_h_1" ext="Activated_cGMP-dependent_protein_kinase_(PKG)_0" fact_ids="[]" ori="PKG_0">reaction = http://www.reactome.org/biopax/60/427306#BiochemicalReaction1</transition>
+  <transition action="" condition="PKG_0" event="_h_1" ext="Activated_cGMP-dependent_protein_kinase_(PKG)_0" fact_ids="[]" ori="cGMP_0">reaction = http://www.reactome.org/biopax/60/427306#BiochemicalReaction1</transition>
+</model>

@@ -1,0 +1,9 @@
+homarus	Reactome	Homarus_americanus.owl	http://reactome.org/homarus
+crithidia	Reactome	Crithidia_fasciculata.owl	http://reactome.org/crithidia
+vigna	Reactome	Vigna_radiata_var._radiata.owl	http://reactome.org/vigna
+triticum	Reactome	Triticum_aestivum.owl	http://reactome.org/triticum
+cavia	Reactome	Cavia_porcellus.owl	http://reactome.org/cavia
+virtualCase1	Virtual Cases	virtualCase1.owl	http://virtualcases.org/1
+virtualCase2	Virtual Cases	virtualCase2.owl	http://virtualcases.org/2
+escherichia	Reactome	Escherichia_coli.owl	http://reactome.org/escherichia
+cricetulus	Reactome	Cricetulus_griseus.owl	http://reactome.org/cricetulus

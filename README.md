@@ -9,17 +9,24 @@ Convert Biopax data (http://biopax.org) to Cabiom model (http://cadbiom.genouest
 					[--listOfGraphUri LISTOFGRAPHURI [LISTOFGRAPHURI ...]]
 					[--cadbiomFile [CADBIOMFILE]]
 
-	biopax2cabiom.py is a script to transforme a Biopax data from a RDBMS to a
+	biopax2cabiom.py is a script to transform a Biopax data from a RDBMS to a
 	Cabiom model.
 
 	optional arguments:
-	-h, --help            show this help message and exit
+	-h, --help		how this help message and exit
 	--pickleBackup [PICKLEBACKUP]
-							enter a file path to save the script variables.
+				enter a file path to save the script variables.
 	--listOfGraphUri LISTOFGRAPHURI [LISTOFGRAPHURI ...]
-							enter a list of RDF graph.
+				enter a list of RDF graph.
 	--cadbiomFile [CADBIOMFILE]
-							enter a file path to generate the Cadbiom model.
+				enter a file path to generate the Cadbiom model.
+	--convertFullGraph	converts all entities to cadbiom nodes, even the
+				entities not used.
+	--testCases		translates Biopax test cases to cadbiom models and
+				compares them with the cadbiom model reference (if it
+				exists).
+	--testCasesDir [TESTCASESDIR]
+				Directory of test cases.
 
 
 ## Examples of command line
@@ -29,6 +36,7 @@ Convert Biopax data (http://biopax.org) to Cabiom model (http://cadbiom.genouest
 
 ## Test cases
 
+[//]: # (TESTS_START)
 ### {+ Reactome - Homarus_americanus.owl +}
 __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/homarus`
   * [x] Expected result
@@ -85,7 +93,7 @@ __Command__: `python3 -m src --convertFullGraph --listOfGraphUri http://biopax.o
   * [x] No errors
   * [x] No unexpected reactions
 
-![ImageOfCaviaTestCase](img/testCases/virtualCase1.png)
+![ImageOfVirtualCase1](img/testCases/virtualCase1.png)
 
 <br/>
 
@@ -95,5 +103,6 @@ __Command__: `python3 -m src --convertFullGraph --listOfGraphUri http://biopax.o
   * [x] No errors
   * [x] No unexpected reactions
 
-![ImageOfCaviaTestCase](img/testCases/virtualCase2.png)
+![ImageOfVirtualCase2](img/testCases/virtualCase2.png)
 
+[//]: # (TESTS_END)

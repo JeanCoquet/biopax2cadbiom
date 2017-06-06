@@ -3,11 +3,12 @@
 This module is used to translate biopax to a cadbiom model
 """
 
-import itertools, copy, dill, sympy, os
+from __future__ import print_function
+
+import itertools, copy, dill, sympy, os, sys
 from src import sparql_biopaxQueries as query
 from collections import defaultdict
 import networkx as nx
-#import xml.etree.ElementTree as ET
 from lxml import etree as ET
 
 def addReactionToEntities(dictReaction, dictControl, dictPhysicalEntity):
@@ -333,7 +334,7 @@ def addCadbiomSympyCondToReactions(dictReaction, dictPhysicalEntity):
 		if cadbiomSympyCond ==  None: dictReaction[reaction]['cadbiomSympyCond'] = sympy.sympify(True)
 		else: dictReaction[reaction]['cadbiomSympyCond'] = cadbiomSympyCond
 		
-		dictReaction[reaction]['event'] = "h_"+str(nbEvent)
+		dictReaction[reaction]['event'] = "_h_"+str(nbEvent)
 		nbEvent += 1
 
 
@@ -537,7 +538,7 @@ def getTransitions(dictReaction, dictPhysicalEntity):
 			continue
 		
 		else:
-			print("UNEXCEPTED REACTION: "+reaction)
+			print("UNEXCEPTED REACTION: "+reaction, file=sys.stderr)
 	
 	return dictTransition
 

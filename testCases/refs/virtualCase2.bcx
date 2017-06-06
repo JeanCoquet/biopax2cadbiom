@@ -1,0 +1,28 @@
+<model name="virtualCase2" xmlns="http://cadbiom">
+  <CSimpleNode name="C1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="C2" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="A1_B2" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="A2_B2" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="A1_B1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="A2_B1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="A1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="B1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="B2" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="A2" xloc="0.0" yloc="0.0"/>
+  <transition action="" condition="" event="((_h_1_1) when (A2_B2)) default ((_h_1_3) when (A1_B2))" ext="B2" fact_ids="[]" ori="C1">reaction = http://www.reactome.org/biopax/60/62596#BiochemicalReaction1</transition>
+  <transition action="" condition="" event="((_h_1_4) when (A1_B1)) default ((_h_1_2) when (A2_B1))" ext="B1" fact_ids="[]" ori="C2">reaction = http://www.reactome.org/biopax/60/62596#BiochemicalReaction1</transition>
+  <transition action="" condition="" event="_h_1_1" ext="B2" fact_ids="[]" ori="A2_B2">reaction = http://www.reactome.org/biopax/60/62596#BiochemicalReaction1</transition>
+  <transition action="" condition="" event="_h_1_3" ext="A1" fact_ids="[]" ori="A1_B2">reaction = http://www.reactome.org/biopax/60/62596#BiochemicalReaction1</transition>
+  <transition action="" condition="" event="_h_1_1" ext="A2" fact_ids="[]" ori="A2_B2">reaction = http://www.reactome.org/biopax/60/62596#BiochemicalReaction1</transition>
+  <transition action="" condition="" event="_h_1_2" ext="A2" fact_ids="[]" ori="A2_B1">reaction = http://www.reactome.org/biopax/60/62596#BiochemicalReaction1</transition>
+  <transition action="" condition="" event="_h_1_2" ext="B1" fact_ids="[]" ori="A2_B1">reaction = http://www.reactome.org/biopax/60/62596#BiochemicalReaction1</transition>
+  <transition action="" condition="" event="((_h_1_4) when (A1_B1)) default ((_h_1_2) when (A2_B1))" ext="B1" fact_ids="[]" ori="C1">reaction = http://www.reactome.org/biopax/60/62596#BiochemicalReaction1</transition>
+  <transition action="" condition="" event="((_h_1_1) when (A2_B2)) default ((_h_1_2) when (A2_B1))" ext="A2" fact_ids="[]" ori="C1">reaction = http://www.reactome.org/biopax/60/62596#BiochemicalReaction1</transition>
+  <transition action="" condition="" event="((_h_1_4) when (A1_B1)) default ((_h_1_3) when (A1_B2))" ext="A1" fact_ids="[]" ori="C1">reaction = http://www.reactome.org/biopax/60/62596#BiochemicalReaction1</transition>
+  <transition action="" condition="" event="((_h_1_1) when (A2_B2)) default ((_h_1_2) when (A2_B1))" ext="A2" fact_ids="[]" ori="C2">reaction = http://www.reactome.org/biopax/60/62596#BiochemicalReaction1</transition>
+  <transition action="" condition="" event="_h_1_4" ext="A1" fact_ids="[]" ori="A1_B1">reaction = http://www.reactome.org/biopax/60/62596#BiochemicalReaction1</transition>
+  <transition action="" condition="" event="_h_1_4" ext="B1" fact_ids="[]" ori="A1_B1">reaction = http://www.reactome.org/biopax/60/62596#BiochemicalReaction1</transition>
+  <transition action="" condition="" event="((_h_1_4) when (A1_B1)) default ((_h_1_3) when (A1_B2))" ext="A1" fact_ids="[]" ori="C2">reaction = http://www.reactome.org/biopax/60/62596#BiochemicalReaction1</transition>
+  <transition action="" condition="" event="((_h_1_1) when (A2_B2)) default ((_h_1_3) when (A1_B2))" ext="B2" fact_ids="[]" ori="C2">reaction = http://www.reactome.org/biopax/60/62596#BiochemicalReaction1</transition>
+  <transition action="" condition="" event="_h_1_3" ext="B2" fact_ids="[]" ori="A1_B2">reaction = http://www.reactome.org/biopax/60/62596#BiochemicalReaction1</transition>
+</model>

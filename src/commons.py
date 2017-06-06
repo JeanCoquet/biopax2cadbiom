@@ -11,6 +11,8 @@ DIR_LOGS            = 'logs/'
 DIR_DATA            = 'data/'
 DIR_PICKLE          = 'backupPickle/'
 DIR_OUTPUT          = 'output/'
+DIR_TEST_CASES      = 'testCases/'
+FILE_README         = 'README.md'
 
 # Logging
 LOGGER_NAME         = "biopax2cadbiom"
