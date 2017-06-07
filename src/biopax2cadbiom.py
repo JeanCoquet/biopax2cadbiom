@@ -5,11 +5,15 @@ This module is used to translate biopax to a cadbiom model
 
 from __future__ import print_function
 
-import itertools, copy, dill, sympy, os, sys
-from src import sparql_biopaxQueries as query
+# Standard imports
+import itertools, copy, dill, sympy, os, sys, re
 from collections import defaultdict
 import networkx as nx
 from lxml import etree as ET
+
+# Custom imports
+from src import sparql_biopaxQueries as query
+
 
 def addReactionToEntities(dictReaction, dictControl, dictPhysicalEntity):
 	"""This procedure adds the key 'reactions' to the dictionnary dictPhysicalEntity[entity]. The value corresponds to a set of reactions involving entity.
@@ -298,8 +302,7 @@ def getCadbiomName(entity, dictPhysicalEntity, dictLocation, synonym=None):
 	def clean_name(name):
 		"""Clean name for correct cadbiom parsing."""
 
-		for char in ['(', ')', ':']:
-			name.replace(char, '_')
+		return re.sub('([^a-zA-Z0-9_])', '_', name)
 
 
 	if synonym == None:
