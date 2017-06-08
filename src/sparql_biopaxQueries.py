@@ -5,6 +5,8 @@ This module contains a list of functions to request Reactome
 
 from src import sparql_wrapper
 from collections import defaultdict
+from src import classes
+
 
 def getPathways(listOfGraphUri):
 	query = """
@@ -79,7 +81,7 @@ def getReactions(listOfGraphUri):
 	"""
 	# ATTENTION: si on fait 'rdfs:subClassOf* biopax3:Interaction' alors on recupere aussi les 'Control', ce qui est doit etre fait par getControls(listOfGraphUri)
 	
-	dictReaction = defaultdict(lambda: defaultdict(set))
+	dictReaction = {}
 	for reaction, \
 		nameReaction, \
 		reactionType, \
@@ -88,14 +90,11 @@ def getReactions(listOfGraphUri):
 		rightComponent, \
 		productComponent, \
 		participantComponent in sparql_wrapper.sparql_query(query):
-		dictReaction[reaction]['name'] = nameReaction
-		dictReaction[reaction]['type'] = reactionType
-		dictReaction[reaction]['productComponent'] = productComponent
-		dictReaction[reaction]['participantComponent'] = participantComponent # EQUAL TO productComponent !!
+		dictReaction[reaction] = Reaction(reaction, nameReaction, reactionType, productComponent, participantComponent)
 
-		if pathway != None: dictReaction[reaction]['pathways'].add(pathway)
-		if leftComponent != None: dictReaction[reaction]['leftComponents'].add(leftComponent)
-		if rightComponent != None: dictReaction[reaction]['rightComponents'].add(rightComponent)
+		if pathway != None: dictReaction[reaction].pathways.add(pathway)
+		if leftComponent != None: dictReaction[reaction].leftComponents.add(leftComponent)
+		if rightComponent != None: dictReaction[reaction].rightComponents.add(rightComponent)
 
 	return dictReaction
 
@@ -129,7 +128,7 @@ def getPhysicalEntities(listOfGraphUri):
 		}
 	"""
 
-	dictPhysicalEntity = defaultdict(lambda: defaultdict(set))
+	dictPhysicalEntity = {}
 	for entity, \
 		name, \
 		synonym, \
@@ -140,15 +139,12 @@ def getPhysicalEntities(listOfGraphUri):
 		entityRef, \
 		dbRef, \
 		idRef in sparql_wrapper.sparql_query(query):
-		dictPhysicalEntity[entity]['name'] = name
-		dictPhysicalEntity[entity]['location'] = location
-		dictPhysicalEntity[entity]['type'] = entityType
-		dictPhysicalEntity[entity]['entityRef'] = entityRef
+		dictPhysicalEntity[entity] = Entity(entity, name, location, entityType, entityRef)
 
-		if synonym != None: dictPhysicalEntity[entity]['synonyms'].add(synonym)
-		if component != None: dictPhysicalEntity[entity]['components'].add(component)
-		if member != None: dictPhysicalEntity[entity]['members'].add(member)
-		if idRef != None: dictPhysicalEntity[entity]['idRefs'].add((idRef,dbRef))
+		if synonym != None: dictPhysicalEntity[entity].synonyms.add(synonym)
+		if component != None: dictPhysicalEntity[entity].components.add(component)
+		if member != None: dictPhysicalEntity[entity].members.add(member)
+		if idRef != None: dictPhysicalEntity[entity].idRefs.add((idRef,dbRef))
 
 	return dictPhysicalEntity
 
@@ -173,11 +169,10 @@ def getLocations(listOfGraphUri):
 			}
 		}
 	"""
-
-	dictLocation = defaultdict(lambda: defaultdict(set))
+	dictLocation = {}
 	for location, locationTerm, dbRef, idRef in sparql_wrapper.sparql_query(query):
-		dictLocation[location]['name'] = locationTerm
-		if idRef != None: dictLocation[location]['idRefs'].add((idRef,dbRef))
+		dictLocation[location] = Location(location, locationTerm)
+		if idRef != None: dictLocation[location].idRefs.add((idRef,dbRef))
 	return dictLocation
 
 
@@ -201,16 +196,12 @@ def getControls(listOfGraphUri):
 			OPTIONAL { ?control biopax3:controller ?controller . }
 		}
 	"""
-
-	dictControl = defaultdict(dict)
+	dictControl = {}
 	for control, \
 		classType, \
 		controlType, \
 		reaction, \
 		controller in sparql_wrapper.sparql_query(query):
-		dictControl[control]['type'] = classType
-		dictControl[control]['controlType'] = controlType
-		dictControl[control]['reaction'] = reaction
-		dictControl[control]['controller'] = controller
+		dictControl[control] = Control(control, classType, controlType, reaction, controller)	
 
 	return dictControl

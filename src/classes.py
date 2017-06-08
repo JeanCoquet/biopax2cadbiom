@@ -24,7 +24,7 @@ class PhysicalEntity(object):
 		self.synonyms = set()
 		self.component = set()
 		self.members = set()
-		self.idrefs = set()
+		self.idRefs = set()
 		self.reactions = set()
 		self.membersUsed = None
 		self.cadbiomName = set()
@@ -82,7 +82,7 @@ class Location(object):
 
 	def __init__(self, idLocation,locationTerm):
 		self.idLocation = idLocation
-		self.locationTerm = locationTerm
+		self.name = locationTerm
 		self.idRefs = set()
 		self.cadbiomId = None
 
@@ -101,4 +101,3 @@ class Control(object):
 		self.controlType = controlType
 		self.reaction = reaction
 		self.controller = controller
-
