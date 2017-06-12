@@ -43,7 +43,7 @@ __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reac
   * [x] No errors
   * [x] No unexpected reactions
 
-![ImageOfHomarusTestCase](testCases/imghomarus.png)
+![ImageOfHomarusTestCase](testCases/img/homarus.png)
 
 <br/>
 
@@ -53,7 +53,7 @@ __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reac
   * [x] No errors
   * [x] No unexpected reactions
 
-![ImageOfCrithidiaTestCase](testCases/imgcrithidia.png)
+![ImageOfCrithidiaTestCase](testCases/img/crithidia.png)
 
 <br/>
 
@@ -63,7 +63,7 @@ __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reac
   * [x] No errors
   * [x] No unexpected reactions
 
-![ImageOfVignaTestCase](testCases/imgvigna.png)
+![ImageOfVignaTestCase](testCases/img/vigna.png)
 
 <br/>
 
@@ -73,7 +73,7 @@ __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reac
   * [x] No errors
   * [x] No unexpected reactions
 
-![ImageOfTriticumTestCase](testCases/imgtriticum.png)
+![ImageOfTriticumTestCase](testCases/img/triticum.png)
 
 <br/>
 
@@ -83,7 +83,7 @@ __Command__: `python3 -m src --convertFullGraph --listOfGraphUri http://biopax.o
   * [x] No errors
   * [x] No unexpected reactions
 
-![ImageOfCaviaTestCase](testCases/imgcavia.png)
+![ImageOfCaviaTestCase](testCases/img/cavia.png)
 
 <br/>
 
@@ -93,9 +93,9 @@ __Command__: `python3 -m src --convertFullGraph --listOfGraphUri http://biopax.o
   * [x] No errors
   * [x] No unexpected reactions
 
-![ImageOfVirtualCase1](testCases/imgvirtualCase1.png)
+![ImageOfVirtualCase1](testCases/img/virtualCase1.png)
 
-<br/>
+<br/>g 
 
 ### {+ Virtual Cases - virtualCase2.owl +}
 __Command__: `python3 -m src --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 http://virtualcases.org/2`
@@ -103,6 +103,6 @@ __Command__: `python3 -m src --convertFullGraph --listOfGraphUri http://biopax.o
   * [x] No errors
   * [x] No unexpected reactions
 
-![ImageOfVirtualCase2](testCases/imgvirtualCase2.png)
+![ImageOfVirtualCase2](testCases/img/virtualCase2.png)
 
 [//]: # (TESTS_END)
