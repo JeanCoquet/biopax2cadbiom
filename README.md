@@ -43,7 +43,7 @@ __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reac
   * [x] No errors
   * [x] No unexpected reactions
 
-![ImageOfHomarusTestCase](img/testCases/homarus.png)
+![ImageOfHomarusTestCase](testCases/imghomarus.png)
 
 <br/>
 
@@ -53,7 +53,7 @@ __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reac
   * [x] No errors
   * [x] No unexpected reactions
 
-![ImageOfCrithidiaTestCase](img/testCases/crithidia.png)
+![ImageOfCrithidiaTestCase](testCases/imgcrithidia.png)
 
 <br/>
 
@@ -63,7 +63,7 @@ __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reac
   * [x] No errors
   * [x] No unexpected reactions
 
-![ImageOfVignaTestCase](img/testCases/vigna.png)
+![ImageOfVignaTestCase](testCases/imgvigna.png)
 
 <br/>
 
@@ -73,7 +73,7 @@ __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reac
   * [x] No errors
   * [x] No unexpected reactions
 
-![ImageOfTriticumTestCase](img/testCases/triticum.png)
+![ImageOfTriticumTestCase](testCases/imgtriticum.png)
 
 <br/>
 
@@ -83,7 +83,7 @@ __Command__: `python3 -m src --convertFullGraph --listOfGraphUri http://biopax.o
   * [x] No errors
   * [x] No unexpected reactions
 
-![ImageOfCaviaTestCase](img/testCases/cavia.png)
+![ImageOfCaviaTestCase](testCases/imgcavia.png)
 
 <br/>
 
@@ -93,7 +93,7 @@ __Command__: `python3 -m src --convertFullGraph --listOfGraphUri http://biopax.o
   * [x] No errors
   * [x] No unexpected reactions
 
-![ImageOfVirtualCase1](img/testCases/virtualCase1.png)
+![ImageOfVirtualCase1](testCases/imgvirtualCase1.png)
 
 <br/>
 
@@ -103,6 +103,6 @@ __Command__: `python3 -m src --convertFullGraph --listOfGraphUri http://biopax.o
   * [x] No errors
   * [x] No unexpected reactions
 
-![ImageOfVirtualCase2](img/testCases/virtualCase2.png)
+![ImageOfVirtualCase2](testCases/imgvirtualCase2.png)
 
 [//]: # (TESTS_END)
