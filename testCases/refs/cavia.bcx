@@ -4,8 +4,8 @@
   <CSimpleNode name="Connexin_26_1" xloc="0.0" yloc="0.0"/>
   <CSimpleNode name="Connexin_32_1" xloc="0.0" yloc="0.0"/>
   <CSimpleNode name="Connexin_26_Connexin_32_connexon_1" xloc="0.0" yloc="0.0"/>
-  <transition action="" condition="Connexin_26_1" event="__h_2" ext="Connexin_26_Connexin_32_connexon_1" fact_ids="[]" ori="Connexin_32_1">reaction = http://www.reactome.org/biopax/60/62596#BiochemicalReaction2</transition>
-  <transition action="" condition="" event="__h_1_2" ext="Connexin_26_1" fact_ids="[]" ori="Connexin_26_0">reaction = http://www.reactome.org/biopax/60/62596#BiochemicalReaction1</transition>
-  <transition action="" condition="" event="__h_1_1" ext="Connexin_32_1" fact_ids="[]" ori="Connexin_32_0">reaction = http://www.reactome.org/biopax/60/62596#BiochemicalReaction1</transition>
-  <transition action="" condition="Connexin_32_1" event="__h_2" ext="Connexin_26_Connexin_32_connexon_1" fact_ids="[]" ori="Connexin_26_1">reaction = http://www.reactome.org/biopax/60/62596#BiochemicalReaction2</transition>
+  <transition action="" condition="Connexin_26_1" event="_h_2" ext="Connexin_26_Connexin_32_connexon_1" fact_ids="[]" ori="Connexin_32_1">reaction = http://www.reactome.org/biopax/60/62596#BiochemicalReaction2</transition>
+  <transition action="" condition="" event="_h_1_2" ext="Connexin_26_1" fact_ids="[]" ori="Connexin_26_0">reaction = http://www.reactome.org/biopax/60/62596#BiochemicalReaction1</transition>
+  <transition action="" condition="" event="_h_1_1" ext="Connexin_32_1" fact_ids="[]" ori="Connexin_32_0">reaction = http://www.reactome.org/biopax/60/62596#BiochemicalReaction1</transition>
+  <transition action="" condition="Connexin_32_1" event="_h_2" ext="Connexin_26_Connexin_32_connexon_1" fact_ids="[]" ori="Connexin_26_1">reaction = http://www.reactome.org/biopax/60/62596#BiochemicalReaction2</transition>
 </model>

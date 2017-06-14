@@ -1,0 +1,294 @@
+<model name="mycobacterium" xmlns="http://cadbiom">
+  <CSimpleNode name="UDP_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="APN_MYT_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="CoA_SH_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="NAD_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Ac_CoA_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="GTP_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="I1P_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="GlcNI_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="OtsA_tetramer_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="DAMT_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="MetB_dimer_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Sir_holoenzyme_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="SubI_0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="CysO_COSH_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="TPNH_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="FMYC_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Mal_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="O_P_Ser_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="CysE_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="AMP_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="NADH_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="CysK1_dimer_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Fdx_red___1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="CysO_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Ser_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="ADP_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="CH3COO__1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="E4P_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="CYSTA_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="UDP_GlcNAc_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="PAPS_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Mca_Zn___1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="MSSM_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="AroA_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="alpha_alpha_trehalose_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Mtr_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="sulfate_adenylyltransferase_complex_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="H2O_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="CysH_holoenzyme_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="MshD_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="ATP_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="CH2O_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="BfrA_0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="TreZ_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="_1_4_alpha_glycosyl_n_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="MSH_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="2OBUTA_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="CRSM_3" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Fdx_ox___1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="OAcSer_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="BfrA_complex__iron_loaded__0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="glucanotrehalose_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="TPN_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="sulfate_ABC_transporter_0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="CysQ_dimer_0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="TreY_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="GlcNAc_Ins_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="AroB_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="3DHSK_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="3DHQ_3" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="_1__4__alpha_D_glucan_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="MshA_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="TreS_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="AcCyS_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="GDP_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="e__1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="L_Cys_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="N_ethylsuccinimide_mercapturic_acid_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="PEP_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="AroE_dimer_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="CysO_CO_Cys_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="CysM_dimer_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="EPSP_4___1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="H__1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="H2SO3_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="NETSU_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="N_ethylsuccinimide_mycothiol_conjugate_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Trx_red___1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="PPi_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Ino1_Zn2__1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Mec_Zn___1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="NH3_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="GlcNAc_Ins_P_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Pi_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="DAHP_3___1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="SKMP_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="APS_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="HCOOH_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="TrxA_ox___1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="APN_MTA_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="BfrA_complex_0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="SKM_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Fe2__1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="MshC_Zn2__1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="MscR_Zn2__1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="alpha_alpha_trehalose_6_phosphate_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="OtsB_Mg2__1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="G6P_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="SubI__sulfate_complex_0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="SO4_2___2" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="SO4_2___1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="S_2___1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="AroG_Mn___pentamer_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="AroK_holoenzyme_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="ImpC_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="APN_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="UDP_Glc_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="AroQ_dodecamer_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="MoeZ_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="CysK2_holoenzyme_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="AroC_FMN_1" xloc="0.0" yloc="0.0"/>
+  <transition action="" condition="(APS_1 and ATP_1 and H2O_1 and sulfate_adenylyltransferase_complex_1)" event="_h_3" ext="ADP_1" fact_ids="[]" ori="GTP_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction23</transition>
+  <transition action="" condition="(Fdx_red___1 and H2SO3_1 and Sir_holoenzyme_1)" event="_h_8" ext="Fdx_ox___1" fact_ids="[]" ori="H__1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction26</transition>
+  <transition action="" condition="(APS_1 and GTP_1 and H2O_1 and sulfate_adenylyltransferase_complex_1)" event="_h_3" ext="GDP_1" fact_ids="[]" ori="ATP_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction23</transition>
+  <transition action="" condition="" event="((_h_53_3) when ((H2O_1 and Mca_Zn___1))) default ((_h_53_4) when ((H2O_1 and Mca_Zn___1)))" ext="GlcNI_1" fact_ids="[]" ori="N_ethylsuccinimide_mycothiol_conjugate_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction10</transition>
+  <transition action="" condition="(Ac_CoA_1 and MshD_1)" event="_h_73" ext="MSH_1" fact_ids="[]" ori="DAMT_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction6</transition>
+  <transition action="" condition="(Fdx_red___1 and H__1 and Sir_holoenzyme_1)" event="_h_8" ext="S_2___1" fact_ids="[]" ori="H2SO3_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction26</transition>
+  <transition action="" condition="(AroB_1 and NADH_1)" event="_h_42" ext="3DHQ_3" fact_ids="[]" ori="DAHP_3___1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction35</transition>
+  <transition action="" condition="FMYC_1" event="_h_55" ext="HCOOH_1" fact_ids="[]" ori="H2O_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction12</transition>
+  <transition action="" condition="(CH2O_1 and MSH_1 and MscR_Zn2__1)" event="_h_54" ext="FMYC_1" fact_ids="[]" ori="NAD_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction11</transition>
+  <transition action="" condition="H2O_1" event="_h_55" ext="HCOOH_1" fact_ids="[]" ori="FMYC_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction12</transition>
+  <transition action="" condition="(ATP_1 and L_Cys_1 and MshC_Zn2__1)" event="_h_76" ext="DAMT_1" fact_ids="[]" ori="GlcNI_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction5</transition>
+  <transition action="" condition="(H2O_1 and ImpC_1)" event="_h_75" ext="Pi_1" fact_ids="[]" ori="GlcNAc_Ins_P_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction4</transition>
+  <transition action="" condition="(ATP_1 and AroK_holoenzyme_1)" event="_h_43" ext="SKMP_1" fact_ids="[]" ori="SKM_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction38</transition>
+  <transition action="" condition="(CH2O_1 and MscR_Zn2__1 and NAD_1)" event="_h_54" ext="NADH_1" fact_ids="[]" ori="MSH_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction11</transition>
+  <transition action="" condition="(H2O_1 and Mca_Zn___1)" event="_h_68" ext="AcCyS_1" fact_ids="[]" ori="MSH_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction8</transition>
+  <transition action="" condition="(AroG_Mn___pentamer_1 and H2O_1 and PEP_1)" event="_h_41" ext="DAHP_3___1" fact_ids="[]" ori="E4P_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction34</transition>
+  <transition action="" condition="(ATP_1 and GlcNI_1 and MshC_Zn2__1)" event="_h_76" ext="AMP_1" fact_ids="[]" ori="L_Cys_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction5</transition>
+  <transition action="" condition="(I1P_1 and MshA_1)" event="_h_71" ext="UDP_1" fact_ids="[]" ori="UDP_GlcNAc_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction3</transition>
+  <transition action="" condition="(H2O_1 and SubI__sulfate_complex_0 and sulfate_ABC_transporter_0)" event="_h_1" ext="SubI_0" fact_ids="[]" ori="ATP_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction21</transition>
+  <transition action="" condition="" event="((_h_1) when ((H2O_1 and SubI__sulfate_complex_0 and sulfate_ABC_transporter_0))) default ((_h_3) when ((APS_1 and GTP_1 and H2O_1 and sulfate_adenylyltransferase_complex_1)))" ext="Pi_1" fact_ids="[]" ori="ATP_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction23</transition>
+  <transition action="" condition="(AroB_1 and DAHP_3___1)" event="_h_42" ext="3DHQ_3" fact_ids="[]" ori="NADH_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction35</transition>
+  <transition action="" condition="(APS_1 and ATP_1 and H2O_1 and sulfate_adenylyltransferase_complex_1)" event="_h_3" ext="GDP_1" fact_ids="[]" ori="GTP_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction23</transition>
+  <transition action="" condition="(H2O_1 and TreZ_1)" event="_h_48" ext="_1__4__alpha_D_glucan_1" fact_ids="[]" ori="glucanotrehalose_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction19</transition>
+  <transition action="" condition="" event="((_h_1) when ((H2O_1 and SubI__sulfate_complex_0 and sulfate_ABC_transporter_0))) default (((_h_3) when ((APS_1 and GTP_1 and H2O_1 and sulfate_adenylyltransferase_complex_1))) default ((_h_43) when ((AroK_holoenzyme_1 and SKM_1))))" ext="ADP_1" fact_ids="[]" ori="ATP_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction38</transition>
+  <transition action="" condition="(BfrA_0 and Fe2__1)" event="_h_72" ext="BfrA_complex__iron_loaded__0" fact_ids="[]" ori="BfrA_complex_0">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction1</transition>
+  <transition action="" condition="(I1P_1 and MshA_1)" event="_h_71" ext="H2O_1" fact_ids="[]" ori="UDP_GlcNAc_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction3</transition>
+  <transition action="" condition="(H2O_1 and Mca_Zn___1)" event="_h_74" ext="CH3COO__1" fact_ids="[]" ori="GlcNAc_Ins_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction7</transition>
+  <transition action="" condition="" event="((_h_53_4) when ((Mca_Zn___1 and N_ethylsuccinimide_mycothiol_conjugate_1))) default ((_h_53_2) when ((APN_MYT_1 and Mca_Zn___1)))" ext="APN_MTA_1" fact_ids="[]" ori="H2O_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction10</transition>
+  <transition action="" condition="(GlcNAc_Ins_P_1 and ImpC_1)" event="_h_75" ext="GlcNAc_Ins_1" fact_ids="[]" ori="H2O_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction4</transition>
+  <transition action="" condition="" event="((_h_3) when ((APS_1 and ATP_1 and GTP_1 and sulfate_adenylyltransferase_complex_1))) default ((_h_1) when ((ATP_1 and SubI__sulfate_complex_0 and sulfate_ABC_transporter_0)))" ext="ADP_1" fact_ids="[]" ori="H2O_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction23</transition>
+  <transition action="" condition="(MSH_1 and Mca_Zn___1)" event="_h_68" ext="AcCyS_1" fact_ids="[]" ori="H2O_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction8</transition>
+  <transition action="" condition="(GlcNAc_Ins_1 and Mca_Zn___1)" event="_h_74" ext="CH3COO__1" fact_ids="[]" ori="H2O_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction7</transition>
+  <transition action="" condition="(AroB_1 and DAHP_3___1)" event="_h_42" ext="Pi_1" fact_ids="[]" ori="NADH_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction35</transition>
+  <transition action="" condition="(CysQ_dimer_0 and PAPS_1)" event="_h_6" ext="APS_1" fact_ids="[]" ori="H2O_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction24</transition>
+  <transition action="" condition="(ATP_1 and SubI__sulfate_complex_0 and sulfate_ABC_transporter_0)" event="_h_1" ext="SubI_0" fact_ids="[]" ori="H2O_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction21</transition>
+  <transition action="" condition="(AroE_dimer_1 and H__1 and TPNH_1)" event="_h_40" ext="TPN_1" fact_ids="[]" ori="3DHSK_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction37</transition>
+  <transition action="" condition="(Ac_CoA_1 and CysE_1)" event="_h_7" ext="CoA_SH_1" fact_ids="[]" ori="Ser_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction27</transition>
+  <transition action="" condition="(DAMT_1 and MshD_1)" event="_h_73" ext="MSH_1" fact_ids="[]" ori="Ac_CoA_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction6</transition>
+  <transition action="" condition="AroQ_dodecamer_1" event="_h_39" ext="3DHSK_1" fact_ids="[]" ori="3DHQ_3">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction36</transition>
+  <transition action="" condition="H2O_1" event="_h_55" ext="H__1" fact_ids="[]" ori="FMYC_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction12</transition>
+  <transition action="" condition="(ATP_1 and sulfate_adenylyltransferase_complex_1)" event="_h_4" ext="APS_1" fact_ids="[]" ori="SO4_2___1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction22</transition>
+  <transition action="" condition="(ATP_1 and H2O_1 and sulfate_ABC_transporter_0)" event="_h_1" ext="ADP_1" fact_ids="[]" ori="SubI__sulfate_complex_0">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction21</transition>
+  <transition action="" condition="(Fdx_red___1 and H2SO3_1 and Sir_holoenzyme_1)" event="_h_8" ext="H2O_1" fact_ids="[]" ori="H__1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction26</transition>
+  <transition action="" condition="" event="((_h_55) when (FMYC_1)) default ((_h_3) when ((APS_1 and ATP_1 and GTP_1 and sulfate_adenylyltransferase_complex_1)))" ext="H__1" fact_ids="[]" ori="H2O_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction12</transition>
+  <transition action="" condition="SO4_2___2" event="_h_2" ext="SubI__sulfate_complex_0" fact_ids="[]" ori="SubI_0">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction20</transition>
+  <transition action="" condition="" event="((_h_9) when ((CysK2_holoenzyme_1 and S_2___1))) default ((_h_10) when ((CysK1_dimer_1 and S_2___1)))" ext="CH3COO__1" fact_ids="[]" ori="OAcSer_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction28</transition>
+  <transition action="" condition="" event="_h_56" ext="MSSM_1" fact_ids="[]" ori="MSH_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction13</transition>
+  <transition action="" condition="(ATP_1 and GTP_1 and H2O_1 and sulfate_adenylyltransferase_complex_1)" event="_h_3" ext="Pi_1" fact_ids="[]" ori="APS_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction23</transition>
+  <transition action="" condition="(MSH_1 and MscR_Zn2__1 and NAD_1)" event="_h_54" ext="NADH_1" fact_ids="[]" ori="CH2O_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction11</transition>
+  <transition action="" condition="(ATP_1 and H2O_1 and sulfate_ABC_transporter_0)" event="_h_1" ext="SO4_2___1" fact_ids="[]" ori="SubI__sulfate_complex_0">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction21</transition>
+  <transition action="" condition="(H__1 and Mtr_1 and TPNH_1)" event="_h_49" ext="TPN_1" fact_ids="[]" ori="MSSM_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction14</transition>
+  <transition action="" condition="(CysM_dimer_1 and O_P_Ser_1)" event="_h_38" ext="CysO_CO_Cys_1" fact_ids="[]" ori="CysO_COSH_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction31</transition>
+  <transition action="" condition="" event="((_h_73) when ((DAMT_1 and MshD_1))) default ((_h_7) when ((CysE_1 and Ser_1)))" ext="CoA_SH_1" fact_ids="[]" ori="Ac_CoA_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction6</transition>
+  <transition action="" condition="" event="((_h_3) when ((ATP_1 and GTP_1 and H2O_1 and sulfate_adenylyltransferase_complex_1))) default ((_h_5) when ((CysH_holoenzyme_1 and Trx_red___1)))" ext="H__1" fact_ids="[]" ori="APS_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction25</transition>
+  <transition action="" condition="(APS_1 and CysH_holoenzyme_1)" event="_h_5" ext="H2SO3_1" fact_ids="[]" ori="Trx_red___1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction25</transition>
+  <transition action="" condition="(G6P_1 and OtsA_tetramer_1)" event="_h_50" ext="UDP_1" fact_ids="[]" ori="UDP_Glc_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction15</transition>
+  <transition action="" condition="(ATP_1 and GlcNI_1 and MshC_Zn2__1)" event="_h_76" ext="DAMT_1" fact_ids="[]" ori="L_Cys_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction5</transition>
+  <transition action="" condition="Ino1_Zn2__1" event="_h_70" ext="I1P_1" fact_ids="[]" ori="G6P_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction2</transition>
+  <transition action="" condition="(APS_1 and ATP_1 and GTP_1 and sulfate_adenylyltransferase_complex_1)" event="_h_3" ext="PAPS_1" fact_ids="[]" ori="H2O_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction23</transition>
+  <transition action="" condition="FMYC_1" event="_h_55" ext="MSH_1" fact_ids="[]" ori="H2O_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction12</transition>
+  <transition action="" condition="(H2O_1 and ImpC_1)" event="_h_75" ext="GlcNAc_Ins_1" fact_ids="[]" ori="GlcNAc_Ins_P_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction4</transition>
+  <transition action="" condition="(H2O_1 and MetB_dimer_1)" event="_h_36" ext="2OBUTA_1" fact_ids="[]" ori="CYSTA_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction33</transition>
+  <transition action="" condition="(AroB_1 and DAHP_3___1)" event="_h_42" ext="NAD_1" fact_ids="[]" ori="NADH_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction35</transition>
+  <transition action="" condition="(CYSTA_1 and MetB_dimer_1)" event="_h_36" ext="NH3_1" fact_ids="[]" ori="H2O_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction33</transition>
+  <transition action="" condition="(MSH_1 and MscR_Zn2__1 and NAD_1)" event="_h_54" ext="H__1" fact_ids="[]" ori="CH2O_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction11</transition>
+  <transition action="" condition="(ATP_1 and H2O_1 and sulfate_ABC_transporter_0)" event="_h_1" ext="SubI_0" fact_ids="[]" ori="SubI__sulfate_complex_0">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction21</transition>
+  <transition action="" condition="(CysO_1 and MoeZ_1)" event="_h_37" ext="CysO_COSH_1" fact_ids="[]" ori="S_2___1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction30</transition>
+  <transition action="" condition="(H2O_1 and OtsB_Mg2__1)" event="_h_51" ext="Pi_1" fact_ids="[]" ori="alpha_alpha_trehalose_6_phosphate_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction16</transition>
+  <transition action="" condition="" event="((_h_76) when ((GlcNI_1 and L_Cys_1 and MshC_Zn2__1))) default ((_h_4) when ((SO4_2___1 and sulfate_adenylyltransferase_complex_1)))" ext="PPi_1" fact_ids="[]" ori="ATP_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction5</transition>
+  <transition action="" condition="(CysM_dimer_1 and O_P_Ser_1)" event="_h_38" ext="Pi_1" fact_ids="[]" ori="CysO_COSH_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction31</transition>
+  <transition action="" condition="(ATP_1 and GlcNI_1 and MshC_Zn2__1)" event="_h_76" ext="PPi_1" fact_ids="[]" ori="L_Cys_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction5</transition>
+  <transition action="" condition="(H2O_1 and OtsB_Mg2__1)" event="_h_51" ext="alpha_alpha_trehalose_1" fact_ids="[]" ori="alpha_alpha_trehalose_6_phosphate_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction16</transition>
+  <transition action="" condition="(AroG_Mn___pentamer_1 and E4P_1 and H2O_1)" event="_h_41" ext="DAHP_3___1" fact_ids="[]" ori="PEP_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction34</transition>
+  <transition action="" condition="(ATP_1 and L_Cys_1 and MshC_Zn2__1)" event="_h_76" ext="PPi_1" fact_ids="[]" ori="GlcNI_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction5</transition>
+  <transition action="" condition="(AroG_Mn___pentamer_1 and H2O_1 and PEP_1)" event="_h_41" ext="Pi_1" fact_ids="[]" ori="E4P_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction34</transition>
+  <transition action="" condition="MSH_1" event="_h_69_3" ext="APN_MYT_1" fact_ids="[]" ori="NETSU_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction9</transition>
+  <transition action="" condition="(H2O_1 and TreZ_1)" event="_h_48" ext="alpha_alpha_trehalose_1" fact_ids="[]" ori="glucanotrehalose_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction19</transition>
+  <transition action="" condition="(AroA_1 and PEP_1)" event="_h_44" ext="Pi_1" fact_ids="[]" ori="SKMP_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction39</transition>
+  <transition action="" condition="SubI_0" event="_h_2" ext="SubI__sulfate_complex_0" fact_ids="[]" ori="SO4_2___2">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction20</transition>
+  <transition action="" condition="(H2O_1 and MetB_dimer_1)" event="_h_36" ext="NH3_1" fact_ids="[]" ori="CYSTA_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction33</transition>
+  <transition action="" condition="(H2O_1 and MetB_dimer_1)" event="_h_36" ext="L_Cys_1" fact_ids="[]" ori="CYSTA_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction33</transition>
+  <transition action="" condition="(AroK_holoenzyme_1 and SKM_1)" event="_h_43" ext="SKMP_1" fact_ids="[]" ori="ATP_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction38</transition>
+  <transition action="" condition="(AroE_dimer_1 and H__1 and TPNH_1)" event="_h_40" ext="SKM_1" fact_ids="[]" ori="3DHSK_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction37</transition>
+  <transition action="" condition="(I1P_1 and MshA_1)" event="_h_71" ext="GlcNAc_Ins_P_1" fact_ids="[]" ori="UDP_GlcNAc_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction3</transition>
+  <transition action="" condition="(APS_1 and ATP_1 and GTP_1 and sulfate_adenylyltransferase_complex_1)" event="_h_3" ext="GDP_1" fact_ids="[]" ori="H2O_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction23</transition>
+  <transition action="" condition="(GlcNI_1 and L_Cys_1 and MshC_Zn2__1)" event="_h_76" ext="AMP_1" fact_ids="[]" ori="ATP_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction5</transition>
+  <transition action="" condition="(H2O_1 and Mca_Zn___1)" event="_h_53_3" ext="N_ethylsuccinimide_mercapturic_acid_1" fact_ids="[]" ori="N_ethylsuccinimide_mycothiol_conjugate_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction10</transition>
+  <transition action="" condition="(Fdx_red___1 and H__1 and Sir_holoenzyme_1)" event="_h_8" ext="H2O_1" fact_ids="[]" ori="H2SO3_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction26</transition>
+  <transition action="" condition="(CYSTA_1 and MetB_dimer_1)" event="_h_36" ext="2OBUTA_1" fact_ids="[]" ori="H2O_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction33</transition>
+  <transition action="" condition="(H2O_1 and SubI__sulfate_complex_0 and sulfate_ABC_transporter_0)" event="_h_1" ext="SO4_2___1" fact_ids="[]" ori="ATP_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction21</transition>
+  <transition action="" condition="(ATP_1 and GTP_1 and H2O_1 and sulfate_adenylyltransferase_complex_1)" event="_h_3" ext="PAPS_1" fact_ids="[]" ori="APS_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction23</transition>
+  <transition action="" condition="(TreZ_1 and glucanotrehalose_1)" event="_h_48" ext="_1__4__alpha_D_glucan_1" fact_ids="[]" ori="H2O_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction19</transition>
+  <transition action="" condition="(CH2O_1 and MSH_1 and MscR_Zn2__1)" event="_h_54" ext="NADH_1" fact_ids="[]" ori="NAD_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction11</transition>
+  <transition action="" condition="" event="((_h_41) when ((AroG_Mn___pentamer_1 and E4P_1 and H2O_1))) default ((_h_44) when ((AroA_1 and SKMP_1)))" ext="Pi_1" fact_ids="[]" ori="PEP_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction39</transition>
+  <transition action="" condition="(H2O_1 and Mca_Zn___1)" event="_h_74" ext="GlcNI_1" fact_ids="[]" ori="GlcNAc_Ins_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction7</transition>
+  <transition action="" condition="(CH2O_1 and MscR_Zn2__1 and NAD_1)" event="_h_54" ext="FMYC_1" fact_ids="[]" ori="MSH_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction11</transition>
+  <transition action="" condition="(CysH_holoenzyme_1 and Trx_red___1)" event="_h_5" ext="TrxA_ox___1" fact_ids="[]" ori="APS_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction25</transition>
+  <transition action="" condition="(H2O_1 and Mca_Zn___1)" event="_h_53_1" ext="N_ethylsuccinimide_mercapturic_acid_1" fact_ids="[]" ori="APN_MYT_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction10</transition>
+  <transition action="" condition="(BfrA_0 and BfrA_complex_0)" event="_h_72" ext="BfrA_complex__iron_loaded__0" fact_ids="[]" ori="Fe2__1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction1</transition>
+  <transition action="" condition="(H__1 and MSSM_1 and Mtr_1)" event="_h_49" ext="MSH_1" fact_ids="[]" ori="TPNH_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction14</transition>
+  <transition action="" condition="(APS_1 and CysH_holoenzyme_1)" event="_h_5" ext="AMP_1" fact_ids="[]" ori="Trx_red___1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction25</transition>
+  <transition action="" condition="" event="((_h_74) when ((GlcNAc_Ins_1 and Mca_Zn___1))) default (((_h_68) when ((MSH_1 and Mca_Zn___1))) default (((_h_53_4) when ((Mca_Zn___1 and N_ethylsuccinimide_mycothiol_conjugate_1))) default (((_h_53_1) when ((APN_MYT_1 and Mca_Zn___1))) default (((_h_53_3) when ((Mca_Zn___1 and N_ethylsuccinimide_mycothiol_conjugate_1))) default ((_h_53_2) when ((APN_MYT_1 and Mca_Zn___1)))))))" ext="GlcNI_1" fact_ids="[]" ori="H2O_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction7</transition>
+  <transition action="" condition="(CysO_CO_Cys_1 and Mec_Zn___1)" event="_h_35" ext="CysO_1" fact_ids="[]" ori="H2O_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction32</transition>
+  <transition action="" condition="(CysM_dimer_1 and CysO_COSH_1)" event="_h_38" ext="Pi_1" fact_ids="[]" ori="O_P_Ser_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction31</transition>
+  <transition action="" condition="MSH_1" event="_h_69_1" ext="APN_MYT_1" fact_ids="[]" ori="APN_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction9</transition>
+  <transition action="" condition="(APS_1 and CysH_holoenzyme_1)" event="_h_5" ext="H__1" fact_ids="[]" ori="Trx_red___1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction25</transition>
+  <transition action="" condition="(MshA_1 and UDP_GlcNAc_1)" event="_h_71" ext="GlcNAc_Ins_P_1" fact_ids="[]" ori="I1P_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction3</transition>
+  <transition action="" condition="(H2O_1 and Mca_Zn___1)" event="_h_53_4" ext="APN_MTA_1" fact_ids="[]" ori="N_ethylsuccinimide_mycothiol_conjugate_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction10</transition>
+  <transition action="" condition="(Fdx_red___1 and H2SO3_1 and Sir_holoenzyme_1)" event="_h_8" ext="S_2___1" fact_ids="[]" ori="H__1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction26</transition>
+  <transition action="" condition="(AroB_1 and DAHP_3___1)" event="_h_42" ext="H__1" fact_ids="[]" ori="NADH_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction35</transition>
+  <transition action="" condition="(G6P_1 and OtsA_tetramer_1)" event="_h_50" ext="alpha_alpha_trehalose_6_phosphate_1" fact_ids="[]" ori="UDP_Glc_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction15</transition>
+  <transition action="" condition="(3DHSK_1 and AroE_dimer_1 and H__1)" event="_h_40" ext="SKM_1" fact_ids="[]" ori="TPNH_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction37</transition>
+  <transition action="" condition="TreY_1" event="_h_47" ext="glucanotrehalose_1" fact_ids="[]" ori="_1_4_alpha_glycosyl_n_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction18</transition>
+  <transition action="" condition="(APS_1 and ATP_1 and H2O_1 and sulfate_adenylyltransferase_complex_1)" event="_h_3" ext="Pi_1" fact_ids="[]" ori="GTP_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction23</transition>
+  <transition action="" condition="(OtsA_tetramer_1 and UDP_Glc_1)" event="_h_50" ext="alpha_alpha_trehalose_6_phosphate_1" fact_ids="[]" ori="G6P_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction15</transition>
+  <transition action="" condition="(CysM_dimer_1 and CysO_COSH_1)" event="_h_38" ext="CysO_CO_Cys_1" fact_ids="[]" ori="O_P_Ser_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction31</transition>
+  <transition action="" condition="(ATP_1 and sulfate_adenylyltransferase_complex_1)" event="_h_4" ext="PPi_1" fact_ids="[]" ori="SO4_2___1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction22</transition>
+  <transition action="" condition="(MshA_1 and UDP_GlcNAc_1)" event="_h_71" ext="UDP_1" fact_ids="[]" ori="I1P_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction3</transition>
+  <transition action="" condition="(H2SO3_1 and H__1 and Sir_holoenzyme_1)" event="_h_8" ext="S_2___1" fact_ids="[]" ori="Fdx_red___1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction26</transition>
+  <transition action="" condition="(MSH_1 and MscR_Zn2__1 and NAD_1)" event="_h_54" ext="FMYC_1" fact_ids="[]" ori="CH2O_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction11</transition>
+  <transition action="" condition="AroQ_dodecamer_1" event="_h_39" ext="H2O_1" fact_ids="[]" ori="3DHQ_3">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction36</transition>
+  <transition action="" condition="(H2SO3_1 and H__1 and Sir_holoenzyme_1)" event="_h_8" ext="H2O_1" fact_ids="[]" ori="Fdx_red___1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction26</transition>
+  <transition action="" condition="(ATP_1 and H2O_1 and sulfate_ABC_transporter_0)" event="_h_1" ext="Pi_1" fact_ids="[]" ori="SubI__sulfate_complex_0">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction21</transition>
+  <transition action="" condition="MSH_1" event="_h_69_4" ext="N_ethylsuccinimide_mycothiol_conjugate_1" fact_ids="[]" ori="NETSU_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction9</transition>
+  <transition action="" condition="(AroA_1 and PEP_1)" event="_h_44" ext="EPSP_4___1" fact_ids="[]" ori="SKMP_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction39</transition>
+  <transition action="" condition="" event="((_h_9) when ((CysK2_holoenzyme_1 and OAcSer_1))) default ((_h_10) when ((CysK1_dimer_1 and OAcSer_1)))" ext="CH3COO__1" fact_ids="[]" ori="S_2___1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction28</transition>
+  <transition action="" condition="" event="((_h_53_2) when ((H2O_1 and Mca_Zn___1))) default ((_h_53_1) when ((H2O_1 and Mca_Zn___1)))" ext="GlcNI_1" fact_ids="[]" ori="APN_MYT_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction10</transition>
+  <transition action="" condition="(ATP_1 and L_Cys_1 and MshC_Zn2__1)" event="_h_76" ext="AMP_1" fact_ids="[]" ori="GlcNI_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction5</transition>
+  <transition action="" condition="" event="((_h_53_1) when ((APN_MYT_1 and Mca_Zn___1))) default ((_h_53_3) when ((Mca_Zn___1 and N_ethylsuccinimide_mycothiol_conjugate_1)))" ext="N_ethylsuccinimide_mercapturic_acid_1" fact_ids="[]" ori="H2O_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction10</transition>
+  <transition action="" condition="" event="((_h_48) when ((TreZ_1 and glucanotrehalose_1))) default ((_h_51) when ((OtsB_Mg2__1 and alpha_alpha_trehalose_6_phosphate_1)))" ext="alpha_alpha_trehalose_1" fact_ids="[]" ori="H2O_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction16</transition>
+  <transition action="" condition="" event="((_h_54) when ((CH2O_1 and MscR_Zn2__1 and NAD_1))) default ((_h_56) when ())" ext="H__1" fact_ids="[]" ori="MSH_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction13</transition>
+  <transition action="" condition="(APS_1 and CysH_holoenzyme_1)" event="_h_5" ext="TrxA_ox___1" fact_ids="[]" ori="Trx_red___1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction25</transition>
+  <transition action="" condition="AroC_FMN_1" event="_h_30" ext="Pi_1" fact_ids="[]" ori="EPSP_4___1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction40</transition>
+  <transition action="" condition="(CysH_holoenzyme_1 and Trx_red___1)" event="_h_5" ext="H2SO3_1" fact_ids="[]" ori="APS_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction25</transition>
+  <transition action="" condition="H2O_1" event="_h_55" ext="MSH_1" fact_ids="[]" ori="FMYC_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction12</transition>
+  <transition action="" condition="(CysH_holoenzyme_1 and Trx_red___1)" event="_h_5" ext="AMP_1" fact_ids="[]" ori="APS_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction25</transition>
+  <transition action="" condition="(ATP_1 and GTP_1 and H2O_1 and sulfate_adenylyltransferase_complex_1)" event="_h_3" ext="ADP_1" fact_ids="[]" ori="APS_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction23</transition>
+  <transition action="" condition="(APS_1 and ATP_1 and H2O_1 and sulfate_adenylyltransferase_complex_1)" event="_h_3" ext="PAPS_1" fact_ids="[]" ori="GTP_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction23</transition>
+  <transition action="" condition="(OtsA_tetramer_1 and UDP_Glc_1)" event="_h_50" ext="UDP_1" fact_ids="[]" ori="G6P_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction15</transition>
+  <transition action="" condition="(AroB_1 and NADH_1)" event="_h_42" ext="NAD_1" fact_ids="[]" ori="DAHP_3___1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction35</transition>
+  <transition action="" condition="(Ac_CoA_1 and MshD_1)" event="_h_73" ext="CoA_SH_1" fact_ids="[]" ori="DAMT_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction6</transition>
+  <transition action="" condition="" event="((_h_51) when ((OtsB_Mg2__1 and alpha_alpha_trehalose_6_phosphate_1))) default (((_h_41) when ((AroG_Mn___pentamer_1 and E4P_1 and PEP_1))) default (((_h_1) when ((ATP_1 and SubI__sulfate_complex_0 and sulfate_ABC_transporter_0))) default (((_h_6) when ((CysQ_dimer_0 and PAPS_1))) default (((_h_75) when ((GlcNAc_Ins_P_1 and ImpC_1))) default ((_h_3) when ((APS_1 and ATP_1 and GTP_1 and sulfate_adenylyltransferase_complex_1)))))))" ext="Pi_1" fact_ids="[]" ori="H2O_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction4</transition>
+  <transition action="" condition="MSH_1" event="_h_69_2" ext="N_ethylsuccinimide_mycothiol_conjugate_1" fact_ids="[]" ori="APN_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction9</transition>
+  <transition action="" condition="(H2O_1 and Mec_Zn___1)" event="_h_35" ext="CysO_1" fact_ids="[]" ori="CysO_CO_Cys_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction32</transition>
+  <transition action="" condition="(ATP_1 and AroK_holoenzyme_1)" event="_h_43" ext="ADP_1" fact_ids="[]" ori="SKM_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction38</transition>
+  <transition action="" condition="(Ac_CoA_1 and CysE_1)" event="_h_7" ext="OAcSer_1" fact_ids="[]" ori="Ser_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction27</transition>
+  <transition action="" condition="(CysQ_dimer_0 and H2O_1)" event="_h_6" ext="Pi_1" fact_ids="[]" ori="PAPS_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction24</transition>
+  <transition action="" condition="(3DHSK_1 and AroE_dimer_1 and TPNH_1)" event="_h_40" ext="SKM_1" fact_ids="[]" ori="H__1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction37</transition>
+  <transition action="" condition="(APS_1 and ATP_1 and H2O_1 and sulfate_adenylyltransferase_complex_1)" event="_h_3" ext="H__1" fact_ids="[]" ori="GTP_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction23</transition>
+  <transition action="" condition="" event="((_h_69_3) when (NETSU_1)) default ((_h_69_1) when (APN_1))" ext="APN_MYT_1" fact_ids="[]" ori="MSH_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction9</transition>
+  <transition action="" condition="(CysQ_dimer_0 and H2O_1)" event="_h_6" ext="APS_1" fact_ids="[]" ori="PAPS_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction24</transition>
+  <transition action="" condition="(Fdx_red___1 and H__1 and Sir_holoenzyme_1)" event="_h_8" ext="Fdx_ox___1" fact_ids="[]" ori="H2SO3_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction26</transition>
+  <transition action="" condition="" event="_h_56" ext="e__1" fact_ids="[]" ori="MSH_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction13</transition>
+  <transition action="" condition="(H2SO3_1 and H__1 and Sir_holoenzyme_1)" event="_h_8" ext="Fdx_ox___1" fact_ids="[]" ori="Fdx_red___1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction26</transition>
+  <transition action="" condition="" event="((_h_9) when ((CysK2_holoenzyme_1 and OAcSer_1))) default ((_h_10) when ((CysK1_dimer_1 and OAcSer_1)))" ext="L_Cys_1" fact_ids="[]" ori="S_2___1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction28</transition>
+  <transition action="" condition="(APS_1 and GTP_1 and H2O_1 and sulfate_adenylyltransferase_complex_1)" event="_h_3" ext="PAPS_1" fact_ids="[]" ori="ATP_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction23</transition>
+  <transition action="" condition="AroC_FMN_1" event="_h_30" ext="CRSM_3" fact_ids="[]" ori="EPSP_4___1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction40</transition>
+  <transition action="" condition="(CH2O_1 and MSH_1 and MscR_Zn2__1)" event="_h_54" ext="H__1" fact_ids="[]" ori="NAD_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction11</transition>
+  <transition action="" condition="" event="((_h_9) when ((CysK2_holoenzyme_1 and S_2___1))) default ((_h_10) when ((CysK1_dimer_1 and S_2___1)))" ext="L_Cys_1" fact_ids="[]" ori="OAcSer_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction28</transition>
+  <transition action="" condition="(MshA_1 and UDP_GlcNAc_1)" event="_h_71" ext="H2O_1" fact_ids="[]" ori="I1P_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction3</transition>
+  <transition action="" condition="(AroG_Mn___pentamer_1 and E4P_1 and PEP_1)" event="_h_41" ext="DAHP_3___1" fact_ids="[]" ori="H2O_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction34</transition>
+  <transition action="" condition="(GlcNI_1 and L_Cys_1 and MshC_Zn2__1)" event="_h_76" ext="DAMT_1" fact_ids="[]" ori="ATP_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction5</transition>
+  <transition action="" condition="(CysE_1 and Ser_1)" event="_h_7" ext="OAcSer_1" fact_ids="[]" ori="Ac_CoA_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction27</transition>
+  <transition action="" condition="(ATP_1 and GTP_1 and H2O_1 and sulfate_adenylyltransferase_complex_1)" event="_h_3" ext="GDP_1" fact_ids="[]" ori="APS_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction23</transition>
+  <transition action="" condition="(AroB_1 and NADH_1)" event="_h_42" ext="Pi_1" fact_ids="[]" ori="DAHP_3___1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction35</transition>
+  <transition action="" condition="(MoeZ_1 and S_2___1)" event="_h_37" ext="CysO_COSH_1" fact_ids="[]" ori="CysO_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction30</transition>
+  <transition action="" condition="(APS_1 and GTP_1 and H2O_1 and sulfate_adenylyltransferase_complex_1)" event="_h_3" ext="H__1" fact_ids="[]" ori="ATP_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction23</transition>
+  <transition action="" condition="(H2O_1 and Mca_Zn___1)" event="_h_53_2" ext="APN_MTA_1" fact_ids="[]" ori="APN_MYT_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction10</transition>
+  <transition action="" condition="" event="((_h_40) when ((3DHSK_1 and AroE_dimer_1 and TPNH_1))) default ((_h_49) when ((MSSM_1 and Mtr_1 and TPNH_1)))" ext="TPN_1" fact_ids="[]" ori="H__1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction14</transition>
+  <transition action="" condition="(AroA_1 and SKMP_1)" event="_h_44" ext="EPSP_4___1" fact_ids="[]" ori="PEP_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction39</transition>
+  <transition action="" condition="(MSSM_1 and Mtr_1 and TPNH_1)" event="_h_49" ext="MSH_1" fact_ids="[]" ori="H__1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction14</transition>
+  <transition action="" condition="TreS_1" event="_h_52" ext="alpha_alpha_trehalose_1" fact_ids="[]" ori="Mal_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction17</transition>
+  <transition action="" condition="" event="((_h_40) when ((3DHSK_1 and AroE_dimer_1 and H__1))) default ((_h_49) when ((H__1 and MSSM_1 and Mtr_1)))" ext="TPN_1" fact_ids="[]" ori="TPNH_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction14</transition>
+  <transition action="" condition="" event="((_h_69_2) when (APN_1)) default ((_h_69_4) when (NETSU_1))" ext="N_ethylsuccinimide_mycothiol_conjugate_1" fact_ids="[]" ori="MSH_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction9</transition>
+  <transition action="" condition="(SO4_2___1 and sulfate_adenylyltransferase_complex_1)" event="_h_4" ext="APS_1" fact_ids="[]" ori="ATP_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction22</transition>
+  <transition action="" condition="(AroB_1 and NADH_1)" event="_h_42" ext="H__1" fact_ids="[]" ori="DAHP_3___1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction35</transition>
+  <transition action="" condition="(H2O_1 and Mca_Zn___1)" event="_h_68" ext="GlcNI_1" fact_ids="[]" ori="MSH_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction8</transition>
+  <transition action="" condition="(H2O_1 and Mec_Zn___1)" event="_h_35" ext="L_Cys_1" fact_ids="[]" ori="CysO_CO_Cys_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction32</transition>
+  <transition action="" condition="" event="((_h_35) when ((CysO_CO_Cys_1 and Mec_Zn___1))) default ((_h_36) when ((CYSTA_1 and MetB_dimer_1)))" ext="L_Cys_1" fact_ids="[]" ori="H2O_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction33</transition>
+  <transition action="" condition="(ATP_1 and SubI__sulfate_complex_0 and sulfate_ABC_transporter_0)" event="_h_1" ext="SO4_2___1" fact_ids="[]" ori="H2O_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction21</transition>
+  <transition action="" condition="(H__1 and Mtr_1 and TPNH_1)" event="_h_49" ext="MSH_1" fact_ids="[]" ori="MSSM_1">reaction = http://www.reactome.org/biopax/60/176806#BiochemicalReaction14</transition>
+</model>

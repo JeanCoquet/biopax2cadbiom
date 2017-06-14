@@ -1,0 +1,50 @@
+<model name="cricetulus" xmlns="http://cadbiom">
+  <CSimpleNode name="UDP_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="UDP_Gal_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Glc_Sia_Gal_GlcNAc_Fuc_Pre_Notch1_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Glc_GlcNAc_Fuc_Pre_Notch3_0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="B4galt1_homodimer_0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Glc_Sia_Gal_GlcNAc_Fuc_Pre_Notch3_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Glc_GlcNAc_Fuc_Pre_Notch4_0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Glc_Gal_GlcNAc_Fuc_Pre_Notch3_0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Glc_Sia_Gal_GlcNAc_Fuc_Pre_Notch2_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="CMP_Neu5Ac_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Glc_GlcNAc_Fuc_Pre_Notch1_0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Glc_Gal_GlcNAc_Fuc_Pre_Notch1_0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="St3gal4_0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="St3gal3_0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Glc_Sia_Gal_GlcNAc_Fuc_Pre_Notch4_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Glc_Gal_GlcNAc_Fuc_Pre_Notch2_0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Glc_GlcNAc_Fuc_Pre_Notch2_0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="St3gal6_0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Glc_Gal_GlcNAc_Fuc_Pre_Notch4_0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="CMP_1" xloc="0.0" yloc="0.0"/>
+  <transition action="" condition="(B4galt1_homodimer_0 and Glc_GlcNAc_Fuc_Pre_Notch3_0)" event="_h_1_3" ext="Glc_Gal_GlcNAc_Fuc_Pre_Notch3_0" fact_ids="[]" ori="UDP_Gal_1">reaction = http://www.reactome.org/biopax/60/63514#BiochemicalReaction2</transition>
+  <transition action="" condition="" event="((_h_2_2) when ((Glc_Gal_GlcNAc_Fuc_Pre_Notch4_0 and (St3gal3_0 or St3gal4_0 or St3gal6_0)))) default (((_h_2_1) when ((Glc_Gal_GlcNAc_Fuc_Pre_Notch3_0 and (St3gal3_0 or St3gal4_0 or St3gal6_0)))) default (((_h_2_4) when ((Glc_Gal_GlcNAc_Fuc_Pre_Notch2_0 and (St3gal3_0 or St3gal4_0 or St3gal6_0)))) default (((_h_2_3) when ((Glc_Gal_GlcNAc_Fuc_Pre_Notch1_0 and (St3gal3_0 or St3gal4_0 or St3gal6_0)))) default ((_h_2_5) when ((CMP_1 and (St3gal3_0 or St3gal4_0 or St3gal6_0)))))))" ext="CMP_1" fact_ids="[]" ori="CMP_Neu5Ac_1">reaction = http://www.reactome.org/biopax/60/63514#BiochemicalReaction1</transition>
+  <transition action="" condition="(St3gal3_0 or St3gal4_0 or St3gal6_0)" event="_h_2_5" ext="CMP_1" fact_ids="[]" ori="CMP_1">reaction = http://www.reactome.org/biopax/60/63514#BiochemicalReaction1</transition>
+  <transition action="" condition="B4galt1_homodimer_0" event="_h_1_3" ext="UDP_1" fact_ids="[]" ori="Glc_GlcNAc_Fuc_Pre_Notch3_0">reaction = http://www.reactome.org/biopax/60/63514#BiochemicalReaction2</transition>
+  <transition action="" condition="(St3gal3_0 or St3gal4_0 or St3gal6_0)" event="_h_2_3" ext="Glc_Sia_Gal_GlcNAc_Fuc_Pre_Notch1_1" fact_ids="[]" ori="Glc_Gal_GlcNAc_Fuc_Pre_Notch1_0">reaction = http://www.reactome.org/biopax/60/63514#BiochemicalReaction1</transition>
+  <transition action="" condition="(St3gal3_0 or St3gal4_0 or St3gal6_0)" event="_h_2_4" ext="CMP_1" fact_ids="[]" ori="Glc_Gal_GlcNAc_Fuc_Pre_Notch2_0">reaction = http://www.reactome.org/biopax/60/63514#BiochemicalReaction1</transition>
+  <transition action="" condition="B4galt1_homodimer_0" event="_h_1_1" ext="UDP_1" fact_ids="[]" ori="Glc_GlcNAc_Fuc_Pre_Notch1_0">reaction = http://www.reactome.org/biopax/60/63514#BiochemicalReaction2</transition>
+  <transition action="" condition="(St3gal3_0 or St3gal4_0 or St3gal6_0)" event="_h_2_2" ext="CMP_1" fact_ids="[]" ori="Glc_Gal_GlcNAc_Fuc_Pre_Notch4_0">reaction = http://www.reactome.org/biopax/60/63514#BiochemicalReaction1</transition>
+  <transition action="" condition="(St3gal3_0 or St3gal4_0 or St3gal6_0)" event="_h_2_4" ext="Glc_Sia_Gal_GlcNAc_Fuc_Pre_Notch2_1" fact_ids="[]" ori="Glc_Gal_GlcNAc_Fuc_Pre_Notch2_0">reaction = http://www.reactome.org/biopax/60/63514#BiochemicalReaction1</transition>
+  <transition action="" condition="B4galt1_homodimer_0" event="_h_1_4" ext="Glc_Gal_GlcNAc_Fuc_Pre_Notch4_0" fact_ids="[]" ori="Glc_GlcNAc_Fuc_Pre_Notch4_0">reaction = http://www.reactome.org/biopax/60/63514#BiochemicalReaction2</transition>
+  <transition action="" condition="B4galt1_homodimer_0" event="_h_1_5" ext="UDP_1" fact_ids="[]" ori="UDP_1">reaction = http://www.reactome.org/biopax/60/63514#BiochemicalReaction2</transition>
+  <transition action="" condition="(St3gal3_0 or St3gal4_0 or St3gal6_0)" event="_h_2_1" ext="CMP_1" fact_ids="[]" ori="Glc_Gal_GlcNAc_Fuc_Pre_Notch3_0">reaction = http://www.reactome.org/biopax/60/63514#BiochemicalReaction1</transition>
+  <transition action="" condition="(B4galt1_homodimer_0 and Glc_GlcNAc_Fuc_Pre_Notch2_0)" event="_h_1_2" ext="Glc_Gal_GlcNAc_Fuc_Pre_Notch2_0" fact_ids="[]" ori="UDP_Gal_1">reaction = http://www.reactome.org/biopax/60/63514#BiochemicalReaction2</transition>
+  <transition action="" condition="B4galt1_homodimer_0" event="_h_1_2" ext="UDP_1" fact_ids="[]" ori="Glc_GlcNAc_Fuc_Pre_Notch2_0">reaction = http://www.reactome.org/biopax/60/63514#BiochemicalReaction2</transition>
+  <transition action="" condition="B4galt1_homodimer_0" event="_h_1_3" ext="Glc_Gal_GlcNAc_Fuc_Pre_Notch3_0" fact_ids="[]" ori="Glc_GlcNAc_Fuc_Pre_Notch3_0">reaction = http://www.reactome.org/biopax/60/63514#BiochemicalReaction2</transition>
+  <transition action="" condition="(St3gal3_0 or St3gal4_0 or St3gal6_0)" event="_h_2_2" ext="Glc_Sia_Gal_GlcNAc_Fuc_Pre_Notch4_1" fact_ids="[]" ori="Glc_Gal_GlcNAc_Fuc_Pre_Notch4_0">reaction = http://www.reactome.org/biopax/60/63514#BiochemicalReaction1</transition>
+  <transition action="" condition="(St3gal3_0 or St3gal4_0 or St3gal6_0)" event="_h_2_1" ext="Glc_Sia_Gal_GlcNAc_Fuc_Pre_Notch3_1" fact_ids="[]" ori="Glc_Gal_GlcNAc_Fuc_Pre_Notch3_0">reaction = http://www.reactome.org/biopax/60/63514#BiochemicalReaction1</transition>
+  <transition action="" condition="(Glc_Gal_GlcNAc_Fuc_Pre_Notch3_0 and (St3gal3_0 or St3gal4_0 or St3gal6_0))" event="_h_2_1" ext="Glc_Sia_Gal_GlcNAc_Fuc_Pre_Notch3_1" fact_ids="[]" ori="CMP_Neu5Ac_1">reaction = http://www.reactome.org/biopax/60/63514#BiochemicalReaction1</transition>
+  <transition action="" condition="" event="((_h_1_4) when ((B4galt1_homodimer_0 and Glc_GlcNAc_Fuc_Pre_Notch4_0))) default (((_h_1_1) when ((B4galt1_homodimer_0 and Glc_GlcNAc_Fuc_Pre_Notch1_0))) default (((_h_1_5) when ((B4galt1_homodimer_0 and UDP_1))) default (((_h_1_2) when ((B4galt1_homodimer_0 and Glc_GlcNAc_Fuc_Pre_Notch2_0))) default ((_h_1_3) when ((B4galt1_homodimer_0 and Glc_GlcNAc_Fuc_Pre_Notch3_0))))))" ext="UDP_1" fact_ids="[]" ori="UDP_Gal_1">reaction = http://www.reactome.org/biopax/60/63514#BiochemicalReaction2</transition>
+  <transition action="" condition="(Glc_Gal_GlcNAc_Fuc_Pre_Notch1_0 and (St3gal3_0 or St3gal4_0 or St3gal6_0))" event="_h_2_3" ext="Glc_Sia_Gal_GlcNAc_Fuc_Pre_Notch1_1" fact_ids="[]" ori="CMP_Neu5Ac_1">reaction = http://www.reactome.org/biopax/60/63514#BiochemicalReaction1</transition>
+  <transition action="" condition="(Glc_Gal_GlcNAc_Fuc_Pre_Notch2_0 and (St3gal3_0 or St3gal4_0 or St3gal6_0))" event="_h_2_4" ext="Glc_Sia_Gal_GlcNAc_Fuc_Pre_Notch2_1" fact_ids="[]" ori="CMP_Neu5Ac_1">reaction = http://www.reactome.org/biopax/60/63514#BiochemicalReaction1</transition>
+  <transition action="" condition="(B4galt1_homodimer_0 and Glc_GlcNAc_Fuc_Pre_Notch1_0)" event="_h_1_1" ext="Glc_Gal_GlcNAc_Fuc_Pre_Notch1_0" fact_ids="[]" ori="UDP_Gal_1">reaction = http://www.reactome.org/biopax/60/63514#BiochemicalReaction2</transition>
+  <transition action="" condition="B4galt1_homodimer_0" event="_h_1_1" ext="Glc_Gal_GlcNAc_Fuc_Pre_Notch1_0" fact_ids="[]" ori="Glc_GlcNAc_Fuc_Pre_Notch1_0">reaction = http://www.reactome.org/biopax/60/63514#BiochemicalReaction2</transition>
+  <transition action="" condition="(St3gal3_0 or St3gal4_0 or St3gal6_0)" event="_h_2_3" ext="CMP_1" fact_ids="[]" ori="Glc_Gal_GlcNAc_Fuc_Pre_Notch1_0">reaction = http://www.reactome.org/biopax/60/63514#BiochemicalReaction1</transition>
+  <transition action="" condition="B4galt1_homodimer_0" event="_h_1_4" ext="UDP_1" fact_ids="[]" ori="Glc_GlcNAc_Fuc_Pre_Notch4_0">reaction = http://www.reactome.org/biopax/60/63514#BiochemicalReaction2</transition>
+  <transition action="" condition="(Glc_Gal_GlcNAc_Fuc_Pre_Notch4_0 and (St3gal3_0 or St3gal4_0 or St3gal6_0))" event="_h_2_2" ext="Glc_Sia_Gal_GlcNAc_Fuc_Pre_Notch4_1" fact_ids="[]" ori="CMP_Neu5Ac_1">reaction = http://www.reactome.org/biopax/60/63514#BiochemicalReaction1</transition>
+  <transition action="" condition="B4galt1_homodimer_0" event="_h_1_2" ext="Glc_Gal_GlcNAc_Fuc_Pre_Notch2_0" fact_ids="[]" ori="Glc_GlcNAc_Fuc_Pre_Notch2_0">reaction = http://www.reactome.org/biopax/60/63514#BiochemicalReaction2</transition>
+  <transition action="" condition="(B4galt1_homodimer_0 and Glc_GlcNAc_Fuc_Pre_Notch4_0)" event="_h_1_4" ext="Glc_Gal_GlcNAc_Fuc_Pre_Notch4_0" fact_ids="[]" ori="UDP_Gal_1">reaction = http://www.reactome.org/biopax/60/63514#BiochemicalReaction2</transition>
+</model>

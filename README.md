@@ -31,14 +31,14 @@ Convert Biopax data (http://biopax.org) to Cabiom model (http://cadbiom.genouest
 
 ## Examples of command line
 
-	python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://www.pathwaycommons.org/reactome_v56
-	python3 -m src --pickleBackup backupPickle/backup.p --cadbiomFile output/tgfBetaTestModel.bcx --listOfGraphUri http://biopax.org/lvl3 http://www.pathwaycommons.org/tgfbrpathway
+	python -m src --listOfGraphUri http://biopax.org/lvl3 http://www.pathwaycommons.org/reactome_v56
+	python -m src --pickleBackup backupPickle/backup.p --cadbiomFile output/tgfBetaTestModel.bcx --listOfGraphUri http://biopax.org/lvl3 http://www.pathwaycommons.org/tgfbrpathway
 
 ## Test cases
 
 [//]: # (TESTS_START)
 ### {+ Reactome - Homarus_americanus.owl +}
-__Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/homarus`
+__Command__: `python -m src --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/homarus`
   * [x] Expected result
   * [x] No errors
   * [x] No unexpected reactions
@@ -48,7 +48,7 @@ __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reac
 <br/>
 
 ### {+ Reactome - Crithidia_fasciculata.owl +}
-__Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/crithidia`
+__Command__: `python -m src --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/crithidia`
   * [x] Expected result
   * [x] No errors
   * [x] No unexpected reactions
@@ -58,7 +58,7 @@ __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reac
 <br/>
 
 ### {+ Reactome - Vigna_radiata_var._radiata.owl +}
-__Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/vigna`
+__Command__: `python -m src --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/vigna`
   * [x] Expected result
   * [x] No errors
   * [x] No unexpected reactions
@@ -68,7 +68,7 @@ __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reac
 <br/>
 
 ### {+ Reactome - Triticum_aestivum.owl +}
-__Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/triticum`
+__Command__: `python -m src --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/triticum`
   * [x] Expected result
   * [x] No errors
   * [x] No unexpected reactions
@@ -78,7 +78,7 @@ __Command__: `python3 -m src --listOfGraphUri http://biopax.org/lvl3 http://reac
 <br/>
 
 ### {+ Reactome - Cavia_porcellus.owl +}
-__Command__: `python3 -m src --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/cavia`
+__Command__: `python -m src --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/cavia`
   * [x] Expected result
   * [x] No errors
   * [x] No unexpected reactions
@@ -88,21 +88,49 @@ __Command__: `python3 -m src --convertFullGraph --listOfGraphUri http://biopax.o
 <br/>
 
 ### {+ Virtual Cases - virtualCase1.owl +}
-__Command__: `python3 -m src --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 http://virtualcases.org/1`
+__Command__: `python -m src --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 http://virtualcases.org/1`
   * [x] Expected result
   * [x] No errors
   * [x] No unexpected reactions
 
 ![ImageOfVirtualCase1](testCases/img/virtualCase1.png)
 
-<br/>g 
+<br/>
 
 ### {+ Virtual Cases - virtualCase2.owl +}
-__Command__: `python3 -m src --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 http://virtualcases.org/2`
+__Command__: `python -m src --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 http://virtualcases.org/2`
   * [x] Expected result
   * [x] No errors
   * [x] No unexpected reactions
 
 ![ImageOfVirtualCase2](testCases/img/virtualCase2.png)
+
+<br/>
+
+### {+ Reactome - Escherichia_coli.owl +}
+__Command__: `python -m src --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/escherichia`
+  * [x] Expected result
+  * [x] No errors
+  * [x] No unexpected reactions
+
+![ImageOfEscherichia](testCases/img/escherichia.png)
+
+<br/>
+
+### {+ Reactome - Cricetulus_griseus.owl +}
+__Command__: `python -m src --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/cricetulus`
+  * [x] Expected result
+  * [x] No errors
+  * [x] No unexpected reactions
+
+![ImageOfEscherichia](testCases/img/cricetulus.png)
+
+<br/>
+
+### {+ Reactome - Mycobacterium_tuberculosis.owl +}
+__Command__: `python -m src --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/mycobacterium`
+  * [x] Expected result
+  * [x] No errors
+  * [x] No unexpected reactions
 
 [//]: # (TESTS_END)

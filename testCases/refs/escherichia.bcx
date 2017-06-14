@@ -1,0 +1,65 @@
+<model name="escherichia" xmlns="http://cadbiom">
+  <CSimpleNode name="Fre_0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Lys_tRNA_Lys__0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Phe_tRNA_Phe__0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Asp_tRNA_Asp__0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Asn_tRNA_Asn__0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Enterobactin_0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Gly_tRNA_Gly__0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="TPNH_0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Val_tRNA_Val__0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Arg_tRNA_Arg__0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Elongation_complex_with_growing_peptide_chain_0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Pro_tRNA_Pro__0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Glu_tRNA_Glu__0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Bfr_complex__iron_loaded__1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Cys_tRNA_Cys__0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Ser_tRNA_Ser__0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Fe2__0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="70S_ribosome_0_mRNA_0_Met_tRNAi_0_His_tRNA_His__0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="70S_mRNA_peptidyl_tRNA_with_elongating_peptide_0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Ala_tRNA_Ala__0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Bfr_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Trp_tRNA_Trp__0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Ile_tRNA_Ile__0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Met_tRNA_Met__0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="H__0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Tyr_tRNA_Tyr__0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Bfr_complex_1" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="TPN_0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Gln_tRNA_Gln__0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="Enterobactin_Fe3__0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Leu_tRNA_Leu__0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Thr_tRNA_Thr__0" xloc="0.0" yloc="0.0"/>
+  <transition action="" condition="" event="_h_4_4" ext="Elongation_complex_with_growing_peptide_chain_0" fact_ids="[]" ori="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Trp_tRNA_Trp__0">reaction = http://www.reactome.org/biopax/60/159879#BiochemicalReaction2</transition>
+  <transition action="" condition="(Enterobactin_Fe3__0 and Fre_0)" event="_h_1" ext="Fe2__0" fact_ids="[]" ori="TPNH_0">reaction = http://www.reactome.org/biopax/60/159879#BiochemicalReaction4</transition>
+  <transition action="" condition="(Fre_0 and TPNH_0)" event="_h_1" ext="Fe2__0" fact_ids="[]" ori="Enterobactin_Fe3__0">reaction = http://www.reactome.org/biopax/60/159879#BiochemicalReaction4</transition>
+  <transition action="" condition="(Fre_0 and TPNH_0)" event="_h_1" ext="Enterobactin_0" fact_ids="[]" ori="Enterobactin_Fe3__0">reaction = http://www.reactome.org/biopax/60/159879#BiochemicalReaction4</transition>
+  <transition action="" condition="(Bfr_1 and Bfr_complex_1)" event="_h_2" ext="Bfr_complex__iron_loaded__1" fact_ids="[]" ori="Fe2__0">reaction = http://www.reactome.org/biopax/60/159879#BiochemicalReaction1</transition>
+  <transition action="" condition="(Bfr_1 and Fe2__0)" event="_h_2" ext="Bfr_complex__iron_loaded__1" fact_ids="[]" ori="Bfr_complex_1">reaction = http://www.reactome.org/biopax/60/159879#BiochemicalReaction1</transition>
+  <transition action="" condition="" event="_h_4_11" ext="Elongation_complex_with_growing_peptide_chain_0" fact_ids="[]" ori="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Val_tRNA_Val__0">reaction = http://www.reactome.org/biopax/60/159879#BiochemicalReaction2</transition>
+  <transition action="" condition="" event="_h_4_1" ext="Elongation_complex_with_growing_peptide_chain_0" fact_ids="[]" ori="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Cys_tRNA_Cys__0">reaction = http://www.reactome.org/biopax/60/159879#BiochemicalReaction2</transition>
+  <transition action="" condition="(Fre_0 and TPNH_0)" event="_h_1" ext="TPN_0" fact_ids="[]" ori="Enterobactin_Fe3__0">reaction = http://www.reactome.org/biopax/60/159879#BiochemicalReaction4</transition>
+  <transition action="" condition="(Enterobactin_Fe3__0 and Fre_0)" event="_h_1" ext="Enterobactin_0" fact_ids="[]" ori="TPNH_0">reaction = http://www.reactome.org/biopax/60/159879#BiochemicalReaction4</transition>
+  <transition action="" condition="" event="_h_4_13" ext="Elongation_complex_with_growing_peptide_chain_0" fact_ids="[]" ori="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Glu_tRNA_Glu__0">reaction = http://www.reactome.org/biopax/60/159879#BiochemicalReaction2</transition>
+  <transition action="" condition="" event="_h_4_14" ext="Elongation_complex_with_growing_peptide_chain_0" fact_ids="[]" ori="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Gln_tRNA_Gln__0">reaction = http://www.reactome.org/biopax/60/159879#BiochemicalReaction2</transition>
+  <transition action="" condition="" event="_h_4_19" ext="Elongation_complex_with_growing_peptide_chain_0" fact_ids="[]" ori="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Met_tRNA_Met__0">reaction = http://www.reactome.org/biopax/60/159879#BiochemicalReaction2</transition>
+  <transition action="" condition="" event="_h_4_10" ext="Elongation_complex_with_growing_peptide_chain_0" fact_ids="[]" ori="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Tyr_tRNA_Tyr__0">reaction = http://www.reactome.org/biopax/60/159879#BiochemicalReaction2</transition>
+  <transition action="" condition="" event="_h_4_15" ext="Elongation_complex_with_growing_peptide_chain_0" fact_ids="[]" ori="70S_ribosome_0_mRNA_0_Met_tRNAi_0_His_tRNA_His__0">reaction = http://www.reactome.org/biopax/60/159879#BiochemicalReaction2</transition>
+  <transition action="" condition="" event="_h_4_9" ext="Elongation_complex_with_growing_peptide_chain_0" fact_ids="[]" ori="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Phe_tRNA_Phe__0">reaction = http://www.reactome.org/biopax/60/159879#BiochemicalReaction2</transition>
+  <transition action="" condition="" event="_h_4_12" ext="Elongation_complex_with_growing_peptide_chain_0" fact_ids="[]" ori="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Thr_tRNA_Thr__0">reaction = http://www.reactome.org/biopax/60/159879#BiochemicalReaction2</transition>
+  <transition action="" condition="" event="_h_4_16" ext="Elongation_complex_with_growing_peptide_chain_0" fact_ids="[]" ori="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Gly_tRNA_Gly__0">reaction = http://www.reactome.org/biopax/60/159879#BiochemicalReaction2</transition>
+  <transition action="" condition="" event="_h_4_5" ext="Elongation_complex_with_growing_peptide_chain_0" fact_ids="[]" ori="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Ala_tRNA_Ala__0">reaction = http://www.reactome.org/biopax/60/159879#BiochemicalReaction2</transition>
+  <transition action="" condition="" event="_h_4_8" ext="Elongation_complex_with_growing_peptide_chain_0" fact_ids="[]" ori="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Pro_tRNA_Pro__0">reaction = http://www.reactome.org/biopax/60/159879#BiochemicalReaction2</transition>
+  <transition action="" condition="" event="_h_4_17" ext="Elongation_complex_with_growing_peptide_chain_0" fact_ids="[]" ori="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Leu_tRNA_Leu__0">reaction = http://www.reactome.org/biopax/60/159879#BiochemicalReaction2</transition>
+  <transition action="" condition="" event="_h_4_6" ext="Elongation_complex_with_growing_peptide_chain_0" fact_ids="[]" ori="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Asn_tRNA_Asn__0">reaction = http://www.reactome.org/biopax/60/159879#BiochemicalReaction2</transition>
+  <transition action="" condition="" event="_h_3" ext="70S_mRNA_peptidyl_tRNA_with_elongating_peptide_0" fact_ids="[]" ori="Elongation_complex_with_growing_peptide_chain_0">reaction = http://www.reactome.org/biopax/60/159879#BiochemicalReaction3</transition>
+  <transition action="" condition="" event="_h_4_2" ext="Elongation_complex_with_growing_peptide_chain_0" fact_ids="[]" ori="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Ser_tRNA_Ser__0">reaction = http://www.reactome.org/biopax/60/159879#BiochemicalReaction2</transition>
+  <transition action="" condition="(Enterobactin_Fe3__0 and Fre_0)" event="_h_1" ext="TPN_0" fact_ids="[]" ori="TPNH_0">reaction = http://www.reactome.org/biopax/60/159879#BiochemicalReaction4</transition>
+  <transition action="" condition="" event="_h_4_7" ext="Elongation_complex_with_growing_peptide_chain_0" fact_ids="[]" ori="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Arg_tRNA_Arg__0">reaction = http://www.reactome.org/biopax/60/159879#BiochemicalReaction2</transition>
+  <transition action="" condition="" event="_h_4_18" ext="Elongation_complex_with_growing_peptide_chain_0" fact_ids="[]" ori="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Ile_tRNA_Ile__0">reaction = http://www.reactome.org/biopax/60/159879#BiochemicalReaction2</transition>
+  <transition action="" condition="(Fre_0 and TPNH_0)" event="_h_1" ext="H__0" fact_ids="[]" ori="Enterobactin_Fe3__0">reaction = http://www.reactome.org/biopax/60/159879#BiochemicalReaction4</transition>
+  <transition action="" condition="(Enterobactin_Fe3__0 and Fre_0)" event="_h_1" ext="H__0" fact_ids="[]" ori="TPNH_0">reaction = http://www.reactome.org/biopax/60/159879#BiochemicalReaction4</transition>
+  <transition action="" condition="" event="_h_4_3" ext="Elongation_complex_with_growing_peptide_chain_0" fact_ids="[]" ori="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Asp_tRNA_Asp__0">reaction = http://www.reactome.org/biopax/60/159879#BiochemicalReaction2</transition>
+  <transition action="" condition="" event="_h_4_20" ext="Elongation_complex_with_growing_peptide_chain_0" fact_ids="[]" ori="70S_ribosome_0_mRNA_0_Met_tRNAi_0_Lys_tRNA_Lys__0">reaction = http://www.reactome.org/biopax/60/159879#BiochemicalReaction2</transition>
+</model>

@@ -1,18 +1,18 @@
 <model name="vigna" xmlns="http://cadbiom">
   <CSimpleNode name="Mars_0" xloc="0.0" yloc="0.0"/>
-  <CSimpleNode name="SeMet-tRNA(Met)_0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="SeMet_tRNA_Met__0" xloc="0.0" yloc="0.0"/>
   <CSimpleNode name="ATP_0" xloc="0.0" yloc="0.0"/>
-  <CSimpleNode name="tRNA(Met)_0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="tRNA_Met__0" xloc="0.0" yloc="0.0"/>
   <CSimpleNode name="PPi_0" xloc="0.0" yloc="0.0"/>
   <CSimpleNode name="SeMet_0" xloc="0.0" yloc="0.0"/>
   <CSimpleNode name="AMP_0" xloc="0.0" yloc="0.0"/>
-  <transition action="" condition="(Mars_0 and SeMet_0 and tRNA(Met)_0)" event="_h_1" ext="SeMet-tRNA(Met)_0" fact_ids="[]" ori="ATP_0">reaction = http://www.reactome.org/biopax/60/2408523#BiochemicalReaction1</transition>
-  <transition action="" condition="(ATP_0 and Mars_0 and tRNA(Met)_0)" event="_h_1" ext="SeMet-tRNA(Met)_0" fact_ids="[]" ori="SeMet_0">reaction = http://www.reactome.org/biopax/60/2408523#BiochemicalReaction1</transition>
-  <transition action="" condition="(ATP_0 and Mars_0 and SeMet_0)" event="_h_1" ext="SeMet-tRNA(Met)_0" fact_ids="[]" ori="tRNA(Met)_0">reaction = http://www.reactome.org/biopax/60/2408523#BiochemicalReaction1</transition>
-  <transition action="" condition="(Mars_0 and SeMet_0 and tRNA(Met)_0)" event="_h_1" ext="PPi_0" fact_ids="[]" ori="ATP_0">reaction = http://www.reactome.org/biopax/60/2408523#BiochemicalReaction1</transition>
-  <transition action="" condition="(ATP_0 and Mars_0 and SeMet_0)" event="_h_1" ext="PPi_0" fact_ids="[]" ori="tRNA(Met)_0">reaction = http://www.reactome.org/biopax/60/2408523#BiochemicalReaction1</transition>
-  <transition action="" condition="(ATP_0 and Mars_0 and SeMet_0)" event="_h_1" ext="AMP_0" fact_ids="[]" ori="tRNA(Met)_0">reaction = http://www.reactome.org/biopax/60/2408523#BiochemicalReaction1</transition>
-  <transition action="" condition="(ATP_0 and Mars_0 and tRNA(Met)_0)" event="_h_1" ext="AMP_0" fact_ids="[]" ori="SeMet_0">reaction = http://www.reactome.org/biopax/60/2408523#BiochemicalReaction1</transition>
-  <transition action="" condition="(ATP_0 and Mars_0 and tRNA(Met)_0)" event="_h_1" ext="PPi_0" fact_ids="[]" ori="SeMet_0">reaction = http://www.reactome.org/biopax/60/2408523#BiochemicalReaction1</transition>
-  <transition action="" condition="(Mars_0 and SeMet_0 and tRNA(Met)_0)" event="_h_1" ext="AMP_0" fact_ids="[]" ori="ATP_0">reaction = http://www.reactome.org/biopax/60/2408523#BiochemicalReaction1</transition>
+  <transition action="" condition="(Mars_0 and SeMet_0 and tRNA_Met__0)" event="_h_1" ext="SeMet_tRNA_Met__0" fact_ids="[]" ori="ATP_0">reaction = http://www.reactome.org/biopax/60/2408523#BiochemicalReaction1</transition>
+  <transition action="" condition="(ATP_0 and Mars_0 and tRNA_Met__0)" event="_h_1" ext="SeMet_tRNA_Met__0" fact_ids="[]" ori="SeMet_0">reaction = http://www.reactome.org/biopax/60/2408523#BiochemicalReaction1</transition>
+  <transition action="" condition="(ATP_0 and Mars_0 and SeMet_0)" event="_h_1" ext="SeMet_tRNA_Met__0" fact_ids="[]" ori="tRNA_Met__0">reaction = http://www.reactome.org/biopax/60/2408523#BiochemicalReaction1</transition>
+  <transition action="" condition="(Mars_0 and SeMet_0 and tRNA_Met__0)" event="_h_1" ext="PPi_0" fact_ids="[]" ori="ATP_0">reaction = http://www.reactome.org/biopax/60/2408523#BiochemicalReaction1</transition>
+  <transition action="" condition="(ATP_0 and Mars_0 and SeMet_0)" event="_h_1" ext="PPi_0" fact_ids="[]" ori="tRNA_Met__0">reaction = http://www.reactome.org/biopax/60/2408523#BiochemicalReaction1</transition>
+  <transition action="" condition="(ATP_0 and Mars_0 and SeMet_0)" event="_h_1" ext="AMP_0" fact_ids="[]" ori="tRNA_Met__0">reaction = http://www.reactome.org/biopax/60/2408523#BiochemicalReaction1</transition>
+  <transition action="" condition="(ATP_0 and Mars_0 and tRNA_Met__0)" event="_h_1" ext="AMP_0" fact_ids="[]" ori="SeMet_0">reaction = http://www.reactome.org/biopax/60/2408523#BiochemicalReaction1</transition>
+  <transition action="" condition="(ATP_0 and Mars_0 and tRNA_Met__0)" event="_h_1" ext="PPi_0" fact_ids="[]" ori="SeMet_0">reaction = http://www.reactome.org/biopax/60/2408523#BiochemicalReaction1</transition>
+  <transition action="" condition="(Mars_0 and SeMet_0 and tRNA_Met__0)" event="_h_1" ext="AMP_0" fact_ids="[]" ori="ATP_0">reaction = http://www.reactome.org/biopax/60/2408523#BiochemicalReaction1</transition>
 </model>

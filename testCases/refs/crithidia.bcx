@@ -1,8 +1,8 @@
 <model name="crithidia" xmlns="http://cadbiom">
   <CSimpleNode name="4MTOBUTA_0" xloc="0.0" yloc="0.0"/>
-  <CSimpleNode name="L-Met_0" xloc="0.0" yloc="0.0"/>
-  <CSimpleNode name="2-Oxoacid_0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="L_Met_0" xloc="0.0" yloc="0.0"/>
+  <CSimpleNode name="2_Oxoacid_0" xloc="0.0" yloc="0.0"/>
   <CSimpleNode name="Asat_0" xloc="0.0" yloc="0.0"/>
-  <transition action="" condition="Asat_0" event="_h_1" ext="2-Oxoacid_0" fact_ids="[]" ori="4MTOBUTA_0">reaction = http://www.reactome.org/biopax/60/1237148#BiochemicalReaction1</transition>
-  <transition action="" condition="Asat_0" event="_h_1" ext="L-Met_0" fact_ids="[]" ori="4MTOBUTA_0">reaction = http://www.reactome.org/biopax/60/1237148#BiochemicalReaction1</transition>
+  <transition action="" condition="Asat_0" event="_h_1" ext="2_Oxoacid_0" fact_ids="[]" ori="4MTOBUTA_0">reaction = http://www.reactome.org/biopax/60/1237148#BiochemicalReaction1</transition>
+  <transition action="" condition="Asat_0" event="_h_1" ext="L_Met_0" fact_ids="[]" ori="4MTOBUTA_0">reaction = http://www.reactome.org/biopax/60/1237148#BiochemicalReaction1</transition>
 </model>

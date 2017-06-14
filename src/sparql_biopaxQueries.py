@@ -19,13 +19,16 @@ def getPathways(listOfGraphUri):
 		WHERE
 		{
 			?pathway rdf:type biopax3:Pathway .
-			?pathway biopax3:displayName ?displayName .
+			OPTIONAL { ?pathway biopax3:displayName ?displayName . }
 		}
 	"""
 
 	pathwayToName = {}
 	for pathway, name  in sparql_wrapper.sparql_query(query):
-		pathwayToName[pathway] = name
+		if name != None:
+			pathwayToName[pathway] = name
+		else:
+			pathwayToName[pathway] = pathway
 	return pathwayToName
 
 
