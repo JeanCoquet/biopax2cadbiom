@@ -92,8 +92,8 @@ def getReactions(listOfGraphUri):
 		rightComponent, \
 		productComponent, \
 		participantComponent in sparql_wrapper.sparql_query(query):
-		dictReaction[reaction] = Reaction(reaction, nameReaction, reactionType, productComponent, participantComponent)
-
+		if reaction not in dictReaction:
+			dictReaction[reaction] = Reaction(reaction, nameReaction, reactionType, productComponent, participantComponent)
 		if pathway != None: dictReaction[reaction].pathways.add(pathway)
 		if leftComponent != None: dictReaction[reaction].leftComponents.add(leftComponent)
 		if rightComponent != None: dictReaction[reaction].rightComponents.add(rightComponent)
@@ -142,7 +142,10 @@ def getPhysicalEntities(listOfGraphUri):
 		entityRef, \
 		dbRef, \
 		idRef in sparql_wrapper.sparql_query(query):
-		dictPhysicalEntity[entity] = PhysicalEntity(entity, name, location, entityType, entityRef)
+		
+		if entity not in dictPhysicalEntity:
+			dictPhysicalEntity[entity] = PhysicalEntity(entity, name, location, entityType, entityRef)
+		
 		if synonym != None: dictPhysicalEntity[entity].synonyms.add(synonym)
 		if component != None: dictPhysicalEntity[entity].components.add(component)
 		if member != None: dictPhysicalEntity[entity].members.add(member)
@@ -174,7 +177,8 @@ def getLocations(listOfGraphUri):
 	"""
 	
 	for location, locationTerm, dbRef, idRef in sparql_wrapper.sparql_query(query):
-		dictLocation[location] = Location(location, locationTerm)
+		if location not in dictLocation:
+			dictLocation[location] = Location(location, locationTerm)
 		if idRef != None: dictLocation[location].idRefs.add((idRef,dbRef))
 	return dictLocation
 
@@ -206,6 +210,6 @@ def getControls(listOfGraphUri):
 		controlType, \
 		reaction, \
 		controller in sparql_wrapper.sparql_query(query):
-		dictControl[control] = Control(control, classType, controlType, reaction, controller)	
-
+		if control not in dictControl:
+			dictControl[control] = Control(control, classType, controlType, reaction, controller)
 	return dictControl
