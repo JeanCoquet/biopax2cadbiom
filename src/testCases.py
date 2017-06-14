@@ -46,12 +46,11 @@ def havingErrors(stderrPath):
 
 def compareModelToRef(modelPath, refPath):
 	check_state = graph_isomorph_test(modelPath, refPath, "")
-	print(check_state)
 	return check_state['topology'] and check_state['nodes'] and check_state['edges']
 
 
 def printTestCase(dictTestCase):
-	print(dictTestCase['source']+' - '+dictTestCase['name'])
+	print(dictTestCase['source']+' - '+dictTestCase['owlFile'])
 	print('Command: python3 -m src --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 '+dictTestCase['graphUri'])
 	if dictTestCase['expectedResult']: print('\t'+'[x] Expected result')
 	else: print('\t'+'[ ] Expected result')
@@ -59,7 +58,7 @@ def printTestCase(dictTestCase):
 	else: print('\t'+'[ ] No errors')
 	if not dictTestCase['unexpectedReactions']: print('\t'+'[x] No unexpected reactions')
 	else: print('\t'+'[ ] No unexpected reactions')
-	print()
+	print("")
 
 
 def updateReadme(listOfDictTestCase, readmePath, testCasesDir):
@@ -81,7 +80,7 @@ def updateReadme(listOfDictTestCase, readmePath, testCasesDir):
 			else:
 				readmeFile.write('### {- '+dictTestCase['source']+' - '+dictTestCase['owlFile']+' -}\n')
 			
-			readmeFile.write('__Command__: `python3 -m src --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 '+dictTestCase['graphUri']+'`\n')
+			readmeFile.write('__Command__: `python -m src --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 '+dictTestCase['graphUri']+'`\n')
 			
 			if dictTestCase['expectedResult']: readmeFile.write('  * [x] Expected result\n')
 			else: readmeFile.write('  * [ ] Expected result\n')
