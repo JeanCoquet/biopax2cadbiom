@@ -9,6 +9,7 @@ from classes import *
 
 
 def getPathways(listOfGraphUri):
+	pathwayToName = {}
 	query = """
 		PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 		PREFIX biopax3: <http://www.biopax.org/release/biopax-level3.owl#>
@@ -25,7 +26,7 @@ def getPathways(listOfGraphUri):
 		}
 	"""
 
-	pathwayToName = {}
+	
 	for pathway, name  in sparql_wrapper.sparql_query(query):
 		pathwayToName[pathway] = name
 	return pathwayToName
@@ -58,6 +59,7 @@ def getPathwayAncestorsHierarchy(listOfGraphUri):
 
 
 def getReactions(listOfGraphUri):
+	dictReaction = {}
 	query = """
 		PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 		PREFIX biopax3: <http://www.biopax.org/release/biopax-level3.owl#>
@@ -81,7 +83,7 @@ def getReactions(listOfGraphUri):
 	"""
 	# ATTENTION: si on fait 'rdfs:subClassOf* biopax3:Interaction' alors on recupere aussi les 'Control', ce qui est doit etre fait par getControls(listOfGraphUri)
 	
-	dictReaction = {}
+	
 	for reaction, \
 		nameReaction, \
 		reactionType, \
@@ -100,6 +102,7 @@ def getReactions(listOfGraphUri):
 
 
 def getPhysicalEntities(listOfGraphUri):
+	dictPhysicalEntity = {}
 	query = """
 		PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 		PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -128,7 +131,7 @@ def getPhysicalEntities(listOfGraphUri):
 		}
 	"""
 
-	dictPhysicalEntity = {}
+	
 	for entity, \
 		name, \
 		synonym, \
@@ -149,6 +152,7 @@ def getPhysicalEntities(listOfGraphUri):
 
 
 def getLocations(listOfGraphUri):
+	dictLocation = {}
 	query = """
 		PREFIX biopax3: <http://www.biopax.org/release/biopax-level3.owl#>
 
@@ -168,7 +172,7 @@ def getLocations(listOfGraphUri):
 			}
 		}
 	"""
-	dictLocation = {}
+	
 	for location, locationTerm, dbRef, idRef in sparql_wrapper.sparql_query(query):
 		dictLocation[location] = Location(location, locationTerm)
 		if idRef != None: dictLocation[location].idRefs.add((idRef,dbRef))
@@ -176,6 +180,7 @@ def getLocations(listOfGraphUri):
 
 
 def getControls(listOfGraphUri):
+	dictControl = {}
 	query = """
 		PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 		PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -195,7 +200,7 @@ def getControls(listOfGraphUri):
 			OPTIONAL { ?control biopax3:controller ?controller . }
 		}
 	"""
-	dictControl = {}
+	
 	for control, \
 		classType, \
 		controlType, \
