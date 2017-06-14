@@ -15,30 +15,22 @@ class PhysicalEntity(object):
 			membersUsed(bool)
 			cadbiomName (set)
 	"""
-	def __init__(self,idEntity,name,location,entitytype,entityref):
+	def __init__(self,idEntity,name,location,entityType,entityRef):
 		self.idEntity = idEntity
 		self.name = name
 		self.location = location
-		self.entitytype = entitytype
-		self.entityref = entityref
+		self.entityType = entityType
+		self.entityRef = entityRef
 		self.synonyms = set()
-		self.component = set()
+		self.components = set()
 		self.members = set()
 		self.idRefs = set()
 		self.reactions = set()
 		self.membersUsed = None
 		self.cadbiomName = set()
-        self.listOfFlatComponents = []
-        self.listOfCadbiomNames = []
+		self.listOfFlatComponents = []
+		self.listOfCadbiomNames = []
         
-    def checkIfMemberUsed(self):
-        if self.membersUsed == None:
-            self.membersUsed = False
-            for subEntity in self.members:
-                if len(subEntity.reactions) != 0:
-                    self.membersUsed = True
-                    break
-
 class Reaction(object):
 	"""
 	Class for reaction:

@@ -10,10 +10,9 @@ import itertools, copy, dill, sympy, os, sys
 from collections import defaultdict
 import networkx as nx
 from lxml import etree as ET
-
+import re
 # Custom imports
 from src import sparql_biopaxQueries as query
-
 
 def addReactionToEntities(dictReaction, dictControl, dictPhysicalEntity):
 	"""This procedure adds the key 'reactions' to the dictionnary dictPhysicalEntity[entity]. The value corresponds to a set of reactions involving entity.
@@ -69,8 +68,8 @@ def developComplexs(dictPhysicalEntity):
 	:type dictPhysicalEntity: dict
 	"""
 	for entity in dictPhysicalEntity:
-		if dictPhysicalEntity[entity].entitytype != set() :
-			typeName = dictPhysicalEntity[entity].entitytype.rsplit("#", 1)[1]
+		if dictPhysicalEntity[entity].entityType != set() :
+			typeName = dictPhysicalEntity[entity].entityType.rsplit("#", 1)[1]
 			if typeName == "Complex":
 				if len(dictPhysicalEntity[entity].listOfFlatComponents) == 0:
 					developComplexEntity(entity, dictPhysicalEntity)
@@ -86,8 +85,8 @@ def developComplexEntity(complexEntity, dictPhysicalEntity):
 	"""
 	listOfComponentsDevelopped = list()
 	for component in dictPhysicalEntity[complexEntity].components:
-		if component in dictPhysicalEntity and dictPhysicalEntity[component].entitytype != set() :
-			typeName = dictPhysicalEntity[component].entitytype.rsplit("#", 1)[1]
+		if component in dictPhysicalEntity and dictPhysicalEntity[component].entityType != set() :
+			typeName = dictPhysicalEntity[component].entityType.rsplit("#", 1)[1]
 			if typeName == "Complex":
 				if len(dictPhysicalEntity[component].listOfFlatComponents) == 0:
 					developComplexEntity(component, dictPhysicalEntity)
@@ -192,7 +191,7 @@ def createGraph(pathwayToName, pathwayToSuperPathways, pathwayToPhysicalEntities
 		
 		shareProteinsOrComplexs = False
 		for entity in physicalEntitiesShared:
-			typeName = dictPhysicalEntity[entity].entitytype.rsplit("#", 1)[1]
+			typeName = dictPhysicalEntity[entity].entityType.rsplit("#", 1)[1]
 			if typeName == "Protein" or typeName == "Complex":
 				shareProteinsOrComplexs = True
 				break
@@ -369,7 +368,7 @@ def getListOfPossibilitiesAndCadbiomNames(entity, dictPhysicalEntity):
 	if len(dictPhysicalEntity[entity].listOfFlatComponents) != 0:
 		for i in range(len(dictPhysicalEntity[entity].listOfFlatComponents)):
 			flatComponents = dictPhysicalEntity[entity].listOfFlatComponents[i]
-			cadbiomName = dictPhysicalEntity[entity].listOfCadiomNames[i]
+			cadbiomName = dictPhysicalEntity[entity].listOfCadbiomNames[i]
 			listOfEquivalentsAndCadbiomName.append((flatComponents,cadbiomName))
 			
 	elif len(dictPhysicalEntity[entity].members) != 0 and dictPhysicalEntity[entity].membersUsed:

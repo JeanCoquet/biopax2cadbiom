@@ -5,7 +5,7 @@ This module contains a list of functions to request Reactome
 
 from src import sparql_wrapper
 from collections import defaultdict
-from src import classes
+from classes import *
 
 
 def getPathways(listOfGraphUri):
@@ -139,8 +139,7 @@ def getPhysicalEntities(listOfGraphUri):
 		entityRef, \
 		dbRef, \
 		idRef in sparql_wrapper.sparql_query(query):
-		dictPhysicalEntity[entity] = Entity(entity, name, location, entityType, entityRef)
-
+		dictPhysicalEntity[entity] = PhysicalEntity(entity, name, location, entityType, entityRef)
 		if synonym != None: dictPhysicalEntity[entity].synonyms.add(synonym)
 		if component != None: dictPhysicalEntity[entity].components.add(component)
 		if member != None: dictPhysicalEntity[entity].members.add(member)
