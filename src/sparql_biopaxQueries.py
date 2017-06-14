@@ -11,9 +11,6 @@ from classes import *
 def getPathways(listOfGraphUri):
 	pathwayToName = {}
 	query = """
-		PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-		PREFIX biopax3: <http://www.biopax.org/release/biopax-level3.owl#>
-
 		SELECT DISTINCT ?pathway ?displayName
 	"""
 	for graphUri in listOfGraphUri:
@@ -34,9 +31,6 @@ def getPathways(listOfGraphUri):
 
 def getPathwayAncestorsHierarchy(listOfGraphUri):
 	query = """
-		PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-		PREFIX biopax3: <http://www.biopax.org/release/biopax-level3.owl#>
-
 		SELECT DISTINCT ?pathway ?superPathway
 	"""
 	for graphUri in listOfGraphUri:
@@ -61,9 +55,6 @@ def getPathwayAncestorsHierarchy(listOfGraphUri):
 def getReactions(listOfGraphUri):
 	dictReaction = {}
 	query = """
-		PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-		PREFIX biopax3: <http://www.biopax.org/release/biopax-level3.owl#>
-
 		SELECT DISTINCT ?reaction ?nameReaction ?reactionType ?pathway ?leftComponent ?rightComponent ?productComponent ?participantComponent
 	"""
 	for graphUri in listOfGraphUri:
@@ -82,8 +73,7 @@ def getReactions(listOfGraphUri):
 		}
 	"""
 	# ATTENTION: si on fait 'rdfs:subClassOf* biopax3:Interaction' alors on recupere aussi les 'Control', ce qui est doit etre fait par getControls(listOfGraphUri)
-	
-	
+
 	for reaction, \
 		nameReaction, \
 		reactionType, \
@@ -104,10 +94,6 @@ def getReactions(listOfGraphUri):
 def getPhysicalEntities(listOfGraphUri):
 	dictPhysicalEntity = {}
 	query = """
-		PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-		PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-		PREFIX biopax3: <http://www.biopax.org/release/biopax-level3.owl#>
-
 		SELECT DISTINCT ?entity ?name ?synonym ?location ?type ?component ?member ?entityRef ?dbRef ?idRef
 	"""
 	for graphUri in listOfGraphUri:
@@ -157,8 +143,6 @@ def getPhysicalEntities(listOfGraphUri):
 def getLocations(listOfGraphUri):
 	dictLocation = {}
 	query = """
-		PREFIX biopax3: <http://www.biopax.org/release/biopax-level3.owl#>
-
 		SELECT DISTINCT ?location ?locationTerm ?dbRef ?idRef
 	"""
 	for graphUri in listOfGraphUri:
@@ -186,10 +170,6 @@ def getLocations(listOfGraphUri):
 def getControls(listOfGraphUri):
 	dictControl = {}
 	query = """
-		PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-		PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-		PREFIX biopax3: <http://www.biopax.org/release/biopax-level3.owl#>
-
 		SELECT DISTINCT ?control ?type ?controlType ?reaction ?controller
 	"""
 	for graphUri in listOfGraphUri:
