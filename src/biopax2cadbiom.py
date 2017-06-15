@@ -64,7 +64,7 @@ def detectMembersUsedInEntities(dictPhysicalEntity, convertFullGraph):
 
 # TODO: Test this function
 def developComplexs(dictPhysicalEntity):
-	"""This procedure adds the key 'listOfFlatComponents' to the dictionnary dictPhysicalEntity[entity]. The value corresponds to a list of component sets. 
+	"""This procedure adds the key 'listOfFlatComponents' to the dictionnary dictPhysicalEntity[entity]. The value corresponds to a list of component sets.
 
 	:param dictPhysicalEntity: the dictionnary of biopax physicalEntities created by the function query.getPhysicalEntities()
 	:type dictPhysicalEntity: dict
@@ -78,7 +78,7 @@ def developComplexs(dictPhysicalEntity):
 
 
 def developComplexEntity(complexEntity, dictPhysicalEntity):
-	"""This procedure fills the value of dictPhysicalEntity[entity]['listOfFlatComponents']. 
+	"""This procedure fills the value of dictPhysicalEntity[entity]['listOfFlatComponents'].
 
 	:param complexEntity: the biopax id of a complex entity
 	:param dictPhysicalEntity: the dictionnary of biopax physicalEntities created by the function query.getPhysicalEntities()
@@ -102,7 +102,7 @@ def developComplexEntity(complexEntity, dictPhysicalEntity):
 		dictPhysicalEntity[complexEntity]['listOfFlatComponents'] = []
 		for elements in itertools.product(*listOfComponentsDevelopped):
 			l = []
-			for e in elements: 
+			for e in elements:
 				if isinstance(e, tuple): l += e
 				else: l.append(e)
 			dictPhysicalEntity[complexEntity]['listOfFlatComponents'].append(tuple(l))
@@ -428,7 +428,7 @@ def getProductCadbiomsMatched(entities, entityToListOfEquivalentsAndCadbiomName,
 def getEntityNameUnmatched(entities, entityToEntitiesMatched, dictPhysicalEntity):
 	nameUnmatched = set()
 	for entity in entities:
-		if entityToEntitiesMatched[entity] == set(): 
+		if entityToEntitiesMatched[entity] == set():
 			nameUnmatched.add(dictPhysicalEntity[entity]['cadbiomName'])
 	return nameUnmatched
 
@@ -509,7 +509,7 @@ def updateTransitions(reaction, dictPhysicalEntity, dictReaction, dictTransition
 					subH += 1
 
 		for entityR in rightEntities:
-			if entityToEntitiesMatched[entityR] == set(): 
+			if entityToEntitiesMatched[entityR] == set():
 				nameEntityR = dictPhysicalEntity[entityR]['cadbiomName']
 				for subEquis,subCadbiom in entityToListOfEquivalentsAndCadbiomName[entityR]:
 					transitionSympyCond = dictReaction[reaction]['cadbiomSympyCond']
@@ -523,7 +523,7 @@ def updateTransitions(reaction, dictPhysicalEntity, dictReaction, dictTransition
 
 		currentKeys = list(subDictTransition.keys())
 		for entityL in leftEntities:
-			if entityToEntitiesMatched[entityL] == set(): 
+			if entityToEntitiesMatched[entityL] == set():
 				for equisL,cadbiomL in entityToListOfEquivalentsAndCadbiomName[entityL]:
 					for left,right in currentKeys:
 						for transition in subDictTransition[(left,right)]:
@@ -557,7 +557,7 @@ def getTransitions(dictReaction, dictPhysicalEntity):
 	for reaction in dictReaction:
 		typeName = dictReaction[reaction]['type'].rsplit("#", 1)[1]
 
-		if typeName in ["BiochemicalReaction", "ComplexAssembly", "Transport"]:
+		if typeName in ["BiochemicalReaction", "ComplexAssembly", "Transport", "TransportWithBiochemicalReaction"]:
 			#ATTENTION: que faire si 'leftComponents' ou bien 'rightComponents' sont vides ?
 			updateTransitions(reaction, dictPhysicalEntity, dictReaction, dictTransition)
 
@@ -572,14 +572,17 @@ def getTransitions(dictReaction, dictPhysicalEntity):
 
 		elif typeName == "TemplateReaction":
 			entityR = dictReaction[reaction]['productComponent']
-			cadbiomR = dictPhysicalEntity[entityR]['cadbiomName']
-			dictTransition[(cadbiomR+"_gene",cadbiomR)].append({
-				'event': dictReaction[reaction]['event'],
-				'reaction': reaction,
-				'sympyCond': dictReaction[reaction]['cadbiomSympyCond']
-			})
 
-		elif typeName == "Catalysis" or typeName == "Control":
+			#Sometimes, there is not entityR (ex: http://pathwaycommons.org/pc2/#TemplateReaction_3903f25156da4c9000a93bbc85b18572). It is a bug in BioPax.
+			if entityR != None:
+				cadbiomR = dictPhysicalEntity[entityR]['cadbiomName']
+				dictTransition[(cadbiomR+"_gene",cadbiomR)].append({
+					'event': dictReaction[reaction]['event'],
+					'reaction': reaction,
+					'sympyCond': dictReaction[reaction]['cadbiomSympyCond']
+				})
+
+		elif typeName in ["Catalysis", "Control", "TemplateReactionRegulation"]:
 			continue
 
 		else:
@@ -680,7 +683,6 @@ def main(params):
 		dictPhysicalEntity, dictReaction, dictControl, \
 		dictLocation, idLocationToLocation, cadbiomNameToPhysicalEntity \
 			= dill.load(open(params['pickleBackup'], "rb"))
-
 	dictTransition = getTransitions(dictReaction, dictPhysicalEntity)
 
 	cadbiomModelName = params['cadbiomFile'].rsplit('/',1)[-1].rsplit('.',1)[0]
