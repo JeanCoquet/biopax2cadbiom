@@ -651,17 +651,18 @@ def createCadbiomFile(dictTransition,
 	tree.write(filePath, pretty_print=True)
 
 
-def main(args):
+def main(params):
+	"""Entry point"""
 
-	if not os.path.isfile(args.pickleBackup):
+	if not os.path.isfile(params['pickleBackup']):
 
-		dictPhysicalEntity = query.getPhysicalEntities(args.listOfGraphUri)
-		dictReaction = query.getReactions(args.listOfGraphUri)
-		dictControl = query.getControls(args.listOfGraphUri)
-		dictLocation = query.getLocations(args.listOfGraphUri)
+		dictPhysicalEntity = query.getPhysicalEntities(params['listOfGraphUri'])
+		dictReaction = query.getReactions(params['listOfGraphUri'])
+		dictControl = query.getControls(params['listOfGraphUri'])
+		dictLocation = query.getLocations(params['listOfGraphUri'])
 
 		addReactionToEntities(dictReaction, dictControl, dictPhysicalEntity)
-		detectMembersUsedInEntities(dictPhysicalEntity, args.convertFullGraph)
+		detectMembersUsedInEntities(dictPhysicalEntity, params['convertFullGraph'])
 		developComplexs(dictPhysicalEntity)
 		addControllersToReactions(dictReaction, dictControl)
 		idLocationToLocation = numerotateLocations(dictLocation)
@@ -673,21 +674,21 @@ def main(args):
 				dictPhysicalEntity, dictReaction, dictControl, dictLocation,
 				idLocationToLocation, cadbiomNameToPhysicalEntity
 			],
-			open(args.pickleBackup, "wb")
+			open(params['pickleBackup'], "wb")
 		)
 
 	else:
 		dictPhysicalEntity, dictReaction, dictControl, \
 		dictLocation, idLocationToLocation, cadbiomNameToPhysicalEntity \
-			= dill.load(open(args.pickleBackup, "rb"))
+			= dill.load(open(params['pickleBackup'], "rb"))
 
 	dictTransition = getTransitions(dictReaction, dictPhysicalEntity)
 
-	cadbiomModelName = args.cadbiomFile.rsplit('/',1)[-1].rsplit('.',1)[0]
+	cadbiomModelName = params['cadbiomFile'].rsplit('/',1)[-1].rsplit('.',1)[0]
 	createCadbiomFile(
 		dictTransition,
 		dictPhysicalEntity,
 		dictReaction,
 		cadbiomModelName,
-		args.cadbiomFile
+		params['cadbiomFile']
 	)

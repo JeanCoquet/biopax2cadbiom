@@ -1,9 +1,17 @@
 # -*- coding: utf-8 -*-
+
 # Standard imports
 import argparse
+import pytest
+
+# Custom imports
 import src.biopax2cadbiom as biopax2cadbiom
-import src.testCases as testCases
-from src.commons import DIR_PICKLE, DIR_OUTPUT, DIR_TEST_CASES
+from src.commons import DIR_PICKLE, DIR_OUTPUT
+
+
+def args_to_param(args):
+	"""Return argparse namespace as a dict {variable name: value}"""
+	return {k: v for k, v in vars(args).items() if k != 'func'}
 
 
 if __name__ == "__main__" :
@@ -28,21 +36,16 @@ if __name__ == "__main__" :
 	parser.add_argument('--testCases', action='store_true',
 						help='translates Biopax test cases to cadbiom models and compares them with the cadbiom model reference (if it exists).'
 	)
-	parser.add_argument('--testCasesDir', type=str, nargs='?',
-						default=DIR_TEST_CASES,
-						help='Directory of test cases.'
-	)
-	
+
 	parser.set_defaults(func=biopax2cadbiom.main)
 
-	# get program args and launch associated command
+	# Get program args and launch associated command
 	args = parser.parse_args()
-	
+	# Take argparse arguments and put them in a standard dict
+	params = args_to_param(args)
+
 	if args.listOfGraphUri:
-		# Set log level
-		#LOGGER.setLevel(cm.LOG_LEVELS[vars(args)['verbose']])
-		# launch associated command
-		args.func(args)
-	
+		args.func(params)
+
 	if args.testCases:
-		testCases.main(args)
+		pytest.main(['./'])
