@@ -50,3 +50,18 @@ formatter      = logging.Formatter('%(levelname)s: %(message)s')
 stream_handler.setFormatter(formatter)
 stream_handler.setLevel(LOG_LEVEL)
 _logger.addHandler(stream_handler)
+
+
+def log_level(level):
+    """Set terminal/file log level to given one.
+    .. note:: Don't forget the propagation system of messages:
+        From logger to handlers. Handlers receive log messages only if
+        the main logger doesn't filter them.
+    """
+    # Main logger
+    _logger.setLevel(level.upper())
+    # Handlers
+    [handler.setLevel(level.upper()) for handler in _logger.handlers
+        if handler.__class__ in (logging.StreamHandler,
+                                 logging.handlers.RotatingFileHandler)
+    ]
