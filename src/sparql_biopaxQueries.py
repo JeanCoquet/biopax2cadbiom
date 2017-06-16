@@ -19,13 +19,15 @@ def getPathways(listOfGraphUri):
 		WHERE
 		{
 			?pathway rdf:type biopax3:Pathway .
-			?pathway biopax3:displayName ?displayName .
+			OPTIONAL { ?pathway biopax3:displayName ?displayName . }
 		}
 	"""
 
-	
 	for pathway, name  in sparql_wrapper.sparql_query(query):
-		pathwayToName[pathway] = name
+		if name != None:
+			pathwayToName[pathway] = name
+		else:
+			pathwayToName[pathway] = pathway
 	return pathwayToName
 
 
@@ -117,7 +119,6 @@ def getPhysicalEntities(listOfGraphUri):
 		}
 	"""
 
-	
 	for entity, \
 		name, \
 		synonym, \
@@ -128,10 +129,10 @@ def getPhysicalEntities(listOfGraphUri):
 		entityRef, \
 		dbRef, \
 		idRef in sparql_wrapper.sparql_query(query):
-		
+
 		if entity not in dictPhysicalEntity:
 			dictPhysicalEntity[entity] = PhysicalEntity(entity, name, location, entityType, entityRef)
-		
+
 		if synonym != None: dictPhysicalEntity[entity].synonyms.add(synonym)
 		if component != None: dictPhysicalEntity[entity].components.add(component)
 		if member != None: dictPhysicalEntity[entity].members.add(member)
@@ -159,7 +160,7 @@ def getLocations(listOfGraphUri):
 			}
 		}
 	"""
-	
+
 	for location, locationTerm, dbRef, idRef in sparql_wrapper.sparql_query(query):
 		if location not in dictLocation:
 			dictLocation[location] = Location(location, locationTerm)
@@ -184,7 +185,7 @@ def getControls(listOfGraphUri):
 			OPTIONAL { ?control biopax3:controller ?controller . }
 		}
 	"""
-	
+
 	for control, \
 		classType, \
 		controlType, \
