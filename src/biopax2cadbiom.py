@@ -36,8 +36,10 @@ def addReactionToEntities(dictReaction, dictControl, dictPhysicalEntity):
 			dictPhysicalEntity[entity].reactions.add(reaction)
 
 	for control in dictControl:
+		# Here, thanks to filter_control() we have only entities
 		entity = dictControl[control].controller
 		reaction = dictControl[control].reaction
+
 		if entity != None and reaction != None:
 			dictPhysicalEntity[entity].reactions.add(reaction)
 
@@ -655,17 +657,41 @@ def createCadbiomFile(dictTransition,
 	tree.write(filePath, pretty_print=True)
 
 
+def filter_control(controls, pathways_names):
+	"""Remove pathaways from controls and keep others (entities + ?).
+
+	We want ONLY entities and by default there are pathways + entities.
+
+	:param arg1: Contollers.
+	:param arg2: Dict of pathways URIs and names.
+		keys: URIs; values: names (or uri if no name)
+	:type arg1: <dict>
+	:type arg2: <dict>
+	:return: Filtered controllers dict.
+	:rtype: <dict>
+	"""
+
+	return {control: controls[control] for control in controls
+			if controls[control].controller not in pathways_names}
+
+
 def main(params):
 	"""Entry point"""
 
 	if not os.path.isfile(params['pickleBackup']):
 
 		dictPhysicalEntity = query.getPhysicalEntities(params['listOfGraphUri'])
-		dictReaction = query.getReactions(params['listOfGraphUri'])
-		dictControl = query.getControls(params['listOfGraphUri'])
-		dictLocation = query.getLocations(params['listOfGraphUri'])
+		dictReaction	   = query.getReactions(params['listOfGraphUri'])
+		dictLocation	   = query.getLocations(params['listOfGraphUri'])
+		dictPathwayName	= query.getPathways(params['listOfGraphUri'])
+		dictControl = \
+			filter_control(
+				query.getControls(params['listOfGraphUri']),
+				dictPathwayName,
+			)
 
 		addReactionToEntities(dictReaction, dictControl, dictPhysicalEntity)
+
 		detectMembersUsedInEntities(dictPhysicalEntity, params['convertFullGraph'])
 		developComplexs(dictPhysicalEntity)
 		addControllersToReactions(dictReaction, dictControl)
