@@ -2,6 +2,8 @@
 
 Convert Biopax data (http://biopax.org) to Cabiom model (http://cadbiom.genouest.org).
 
+Supplementary data: https://data-access.cesgo.org/index.php/s/bIbYc7B1dmnFGCd
+
 ## Help
 
 	$ python -m src -h
