@@ -720,7 +720,7 @@ def main(params):
 		detectMembersUsedInEntities(dictPhysicalEntity, params['convertFullGraph'])
 		developComplexs(dictPhysicalEntity)
 		addControllersToReactions(dictReaction, dictControl)
-		idLocationToLocation = numerotateLocations(dictLocation, False)
+		idLocationToLocation = numerotateLocations(dictLocation, params['fullCompartmentsNames'])
 		cadbiomNameToPhysicalEntity = addCadbiomNameToEntities(dictPhysicalEntity, dictLocation)
 		addCadbiomSympyCondToReactions(dictReaction, dictPhysicalEntity)
 
