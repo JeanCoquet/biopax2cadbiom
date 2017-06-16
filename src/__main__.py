@@ -39,6 +39,10 @@ if __name__ == "__main__" :
 						help='converts all entities to cadbiom nodes, '
 							 'even the entities not used.'
 	)
+	parser.add_argument('--fullCompartmentsNames', action='store_true',
+						help='If set, compartments will be encoded on the base '
+							 'of their real names instead of numeric values.'
+	)
 	parser.add_argument('--testCases', action='store_true',
 						help='translates Biopax test cases to cadbiom models '
 							 'and compares them with the cadbiom model '

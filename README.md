@@ -1,40 +1,44 @@
 # biopax2cadbiom
 
 Convert Biopax data (http://biopax.org) to Cabiom model (http://cadbiom.genouest.org).
+Supplementary data: https://data-access.cesgo.org/index.php/s/bIbYc7B1dmnFGCd
 
 Supplementary data: https://data-access.cesgo.org/index.php/s/bIbYc7B1dmnFGCd
 
 ## Help
 
-	$ python -m src -h
-	usage: __main__.py [-h] [--pickleBackup [PICKLEBACKUP]]
-					[--listOfGraphUri LISTOFGRAPHURI [LISTOFGRAPHURI ...]]
-					[--cadbiomFile [CADBIOMFILE]]
+    $ python -m src -h
+    usage: __main__.py [-h] [-vv [VERBOSE]] [--pickleBackup [PICKLEBACKUP]]
+                   [--listOfGraphUri LISTOFGRAPHURI [LISTOFGRAPHURI ...]]
+                   [--cadbiomFile [CADBIOMFILE]] [--convertFullGraph]
+                   [--fullCompartmentsNames] [--testCases]
 
-	biopax2cabiom.py is a script to transform a Biopax data from a RDBMS to a
-	Cabiom model.
+    biopax2cabiom.py is a script to transform a Biopax data from a RDBMS to a
+    Cabiom model.
 
-	optional arguments:
-	-h, --help		how this help message and exit
-	--pickleBackup [PICKLEBACKUP]
-				enter a file path to save the script variables.
-	--listOfGraphUri LISTOFGRAPHURI [LISTOFGRAPHURI ...]
-				enter a list of RDF graph.
-	--cadbiomFile [CADBIOMFILE]
-				enter a file path to generate the Cadbiom model.
-	--convertFullGraph	converts all entities to cadbiom nodes, even the
-				entities not used.
-	--testCases		translates Biopax test cases to cadbiom models and
-				compares them with the cadbiom model reference (if it
-				exists).
-	--testCasesDir [TESTCASESDIR]
-				Directory of test cases.
+    optional arguments:
+    -h, --help            show this help message and exit
+    -vv [VERBOSE], --verbose [VERBOSE]
+    --pickleBackup [PICKLEBACKUP]
+                            output file path to save the script variables.
+    --listOfGraphUri LISTOFGRAPHURI [LISTOFGRAPHURI ...]
+                            list of RDF graph.
+    --cadbiomFile [CADBIOMFILE]
+                            output file path to generate the Cadbiom model.
+    --convertFullGraph    converts all entities to cadbiom nodes, even the
+                            entities not used.
+    --fullCompartmentsNames
+                            If set, compartments will be encoded on the base of
+                            their real names instead of numeric values.
+    --testCases           translates Biopax test cases to cadbiom models and
+                            compares them with the cadbiom model reference (if it
+                            exists).
 
 
 ## Examples of command line
 
-	python -m src --listOfGraphUri http://biopax.org/lvl3 http://www.pathwaycommons.org/reactome_v56
-	python -m src --pickleBackup backupPickle/backup.p --cadbiomFile output/tgfBetaTestModel.bcx --listOfGraphUri http://biopax.org/lvl3 http://www.pathwaycommons.org/tgfbrpathway
+    python -m src --listOfGraphUri http://biopax.org/lvl3 http://www.pathwaycommons.org/reactome_v56
+    python -m src --pickleBackup backupPickle/backup.p --cadbiomFile output/tgfBetaTestModel.bcx --listOfGraphUri http://biopax.org/lvl3 http://www.pathwaycommons.org/tgfbrpathway
 
 ## Test cases
 
