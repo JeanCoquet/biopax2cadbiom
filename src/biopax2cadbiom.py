@@ -6,13 +6,16 @@ This module is used to translate biopax to a cadbiom model
 from __future__ import print_function
 
 # Standard imports
-import itertools, copy, dill, sympy, os, sys, re
+import itertools, copy, dill, sympy, os, re
 from collections import defaultdict
 import networkx as nx
 from lxml import etree as ET
 
 # Custom imports
 from src import sparql_biopaxQueries as query
+import src.commons as cm
+
+LOGGER = cm.logger()
 
 
 def addReactionToEntities(dictReaction, dictControl, dictPhysicalEntity):
@@ -590,7 +593,7 @@ def getTransitions(dictReaction, dictPhysicalEntity):
 			continue
 
 		else:
-			print("UNEXCEPTED REACTION: "+reaction, file=sys.stderr)
+			LOGGER.error("UNEXCEPTED REACTION: " + str(reaction))
 
 	return dictTransition
 
