@@ -128,21 +128,43 @@ def addControllersToReactions(dictReaction, dictControl):
 			if reaction in dictReaction:
 				dictReaction[reaction].controllers.add((physicalEntity,dictControl[control].controlType))
 
-def numerotateLocations(dictLocation):
-	"""This function creates an cadbiom ID for each location. It adds the key 'cadbiomId' to the dictionnary dictLocation[location].
 
-	:param dictLocation: the dictionnary of biopax reactions created by the function query.getLocations()
-	:type dictLocation: dict
+def numerotateLocations(dictLocation, full_compartment_name=False):
+	"""This function creates an cadbiom ID for each location.
+
+	..warning:: It adds the key 'cadbiomId' to the dict dictLocation[location].
+
+	:param dictLocation: Dictionnary of biopax reactions created by
+		query.getLocations().
+		keys: CellularLocationVocabulary uri; values: Location object
+	:param full_compartment_name: (optional) If True compartments will be
+		encoded on the base of their real names instead of numeric values.
+	:type dictLocation: <dict>
+	:type full_compartment_name: <bool>
 	:returns: idLocationToLocation
-	:rtype: dict
+		keys: numeric value; values: CellularLocationVocabulary uri
+	:rtype: <dict>
 	"""
+
+	def clean_name(name):
+		"""Clean name for correct cadbiom parsing."""
+
+		return re.sub('([^a-zA-Z0-9_])', '_', name)
+
+
 	idLocationToLocation = {}
 
-	currentId = 0
-	for location in sorted(dictLocation.keys()):
+	for currentId, location in enumerate(sorted(dictLocation.keys())):
+
+		# Encode compartments names
+		if full_compartment_name:
+			currentId = clean_name(dictLocation[location].name)
+
 		idLocationToLocation[str(currentId)] = location
+		# Update dictLocation with encoded id
 		dictLocation[location].cadbiomId = str(currentId)
-		currentId += 1
+
+	LOGGER.debug("Encoded locations:" + str(idLocationToLocation))
 
 	return idLocationToLocation
 
@@ -698,7 +720,7 @@ def main(params):
 		detectMembersUsedInEntities(dictPhysicalEntity, params['convertFullGraph'])
 		developComplexs(dictPhysicalEntity)
 		addControllersToReactions(dictReaction, dictControl)
-		idLocationToLocation = numerotateLocations(dictLocation)
+		idLocationToLocation = numerotateLocations(dictLocation, False)
 		cadbiomNameToPhysicalEntity = addCadbiomNameToEntities(dictPhysicalEntity, dictLocation)
 		addCadbiomSympyCondToReactions(dictReaction, dictPhysicalEntity)
 
