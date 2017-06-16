@@ -558,7 +558,7 @@ def getTransitions(dictReaction, dictPhysicalEntity):
 	for reaction in dictReaction:
 		typeName = dictReaction[reaction].reactiontype.rsplit("#", 1)[1]
 
-		if typeName in ["BiochemicalReaction", "ComplexAssembly", "Transport"]:
+		if typeName in ["BiochemicalReaction", "ComplexAssembly", "Transport", "TransportWithBiochemicalReaction"]:
 			#ATTENTION: que faire si 'leftComponents' ou bien 'rightComponents' sont vides ?
 			updateTransitions(reaction, dictPhysicalEntity, dictReaction, dictTransition)
 
@@ -573,14 +573,18 @@ def getTransitions(dictReaction, dictPhysicalEntity):
 
 		elif typeName == "TemplateReaction":
 			entityR = dictReaction[reaction].productComponent
-			cadbiomR = dictPhysicalEntity[entityR].cadbiomName
-			dictTransition[(cadbiomR+"_gene",cadbiomR)].append({
-				'event': dictReaction[reaction].event,
-				'reaction': reaction,
-				'sympyCond': dictReaction[reaction].cadbiomSympyCond
-			})
+			# Sometimes, there is no entityR
+			# ex: http://pathwaycommons.org/pc2/#TemplateReaction_3903f25156da4c9000a93bbc85b18572).
+			# It is a bug in BioPax.
+			if entityR != None:
+				cadbiomR = dictPhysicalEntity[entityR].cadbiomName
+				dictTransition[(cadbiomR+"_gene",cadbiomR)].append({
+					'event': dictReaction[reaction].event,
+					'reaction': reaction,
+					'sympyCond': dictReaction[reaction].cadbiomSympyCond
+				})
 
-		elif typeName == "Catalysis" or typeName == "Control":
+		elif typeName in ["Catalysis", "Control", "TemplateReactionRegulation"]:
 			continue
 
 		else:
