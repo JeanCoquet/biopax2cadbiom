@@ -30,7 +30,12 @@ class PhysicalEntity(object):
 		self.cadbiomName = set()
 		self.listOfFlatComponents = []
 		self.listOfCadbiomNames = []
-        
+
+	def __hash__(self):
+		"""Define object's unicity"""
+		return hash(self.idEntity)
+
+
 class Reaction(object):
 	"""
 	Class for reaction:
@@ -61,6 +66,11 @@ class Reaction(object):
 		self.cadbiomSympyCond = None
 		self.event = None
 
+	def __hash__(self):
+		"""Define object's unicity"""
+		return hash(self.idReaction)
+
+
 class Location(object):
 	"""
 	Class for Location:
@@ -78,6 +88,11 @@ class Location(object):
 		self.idRefs = set()
 		self.cadbiomId = None
 
+	def __hash__(self):
+		"""Define object's unicity"""
+		return hash(self.idLocation)
+
+
 class Control(object):
 	"""
 	Class for Control:
@@ -93,3 +108,7 @@ class Control(object):
 		self.controlType = controlType
 		self.reaction = reaction
 		self.controller = controller
+
+	def __hash__(self):
+		"""Define object's unicity"""
+		return hash(self.idControl)
