@@ -128,26 +128,42 @@ def developComplexEntity(complexEntity, dictPhysicalEntity):
 		dictPhysicalEntity[complexEntity].listOfFlatComponents = []
 		for elements in itertools.product(*listOfComponentsDevelopped):
 			l = []
-			for e in elements: 
+			for e in elements:
 				if isinstance(e, tuple): l += e
 				else: l.append(e)
 			dictPhysicalEntity[complexEntity].listOfFlatComponents.append(tuple(l))
 
 
 def addControllersToReactions(dictReaction, dictControl):
-	"""This procedure adds the key 'controllers' to the dictionnary dictReaction[reaction]. The value corresponds to a set of controller entities involved in reaction.
+	"""This procedure fills the attribute 'controllers' of Reaction objects.
 
-	:param dictReaction: the dictionnary of biopax reactions created by the function query.getReactions()
-	:param dictControl: the dictionnary of biopax controls created by the function query.getControls()
-	:type dictReaction: dict
-	:type dictControl: dict
+	.. note:: The value corresponds to a set of controller entities involved
+		in reaction.
+
+	:param dictReaction: Dictionnary of biopax reactions created,
+		by the function query.getReactions()
+	:param dictControl: Dictionnary of biopax controls created,
+		by the function query.getControls()
+	:type dictReaction: <dict <str>: <Reaction>>
+		keys: uris; values reaction objects
+	:type dictControl: <dict <str>: <Control>>
+		keys: uris; values control objects
 	"""
-	for control in dictControl:
-		reaction = dictControl[control].reaction
-		physicalEntity = dictControl[control].controller
-		if reaction != None and physicalEntity != None:
+
+	# Get control objects
+	for uri, control in dictControl.iteritems():
+		# uri reaction
+		reaction = control.reaction
+
+		# uris (reaction and controller)
+		# We don't want control with empty controller !
+		# TODO: filtrer /vérifier ça à la création de l'objet non ?
+		# TODO: pourquoi cette vérif ?
+		if reaction != None and control.controller != None:
+
 			if reaction in dictReaction:
-				dictReaction[reaction].controllers.add((physicalEntity,dictControl[control].controlType))
+				# update reaction object with control object
+				dictReaction[reaction].controllers.add(control)
 
 
 def numerotateLocations(dictLocation, full_compartment_name=False):
@@ -390,30 +406,39 @@ def getSetOfCadbiomPossibilities(entity, dictPhysicalEntity):
 
 
 def addCadbiomSympyCondToReactions(dictReaction, dictPhysicalEntity):
-	nbEvent = 1
-	for reaction in dictReaction:
-		controllers = dictReaction[reaction].controllers
+	"""TODO !
+
+	"""
+
+	# Begin event's numeration from 1
+	for event_number, (uri, reaction) in enumerate(dictReaction.iteritems(), 1):
 
 		cadbiomSympyCond = None
-		for entity, controlType in controllers:
-			cadbiomPossibilities = getSetOfCadbiomPossibilities(entity, dictPhysicalEntity)
-			if controlType == "ACTIVATION" :
+		# set of Control objects
+		for control in reaction.controllers:
+			cadbiomPossibilities = getSetOfCadbiomPossibilities(control.controller, dictPhysicalEntity)
+
+			if control.controlType == "ACTIVATION" :
 				subCadbiomSympyCond = sympy.Or(sympy.Symbol(cadbiomPossibilities.pop()))
 				for cadbiom in cadbiomPossibilities:
 					subCadbiomSympyCond = sympy.Or(subCadbiomSympyCond,sympy.Symbol(cadbiom))
-			elif controlType == "INHIBITION":
+
+			elif control.controlType == "INHIBITION":
 				subCadbiomSympyCond = sympy.Not(sympy.Symbol(cadbiomPossibilities.pop()))
 				for cadbiom in cadbiomPossibilities:
 					subCadbiomSympyCond = sympy.Or(subCadbiomSympyCond,sympy.Not(sympy.Symbol(cadbiom)))
 
-			if cadbiomSympyCond ==  None: cadbiomSympyCond = subCadbiomSympyCond
-			else: cadbiomSympyCond = sympy.And(cadbiomSympyCond, subCadbiomSympyCond)
+			if cadbiomSympyCond ==  None:
+				cadbiomSympyCond = subCadbiomSympyCond
+			else:
+				cadbiomSympyCond = sympy.And(cadbiomSympyCond, subCadbiomSympyCond)
 
-		if cadbiomSympyCond ==  None: dictReaction[reaction].cadbiomSympyCond = sympy.sympify(True)
-		else: dictReaction[reaction].cadbiomSympyCond = cadbiomSympyCond
+		if cadbiomSympyCond ==  None:
+			reaction.cadbiomSympyCond = sympy.sympify(True)
+		else:
+			reaction.cadbiomSympyCond = cadbiomSympyCond
 
-		dictReaction[reaction].event = "_h_"+str(nbEvent)
-		nbEvent += 1
+		reaction.event = "_h_" + str(event_number)
 
 
 def getListOfPossibilitiesAndCadbiomNames(entity, dictPhysicalEntity):
