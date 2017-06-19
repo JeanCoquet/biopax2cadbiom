@@ -169,6 +169,11 @@ def getLocations(listOfGraphUri):
 
 
 def getControls(listOfGraphUri):
+	"""
+
+	.. note: controlType is in (ACTIVATION, INHIBITION)
+	"""
+
 	dictControl = {}
 	query = """
 		SELECT DISTINCT ?control ?type ?controlType ?reaction ?controller

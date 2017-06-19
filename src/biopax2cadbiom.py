@@ -76,7 +76,7 @@ def developComplexs(dictPhysicalEntity):
 	"""
 	for entity in dictPhysicalEntity:
 		if dictPhysicalEntity[entity].entityType != set() :
-			typeName = dictPhysicalEntity[entity].entityType.rsplit("#", 1)[1]
+			typeName = dictPhysicalEntity[entity].entityType
 			if typeName == "Complex":
 				if len(dictPhysicalEntity[entity].listOfFlatComponents) == 0:
 					developComplexEntity(entity, dictPhysicalEntity)
@@ -93,7 +93,7 @@ def developComplexEntity(complexEntity, dictPhysicalEntity):
 	listOfComponentsDevelopped = list()
 	for component in dictPhysicalEntity[complexEntity].components:
 		if component in dictPhysicalEntity and dictPhysicalEntity[component].entityType != set() :
-			typeName = dictPhysicalEntity[component].entityType.rsplit("#", 1)[1]
+			typeName = dictPhysicalEntity[component].entityType
 			if typeName == "Complex":
 				if len(dictPhysicalEntity[component].listOfFlatComponents) == 0:
 					developComplexEntity(component, dictPhysicalEntity)
@@ -583,7 +583,8 @@ def getTransitions(dictReaction, dictPhysicalEntity):
 	dictTransition = defaultdict(list)
 
 	for reaction in dictReaction:
-		typeName = dictReaction[reaction].reactiontype.rsplit("#", 1)[1]
+
+		typeName = reaction.reactiontype
 
 		if typeName in ["BiochemicalReaction", "ComplexAssembly", "Transport", "TransportWithBiochemicalReaction"]:
 			#ATTENTION: que faire si 'leftComponents' ou bien 'rightComponents' sont vides ?

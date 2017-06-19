@@ -31,6 +31,14 @@ class PhysicalEntity(object):
 		self.listOfFlatComponents = []
 		self.listOfCadbiomNames = []
 
+	@property
+	def entityType(self):
+		return self._entityType
+
+	@entityType.setter
+	def entityType(self, value):
+		self._entityType = value.rsplit("#", 1)[1]
+
 	def __hash__(self):
 		"""Define object's unicity"""
 		return hash(self.idEntity)
@@ -65,6 +73,14 @@ class Reaction(object):
 		self.controllers = set()
 		self.cadbiomSympyCond = None
 		self.event = None
+
+	@property
+	def reactiontype(self):
+		return self._reactiontype
+
+	@reactiontype.setter
+	def reactiontype(self, value):
+		self._reactiontype = value.rsplit("#", 1)[1]
 
 	def __hash__(self):
 		"""Define object's unicity"""
@@ -101,6 +117,8 @@ class Control(object):
 			controlType
 			reaction
 			controller
+
+	.. note: controlType is in (ACTIVATION, INHIBITION)
 	"""
 	def __init__(self,idControl,classType,controlType,reaction,controller):
 		self.idControl = idControl
@@ -108,6 +126,15 @@ class Control(object):
 		self.controlType = controlType
 		self.reaction = reaction
 		self.controller = controller
+
+	@property
+	def controlType(self):
+		return self._controlType
+
+	@controlType.setter
+	def controlType(self, value):
+		assert value in ('ACTIVATION', 'INHIBITION')
+		self._controlType = value
 
 	def __hash__(self):
 		"""Define object's unicity"""
