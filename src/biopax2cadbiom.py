@@ -19,32 +19,53 @@ LOGGER = cm.logger()
 
 
 def addReactionToEntities(dictReaction, dictControl, dictPhysicalEntity):
-	"""This procedure adds the key 'reactions' to the dictionnary dictPhysicalEntity[entity]. The value corresponds to a set of reactions involving entity.
+	"""This procedure fills the attribute 'reactions' of PhysicalEntity objects.
 
-	:param dictReaction: the dictionnary of biopax reactions created by the function query.getReactions()
-	:param dictControl: the dictionnary of biopax controls created by the function query.getControls()
-	:param dictPhysicalEntity: the dictionnary of biopax physicalEntities created by the function query.getPhysicalEntities()
-	:type dictReaction: dict
-	:type dictControl: dict
-	:type dictPhysicalEntity: dict
+	.. note:: The value corresponds to a set of reactions involving entity.
+
+	.. note:: Supported roles in reactions are:
+		- productComponent
+		- participantComponent
+		- leftComponents
+		- rightComponents
+		- controller of
+
+	:param dictReaction: Dictionnary of biopax reactions,
+		created by the function query.getReactions()
+	:param dictControl: Dictionnary of biopax controls,
+		created by the function query.getControls()
+	:param dictPhysicalEntity: Dictionnary of biopax physicalEntities,
+		created by the function query.getPhysicalEntities()
+	:type dictReaction: <dict <str>: <Reaction>>
+		keys: uris; values reaction objects
+	:type dictControl: <dict <str>: <Control>>
+		keys: uris; values control objects
+	:type dictPhysicalEntity: <dict <str>: <PhysicalEntity>>
+		keys: uris; values entity objects
 	"""
-	for reaction in dictReaction:
-		if dictReaction[reaction].productComponent != None:
-			entity = dictReaction[reaction].productComponent
-			dictPhysicalEntity[entity].reactions.add(reaction)
-		if dictReaction[reaction].participantComponent != None:
-			entity = dictReaction[reaction].participantComponent
-			dictPhysicalEntity[entity].reactions.add(reaction)
-		for entity in dictReaction[reaction].leftComponents | dictReaction[reaction].rightComponents:
+
+	# Add reactions where each entity is involved
+	for uri, reaction in dictReaction.iteritems():
+		if reaction.productComponent != None:
+			entity = reaction.productComponent
 			dictPhysicalEntity[entity].reactions.add(reaction)
 
-	for control in dictControl:
+		if reaction.participantComponent != None:
+			entity = reaction.participantComponent
+			dictPhysicalEntity[entity].reactions.add(reaction)
+
+		for entity in reaction.leftComponents | reaction.rightComponents:
+			dictPhysicalEntity[entity].reactions.add(reaction)
+
+	# Add reactions controlled by each entity
+	for uri, control in dictControl.iteritems():
 		# Here, thanks to filter_control() we have only entities
-		entity = dictControl[control].controller
-		reaction = dictControl[control].reaction
-
-		if entity != None and reaction != None:
-			dictPhysicalEntity[entity].reactions.add(reaction)
+		# Each controller (control.controller) is an entity (not a pathway)
+		# So each entity controls a reaction
+		if control.controller != None and control.reaction != None:
+			dictPhysicalEntity[control.controller].reactions.add(
+				control.reaction
+			)
 
 
 def detectMembersUsedInEntities(dictPhysicalEntity, convertFullGraph):
