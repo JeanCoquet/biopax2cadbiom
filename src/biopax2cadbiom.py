@@ -584,7 +584,7 @@ def getTransitions(dictReaction, dictPhysicalEntity):
 
 	for reaction in dictReaction:
 
-		typeName = reaction.reactiontype
+		typeName = dictReaction[reaction].reactiontype
 
 		if typeName in ["BiochemicalReaction", "ComplexAssembly", "Transport", "TransportWithBiochemicalReaction"]:
 			#ATTENTION: que faire si 'leftComponents' ou bien 'rightComponents' sont vides ?
