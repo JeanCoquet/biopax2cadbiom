@@ -8,7 +8,7 @@ class PhysicalEntity(object):
 			entityRef
 		Optional
 			synonym (set)
-			component (set) 
+			component (set)
 			member (set)
 			idRef (set)
 			reactions (set)
@@ -56,7 +56,7 @@ class Reaction(object):
 			pathways (set)
 			leftcomponents
 			rightcomponents
-			controllers(set)
+			controllers (set)   => entities that control the reaction
 			cadbiomSympyCond
 			event
 	"""
@@ -114,9 +114,9 @@ class Control(object):
 	Class for Control:
 		Attributes
 			classType
-			controlType
-			reaction
-			controller
+			controlType	 => type of control (ACTIVATION or INHIBITION)
+			reaction		=> reaction controlled
+			controller	  => entity that controls the reaction
 
 	.. note: controlType is in (ACTIVATION, INHIBITION)
 	"""
