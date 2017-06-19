@@ -579,44 +579,75 @@ def updateTransitions(reaction, dictPhysicalEntity, dictReaction, dictTransition
 			})
 
 
+
 def getTransitions(dictReaction, dictPhysicalEntity):
+	"""
+
+	"""
+
+	def update_transitions(transitions, left_entity, right_entity, reaction):
+		""".. todo: Move this function and reuse it elsewhere.
+		"""
+
+		transitions[(left_entity, right_entity)].append(
+			{
+				'event': reaction.event,
+				'reaction': reaction.idReaction,
+				'sympyCond': reaction.cadbiomSympyCond
+			}
+		)
+
+
 	dictTransition = defaultdict(list)
 
-	for reaction in dictReaction:
+	for reaction_uri, reaction in dictReaction.iteritems():
 
 		typeName = reaction.reactiontype
 
-		if typeName in ["BiochemicalReaction", "ComplexAssembly", "Transport", "TransportWithBiochemicalReaction"]:
-			#ATTENTION: que faire si 'leftComponents' ou bien 'rightComponents' sont vides ?
-			updateTransitions(reaction, dictPhysicalEntity, dictReaction, dictTransition)
+		if typeName in ["BiochemicalReaction", "ComplexAssembly", "Transport",
+			"TransportWithBiochemicalReaction"]:
+			# ATTENTION: que faire si 'leftComponents'
+			# ou bien 'rightComponents' sont vides ?
+			# /!\ This modifies dictTransition in place
+			updateTransitions(
+				reaction_uri, dictPhysicalEntity, dictReaction, dictTransition
+			)
 
 		elif typeName == "Degradation":
-			for entityL in dictReaction[reaction].leftComponents: # Normally there is just one component
+			# Reaction of degradation = Suppression of entities
+			# Normally there is just one component
+			assert len(reaction.rightComponents) == 0, \
+				"The degradation reaction {}, contains an output entity" \
+				" (right) ! Please check this !".format(reaction_uri)
+
+			for entityL in reaction.leftComponents:
 				cadbiomL = dictPhysicalEntity[entityL].cadbiomName
-				dictTransition[(cadbiomL,"#TRASH")].append({
-					'event': dictReaction[reaction].event,
-					'reaction': reaction,
-					'sympyCond': dictReaction[reaction].cadbiomSympyCond
-				})
+
+				# /!\ This modifies dictTransition in place
+				update_transitions(
+					dictTransition, cadbiomL, "#TRASH", reaction
+				)
 
 		elif typeName == "TemplateReaction":
-			entityR = dictReaction[reaction].productComponent
+			# Reaction of transcription
+			# In Cadbiom language: Gene => product of gene
+			entityR = reaction.productComponent
 			# Sometimes, there is no entityR
 			# ex: http://pathwaycommons.org/pc2/#TemplateReaction_3903f25156da4c9000a93bbc85b18572).
 			# It is a bug in BioPax.
 			if entityR != None:
 				cadbiomR = dictPhysicalEntity[entityR].cadbiomName
-				dictTransition[(cadbiomR+"_gene",cadbiomR)].append({
-					'event': dictReaction[reaction].event,
-					'reaction': reaction,
-					'sympyCond': dictReaction[reaction].cadbiomSympyCond
-				})
+
+				# /!\ This modifies dictTransition in place
+				update_transitions(
+					dictTransition, cadbiomR + "_gene", cadbiomR, reaction
+				)
 
 		elif typeName in ["Catalysis", "Control", "TemplateReactionRegulation"]:
 			continue
 
 		else:
-			LOGGER.error("UNEXCEPTED REACTION: " + str(reaction))
+			LOGGER.error("UNEXCEPTED REACTION: " + str(reaction_uri))
 
 	return dictTransition
 
