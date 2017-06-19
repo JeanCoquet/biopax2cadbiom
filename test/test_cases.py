@@ -78,7 +78,8 @@ def t_model(feed_statement):
 			'convertFullGraph': True,
 			'listOfGraphUri': uris,
 			'pickleBackup': DIR_TEST_CASES + 'backup.p',
-			'testCasesDir': DIR_TEST_CASES
+			'testCasesDir': DIR_TEST_CASES,
+			'fullCompartmentsNames': True,
 		}
 
 		biopax2cadbiom.main(params)
