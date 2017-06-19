@@ -161,6 +161,7 @@ def addControllersToReactions(dictReaction, dictControl):
 		# TODO: pourquoi cette vérif ?
 		if reaction != None and control.controller != None:
 
+			# TODO: on fait quoi si cette uri n'est pas dans les réactions ??
 			if reaction in dictReaction:
 				# update reaction object with control object
 				dictReaction[reaction].controllers.add(control)
@@ -720,40 +721,88 @@ def formatEventAndCond(setOfEventAndCond):
 	else:
 		return "("+s+") default ("+formatEventAndCond(setOfEventAndCond)+")"
 
-def createCadbiomFile(dictTransition,
-					  dictPhysicalEntity,
-					  nameModel,
-					  filePath):
+
+def createCadbiomFile(dictTransition, dictPhysicalEntity, nameModel, filePath):
+	"""Export data into a cadbiom model file format.
+
+	:param arg1: Dictionnary of transitions and their respective set of events.
+	:param arg2: Dictionnary of biopax physicalEntities,
+		created by the function query.getPhysicalEntities()
+		.. example::
+			subDictTransition[(cadbiomL,right)].append({
+				'event': transition['event'],
+				'reaction': reaction,
+				'sympyCond': transitionSympyCond
+			}
+	:param arg3: Name of the model.
+	:param arg4: File path.
+	:type arg1: <dict <tuple <str>, <str>>: <list <dict>>>
+	:type arg2: <dict <str>: <PhysicalEntity>>
+		keys: uris; values entity objects
+	:type arg3: <str>
+	:type arg4: <str>
+	"""
+
+	# Header
 	model = ET.Element("model", xmlns="http://cadbiom", name=nameModel)
 
+	# Get all nodes
 	cadbiomNodes = set()
-	for cadbiomL,cadbiomR in dictTransition:
-		cadbiomNodes.add(cadbiomL)
-		cadbiomNodes.add(cadbiomR)
-		for transition in dictTransition[(cadbiomL,cadbiomR)]:
-			cadbiomNodes |= set([str(atom) for atom in transition['sympyCond'].atoms()])
+	for ori_ext_nodes, transitions in dictTransition.iteritems():
 
-	for cadbiomName in cadbiomNodes:
-		ET.SubElement(model, "CSimpleNode", name=cadbiomName, xloc="0.0", yloc="0.0")
+		# In transitions (ori/ext)
+		cadbiomNodes.update(ori_ext_nodes)
+		# In conditions
+		cadbiomNodes.update(
+			str(atom) for transition in transitions
+			for atom in transition['sympyCond'].atoms()
+		)
 
-	for cadbiomL,cadbiomR in dictTransition:
-		if len(dictTransition[(cadbiomL,cadbiomR)]) == 1:
-			transition = dictTransition[(cadbiomL,cadbiomR)][0]
-			ET.SubElement(
-				model, "transition",
-				ori=cadbiomL, ext=cadbiomR,
-				event=transition["event"], condition=formatCadbiomSympyCond(transition["sympyCond"]),
-				action="", fact_ids="[]").text = "reaction = "+transition["reaction"]
+	# Put these nodes in the model
+	# PS: why we don't do that in the following iteration of dictTransition ?
+	# Because the cadbiom model is parsed from the top to the end ><
+	# If nodes are at the end, the model will fail to be loaded...
+	# Awesome.
+	[ET.SubElement(model, "CSimpleNode",
+				   name=cadbiomName,
+				   xloc="0.0", yloc="0.0") for cadbiomName in cadbiomNodes]
+
+	############################################################################
+	# Anyway, next...
+	# Get all transitions
+	def write_transitions(ori_ext_nodes, event, condition, text):
+		"""
+		"""
+		left_entity, right_entity = ori_ext_nodes
+		ET.SubElement(
+			model, "transition",
+			ori=left_entity, ext=right_entity,
+			event=event,
+			condition=condition,
+			action="", fact_ids="[]"
+		).text = \
+			text
+
+	for ori_ext_nodes, transitions in dictTransition.iteritems():
+
+		if len(transitions) == 1:
+			transition = transitions[0]
+			write_transitions(
+				ori_ext_nodes, transition["event"],
+				formatCadbiomSympyCond(transition["sympyCond"]),
+				"reaction=" + transition["reaction"],
+			)
+
 		else:
-			setOfEventAndCond = set([])
-			for transition in dictTransition[(cadbiomL,cadbiomR)]:
-				setOfEventAndCond.add((transition["event"],transition["sympyCond"]))
-			eventAndCondStr = formatEventAndCond(setOfEventAndCond)
-			ET.SubElement(
-				model, "transition",
-				ori=cadbiomL, ext=cadbiomR,
-				event=eventAndCondStr, condition="",
-				action="", fact_ids="[]").text = "reaction = "+transition["reaction"]
+			events_conds = \
+				{tuple((transition["event"], transition["sympyCond"]))
+					for transition in transitions}
+
+			write_transitions(
+				ori_ext_nodes, formatEventAndCond(events_conds),
+				"",
+				"reaction=" #TODO: + transition["reaction"] # Many reactions here
+			)
 
 	tree = ET.ElementTree(model)
 	tree.write(filePath, pretty_print=True)
