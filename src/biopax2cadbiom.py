@@ -90,7 +90,7 @@ def detectMembersUsedInEntities(dictPhysicalEntity, convertFullGraph):
 
 # TODO: Test this function
 def developComplexs(dictPhysicalEntity):
-	"""This procedure adds the key 'listOfFlatComponents' to the dictionnary dictPhysicalEntity[entity]. The value corresponds to a list of component sets. 
+	"""This procedure adds the key 'listOfFlatComponents' to the dictionnary dictPhysicalEntity[entity]. The value corresponds to a list of component sets.
 
 	:param dictPhysicalEntity: the dictionnary of biopax physicalEntities created by the function query.getPhysicalEntities()
 	:type dictPhysicalEntity: dict
@@ -104,7 +104,7 @@ def developComplexs(dictPhysicalEntity):
 
 
 def developComplexEntity(complexEntity, dictPhysicalEntity):
-	"""This procedure fills the value of dictPhysicalEntity[entity]['listOfFlatComponents']. 
+	"""This procedure fills the value of dictPhysicalEntity[entity]['listOfFlatComponents'].
 
 	:param complexEntity: the biopax id of a complex entity
 	:param dictPhysicalEntity: the dictionnary of biopax physicalEntities created by the function query.getPhysicalEntities()
@@ -171,7 +171,7 @@ def numerotateLocations(dictLocation, full_compartment_name=False):
 
 	..warning:: It adds the key 'cadbiomId' to the dict dictLocation[location].
 
-	:param dictLocation: Dictionnary of biopax reactions created by
+	:param dictLocation: Dictionnary of biopax locations created by
 		query.getLocations().
 		keys: CellularLocationVocabulary uri; values: Location object
 	:param full_compartment_name: (optional) If True compartments will be
@@ -502,7 +502,7 @@ def getProductCadbiomsMatched(entities, entityToListOfEquivalentsAndCadbiomName,
 def getEntityNameUnmatched(entities, entityToEntitiesMatched, dictPhysicalEntity):
 	nameUnmatched = set()
 	for entity in entities:
-		if entityToEntitiesMatched[entity] == set(): 
+		if entityToEntitiesMatched[entity] == set():
 			nameUnmatched.add(dictPhysicalEntity[entity].cadbiomName)
 	return nameUnmatched
 
@@ -583,7 +583,7 @@ def updateTransitions(reaction, dictPhysicalEntity, dictReaction, dictTransition
 					subH += 1
 
 		for entityR in rightEntities:
-			if entityToEntitiesMatched[entityR] == set(): 
+			if entityToEntitiesMatched[entityR] == set():
 				nameEntityR = dictPhysicalEntity[entityR].cadbiomName
 				for subEquis,subCadbiom in entityToListOfEquivalentsAndCadbiomName[entityR]:
 					transitionSympyCond = dictReaction[reaction].cadbiomSympyCond
@@ -597,7 +597,7 @@ def updateTransitions(reaction, dictPhysicalEntity, dictReaction, dictTransition
 
 		currentKeys = list(subDictTransition.keys())
 		for entityL in leftEntities:
-			if entityToEntitiesMatched[entityL] == set(): 
+			if entityToEntitiesMatched[entityL] == set():
 				for equisL,cadbiomL in entityToListOfEquivalentsAndCadbiomName[entityL]:
 					for left,right in currentKeys:
 						for transition in subDictTransition[(left,right)]:
@@ -722,7 +722,6 @@ def formatEventAndCond(setOfEventAndCond):
 
 def createCadbiomFile(dictTransition,
 					  dictPhysicalEntity,
-					  dictReaction,
 					  nameModel,
 					  filePath):
 	model = ET.Element("model", xmlns="http://cadbiom", name=nameModel)
@@ -761,7 +760,7 @@ def createCadbiomFile(dictTransition,
 
 
 def filter_control(controls, pathways_names):
-	"""Remove pathaways from controls and keep others (entities + ?).
+	"""Remove pathways from controls and keep others (entities + ?).
 
 	We want ONLY entities and by default there are pathways + entities.
 
@@ -786,7 +785,7 @@ def main(params):
 		dictPhysicalEntity = query.getPhysicalEntities(params['listOfGraphUri'])
 		dictReaction	   = query.getReactions(params['listOfGraphUri'])
 		dictLocation	   = query.getLocations(params['listOfGraphUri'])
-		dictPathwayName	= query.getPathways(params['listOfGraphUri'])
+		dictPathwayName = query.getPathways(params['listOfGraphUri'])
 		dictControl = \
 			filter_control(
 				query.getControls(params['listOfGraphUri']),
@@ -821,7 +820,6 @@ def main(params):
 	createCadbiomFile(
 		dictTransition,
 		dictPhysicalEntity,
-		dictReaction,
 		cadbiomModelName,
 		params['cadbiomFile']
 	)
