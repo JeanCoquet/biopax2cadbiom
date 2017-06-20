@@ -107,17 +107,21 @@ def detectMembersUsedInEntities(dictPhysicalEntity, convertFullGraph=False):
 
 # TODO: Test this function
 def developComplexs(dictPhysicalEntity):
-	"""This procedure adds the key 'listOfFlatComponents' to the dictionnary dictPhysicalEntity[entity]. The value corresponds to a list of component sets.
+	"""Set the attribute 'listOfFlatComponents' of entities in the dict dictPhysicalEntity.
 
-	:param dictPhysicalEntity: the dictionnary of biopax physicalEntities created by the function query.getPhysicalEntities()
-	:type dictPhysicalEntity: dict
+	.. note:: The value corresponds to a list of component sets.
+
+	:param dictPhysicalEntity: Dictionnary of biopax physicalEntities,
+		created by the function query.getPhysicalEntities()
+	:type dictPhysicalEntity: <dict <str>: <PhysicalEntity>>
+		keys: uris; values entity objects
 	"""
-	for entity in dictPhysicalEntity:
-		if dictPhysicalEntity[entity].entityType != set() :
-			typeName = dictPhysicalEntity[entity].entityType
-			if typeName == "Complex":
-				if len(dictPhysicalEntity[entity].listOfFlatComponents) == 0:
-					developComplexEntity(entity, dictPhysicalEntity)
+
+	# /!\ dictPhysicalEntity will be modified in place
+	[developComplexEntity(entity_uri, dictPhysicalEntity)
+		for entity_uri, entity in dictPhysicalEntity.iteritems()
+			if (entity.entityType == "Complex") and \
+				(len(entity.listOfFlatComponents) == 0)]
 
 
 def developComplexEntity(complexEntity, dictPhysicalEntity):
