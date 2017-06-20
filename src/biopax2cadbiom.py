@@ -68,24 +68,41 @@ def addReactionToEntities(dictReaction, dictControl, dictPhysicalEntity):
 			)
 
 
-def detectMembersUsedInEntities(dictPhysicalEntity, convertFullGraph):
-	"""This procedure adds the key 'membersUsed' to the dictionnary dictPhysicalEntity[entity]. The value is False if the entity does not have members or if at least one member is involved in a reaction, eles the value is True.
+def detectMembersUsedInEntities(dictPhysicalEntity, convertFullGraph=False):
+	"""Set the attribute 'membersUsed' of entities in the dict dictPhysicalEntity.
 
-	:param dictPhysicalEntity: the dictionnary of biopax physicalEntities created by the function query.getPhysicalEntities()
-	:param convertFullGraph: convert all entities to cadbiom node, even the entities not used
-	:type dictPhysicalEntity: dict
-	:type convertFullGraph: boolean
+	.. note:: The value is False if the entity does not have members;
+		if at least one member is involved in a reaction the value is True.
+
+	:param dictPhysicalEntity: Dictionnary of biopax physicalEntities,
+		created by the function query.getPhysicalEntities()
+	:param convertFullGraph: (optional) Convert all entities to cadbiom node,
+		even the entities that are not used elsewhere.
+	:type dictPhysicalEntity: <dict <str>: <PhysicalEntity>>
+		keys: uris; values entity objects
+	:type convertFullGraph: <bool>
 	"""
-	for entity in dictPhysicalEntity:
+
+	for entity in dictPhysicalEntity.itervalues():
+		entity.membersUsed = convertFullGraph
+
 		if convertFullGraph:
-			dictPhysicalEntity[entity].membersUsed = True
-		else:
-			dictPhysicalEntity[entity].membersUsed = False
-			for subEntity in dictPhysicalEntity[entity].members:
-				if subEntity in dictPhysicalEntity: # IL PEUT Y AVOIR DES ENTITY NON REFERENCEE (EX: http://www.reactome.org/biopax/60/48887#Complex5918)
-					if len(dictPhysicalEntity[subEntity].reactions) != 0:
-						dictPhysicalEntity[entity].membersUsed = True
-					break
+			continue
+
+		# convertFullGraph is False:
+		# Try to detect if members of the current entity
+		# are used elsewhere in the model.
+		# ie: if members of the complex are used in almost 1 reaction
+		for subEntity in entity.members:
+			# TODO: IL PEUT Y AVOIR DES ENTITY NON REFERENCEE
+			# todo: grave ? on en fait quoi ??
+			# EX: http://www.reactome.org/biopax/60/48887#Complex5918
+			if (subEntity in dictPhysicalEntity) and \
+				len(dictPhysicalEntity[subEntity].reactions) != 0:
+				# The complex will be "deconstructed" because
+				# it is not elementary.
+				entity.membersUsed = True
+				break
 
 
 # TODO: Test this function
