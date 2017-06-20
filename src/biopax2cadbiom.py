@@ -19,7 +19,7 @@ LOGGER = cm.logger()
 
 
 def addReactionToEntities(dictReaction, dictControl, dictPhysicalEntity):
-	"""This procedure fills the attribute 'reactions' of PhysicalEntity objects.
+	"""Fill the attribute 'reactions' of PhysicalEntity objects.
 
 	.. note:: The value corresponds to a set of reactions involving entity.
 
@@ -152,7 +152,7 @@ def developComplexEntity(complexEntity, dictPhysicalEntity):
 
 
 def addControllersToReactions(dictReaction, dictControl):
-	"""This procedure fills the attribute 'controllers' of Reaction objects.
+	"""Fill the attribute 'controllers' of Reaction objects.
 
 	.. note:: The value corresponds to a set of controller entities involved
 		in reaction.
@@ -185,7 +185,7 @@ def addControllersToReactions(dictReaction, dictControl):
 
 
 def numerotateLocations(dictLocation, full_compartment_name=False):
-	"""This function creates an cadbiom ID for each location.
+	"""Create an cadbiom ID for each location.
 
 	..warning:: It adds the key 'cadbiomId' to the dict dictLocation[location].
 
@@ -754,29 +754,26 @@ def main(params):
 		detectMembersUsedInEntities(dictPhysicalEntity, params['convertFullGraph'])
 		developComplexs(dictPhysicalEntity)
 		addControllersToReactions(dictReaction, dictControl)
-		idLocationToLocation = numerotateLocations(dictLocation, params['fullCompartmentsNames'])
-		cadbiomNameToPhysicalEntity = addCadbiomNameToEntities(dictPhysicalEntity, dictLocation)
+		numerotateLocations(dictLocation, params['fullCompartmentsNames'])
+		addCadbiomNameToEntities(dictPhysicalEntity, dictLocation)
 		addCadbiomSympyCondToReactions(dictReaction, dictPhysicalEntity)
 
 		dill.dump(
 			[
 				dictPhysicalEntity, dictReaction, dictControl, dictLocation,
-				idLocationToLocation, cadbiomNameToPhysicalEntity
 			],
 			open(params['pickleBackup'], "wb")
 		)
 
 	else:
-		dictPhysicalEntity, dictReaction, dictControl, \
-		dictLocation, idLocationToLocation, cadbiomNameToPhysicalEntity \
-			= dill.load(open(params['pickleBackup'], "rb"))
+		dictPhysicalEntity, dictReaction, dictControl, dictLocation = \
+			dill.load(open(params['pickleBackup'], "rb"))
 
 	dictTransition = getTransitions(dictReaction, dictPhysicalEntity)
 
-	cadbiomModelName = params['cadbiomFile'].rsplit('/',1)[-1].rsplit('.',1)[0]
 	createCadbiomFile(
 		dictTransition,
 		dictPhysicalEntity,
-		cadbiomModelName,
-		params['cadbiomFile']
+		params['cadbiomFile'].rsplit('/', 1)[-1].rsplit('.', 1)[0], # model name
+		params['cadbiomFile'] # path
 	)
