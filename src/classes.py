@@ -8,12 +8,14 @@ class PhysicalEntity(object):
 			entityRef
 		Optional
 			synonym (set)
-			component (set)
-			member (set)
-			idRef (set)
+			components (set)
+			members (set)
+			idRefs (set)
 			reactions (set)
-			membersUsed(bool)
+			membersUsed (bool)
 			cadbiomName (set)
+			listOfFlatComponents (list)
+			listOfCadbiomNames (list)
 	"""
 	def __init__(self,idEntity,name,location,entityType,entityRef):
 		self.idEntity = idEntity
@@ -114,9 +116,9 @@ class Control(object):
 	Class for Control:
 		Attributes
 			classType
-			controlType	 => type of control (ACTIVATION or INHIBITION)
+			controlType  => type of control (ACTIVATION or INHIBITION)
 			reaction		=> reaction controlled
-			controller	  => entity that controls the reaction
+			controller	=> entity that controls the reaction
 
 	.. note: controlType is in (ACTIVATION, INHIBITION)
 	"""
