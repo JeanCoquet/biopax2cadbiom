@@ -6,7 +6,8 @@ This module is used to translate biopax to a cadbiom model
 from __future__ import print_function
 
 # Standard imports
-import itertools, copy, dill, sympy, os, re
+import copy, dill, sympy, os, re
+import itertools as it
 from collections import defaultdict
 import networkx as nx
 
@@ -284,11 +285,11 @@ def createGraphOfInteractionsBetweenPathways(pathwayToName, pathwayToSuperPathwa
 		cadbiomLToPathways[cadbiomL] = pathways
 		cadbiomRToPathways[cadbiomR] = pathways
 
-	for cadbiomL,cadbiomR in itertools.product(cadbiomLToPathways.keys(),cadbiomRToPathways.keys()):
+	for cadbiomL,cadbiomR in it.product(cadbiomLToPathways.keys(),cadbiomRToPathways.keys()):
 		if cadbiomL == cadbiomR:
 			specificPathwaysR = cadbiomRToPathways[cadbiomR]-cadbiomLToPathways[cadbiomL]
 			specificPathwaysL = cadbiomLToPathways[cadbiomL]-cadbiomRToPathways[cadbiomR]
-			for pathwayR,pathwayL in itertools.product(specificPathwaysR,specificPathwaysL):
+			for pathwayR,pathwayL in it.product(specificPathwaysR,specificPathwaysL):
 				if not G.has_edge(pathwayR,pathwayL):
 					G.add_edge(pathwayR, pathwayL, Type='Sharing of cadbiom nodes')
 
@@ -506,7 +507,7 @@ def getProductCadbioms(entities, entityToListOfEquivalentsAndCadbiomName):
 			cadbioms.append(cadbiom)
 		listOfCadbioms.append(cadbioms)
 
-	return itertools.product(*listOfCadbioms)
+	return it.product(*listOfCadbioms)
 
 
 def getProductCadbiomsMatched(entities, entityToListOfEquivalentsAndCadbiomName, entityToEntitiesMatched):
@@ -518,7 +519,7 @@ def getProductCadbiomsMatched(entities, entityToListOfEquivalentsAndCadbiomName,
 				cadbioms.append(cadbiom)
 			listOfCadbioms.append(cadbioms)
 
-	return itertools.product(*listOfCadbioms)
+	return it.product(*listOfCadbioms)
 
 
 def getEntityNameUnmatched(entities, entityToEntitiesMatched, dictPhysicalEntity):
@@ -540,7 +541,7 @@ def updateTransitions(reaction, dictPhysicalEntity, dictReaction, dictTransition
 	cadbiomToCadbiomsMatched = defaultdict(set)
 	entityToEntitiesMatched = defaultdict(set)
 	match = False
-	for entity1, entity2 in itertools.combinations(entityToListOfEquivalentsAndCadbiomName.keys(),2):
+	for entity1, entity2 in it.combinations(entityToListOfEquivalentsAndCadbiomName.keys(),2):
 		for equis1,cadbiom1 in entityToListOfEquivalentsAndCadbiomName[entity1]:
 			for equis2,cadbiom2 in entityToListOfEquivalentsAndCadbiomName[entity2]:
 				if refInCommon(equis1, equis2, dictPhysicalEntity):
@@ -562,7 +563,7 @@ def updateTransitions(reaction, dictPhysicalEntity, dictReaction, dictTransition
 	if not match or not presenceOfMembers:
 		for productCadbiomsL in getProductCadbioms(leftEntities, entityToListOfEquivalentsAndCadbiomName):
 			for productCadbiomsR in getProductCadbioms(rightEntities, entityToListOfEquivalentsAndCadbiomName):
-				for cadbiomL, cadbiomR in itertools.product(productCadbiomsL,productCadbiomsR):
+				for cadbiomL, cadbiomR in it.product(productCadbiomsL,productCadbiomsR):
 					transitionSympyCond = dictReaction[reaction].cadbiomSympyCond
 					for otherCadbiomL in set(productCadbiomsL)-set([cadbiomL]):
 						sympySymbol = sympy.Symbol(otherCadbiomL)
@@ -591,7 +592,7 @@ def updateTransitions(reaction, dictPhysicalEntity, dictReaction, dictTransition
 				if isValidTransition:
 					cadbiomsR = set(productCadbiomsR)|getEntityNameUnmatched(rightEntities, entityToEntitiesMatched, dictPhysicalEntity)
 
-					for cadbiomL, cadbiomR in itertools.product(productCadbiomsL,cadbiomsR):
+					for cadbiomL, cadbiomR in it.product(productCadbiomsL,cadbiomsR):
 						transitionSympyCond = dictReaction[reaction].cadbiomSympyCond
 						for otherCadbiomL in set(productCadbiomsL)-set([cadbiomL]):
 							sympySymbol = sympy.Symbol(otherCadbiomL)
