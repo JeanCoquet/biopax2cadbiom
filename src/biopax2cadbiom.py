@@ -518,7 +518,7 @@ def getListOfPossibilitiesAndCadbiomNames(entity, dictPhysicalEntity):
 
 
 def refInCommon(entities1, entities2, dictPhysicalEntity):
-	if len(set(entities1)&set(entities2)) > 0 : return True
+	if set(entities1)<=set(entities2) or set(entities1)>=set(entities2): return True
 
 	entityRefs1 = set()
 	for entity in entities1:
@@ -530,8 +530,10 @@ def refInCommon(entities1, entities2, dictPhysicalEntity):
 		entityRef = dictPhysicalEntity[entity].entityRef
 		if entityRef != None and entityRef != set():
 			entityRefs2.add(entityRef)
-
-	return (len(entityRefs1&entityRefs2) > 0)
+	
+	if entityRefs1 == set() or entityRefs2 == set():
+		return False
+	return set(entityRefs1)<=set(entityRefs2) or set(entityRefs1)>=set(entityRefs2)
 
 
 def getProductCadbioms(entities, entityToListOfEquivalentsAndCadbiomName):
@@ -588,7 +590,7 @@ def updateTransitions(reaction, dictPhysicalEntity, dictReaction, dictTransition
 
 	presenceOfMembers = False
 	for entity in leftEntities|rightEntities:
-		if len(dictPhysicalEntity[entity].members) > 1 and dictPhysicalEntity[entity].membersUsed:
+		if len(dictPhysicalEntity[entity].listOfFlatComponents) > 1 or (len(dictPhysicalEntity[entity].members) > 1 and dictPhysicalEntity[entity].membersUsed):
 			presenceOfMembers = True
 			break
 
@@ -706,7 +708,7 @@ def getTransitions(dictReaction, dictPhysicalEntity):
 
 	for reaction_uri, reaction in dictReaction.iteritems():
 
-		typeName = reaction.reactiontype
+		typeName = dictReaction[reaction_uri].reactiontype
 
 		if typeName in ["BiochemicalReaction", "ComplexAssembly", "Transport",
 			"TransportWithBiochemicalReaction"]:
