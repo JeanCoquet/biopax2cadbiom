@@ -48,15 +48,15 @@ def addReactionToEntities(dictReaction, dictControl, dictPhysicalEntity):
 	# Add reactions where each entity is involved
 	for uri, reaction in dictReaction.iteritems():
 		if reaction.productComponent != None:
-			entity = reaction.productComponent
-			dictPhysicalEntity[entity].reactions.add(reaction)
+			entity_uri = reaction.productComponent
+			dictPhysicalEntity[entity_uri].reactions.add(reaction)
 
 		if reaction.participantComponent != None:
-			entity = reaction.participantComponent
-			dictPhysicalEntity[entity].reactions.add(reaction)
+			entity_uri = reaction.participantComponent
+			dictPhysicalEntity[entity_uri].reactions.add(reaction)
 
-		for entity in reaction.leftComponents | reaction.rightComponents:
-			dictPhysicalEntity[entity].reactions.add(reaction)
+		for entity_uri in reaction.leftComponents | reaction.rightComponents:
+			dictPhysicalEntity[entity_uri].reactions.add(reaction)
 
 	# Add reactions controlled by each entity
 	for uri, control in dictControl.iteritems():
@@ -202,7 +202,7 @@ def numerotateLocations(dictLocation, full_compartment_name=False):
 	:type dictLocation: <dict>
 	:type full_compartment_name: <bool>
 	:returns: idLocationToLocation
-		keys: numeric value; values: CellularLocationVocabulary uri
+		keys: numeric value; values: Location object
 	:rtype: <dict>
 	"""
 
@@ -214,15 +214,17 @@ def numerotateLocations(dictLocation, full_compartment_name=False):
 
 	idLocationToLocation = {}
 
-	for currentId, location in enumerate(sorted(dictLocation.keys())):
+	for currentId, location_uri in enumerate(sorted(dictLocation.keys())):
+
+		location = dictLocation[location_uri]
 
 		# Encode compartments names
 		if full_compartment_name:
-			currentId = clean_name(dictLocation[location].name)
+			currentId = clean_name(location.name)
 
 		idLocationToLocation[str(currentId)] = location
 		# Update dictLocation with encoded id
-		dictLocation[location].cadbiomId = str(currentId)
+		location.cadbiomId = str(currentId)
 
 	LOGGER.debug("Encoded locations:" + str(idLocationToLocation))
 
