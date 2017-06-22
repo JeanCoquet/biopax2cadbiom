@@ -37,14 +37,14 @@ def createCadbiomFile(dictTransition, dictPhysicalEntity, nameModel, filePath):
 	"""Export data into a cadbiom model file format.
 
 	:param arg1: Dictionnary of transitions and their respective set of events.
-	:param arg2: Dictionnary of biopax physicalEntities,
-		created by the function query.getPhysicalEntities()
 		.. example::
 			subDictTransition[(cadbiomL,right)].append({
 				'event': transition['event'],
 				'reaction': reaction,
 				'sympyCond': transitionSympyCond
 			}
+	:param arg2: Dictionnary of biopax physicalEntities,
+		created by the function query.getPhysicalEntities()
 	:param arg3: Name of the model.
 	:param arg4: File path.
 	:type arg1: <dict <tuple <str>, <str>>: <list <dict>>>

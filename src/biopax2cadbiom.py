@@ -148,7 +148,7 @@ def developComplexEntity(complexEntity, dictPhysicalEntity):
 
 	if len(listOfComponentsDevelopped) != 0:
 		dictPhysicalEntity[complexEntity].listOfFlatComponents = []
-		for elements in itertools.product(*listOfComponentsDevelopped):
+		for elements in it.product(*listOfComponentsDevelopped):
 			l = []
 			for e in elements:
 				if isinstance(e, tuple): l += e
@@ -373,6 +373,8 @@ def findUniqueSynonym(entities, dictPhysicalEntity):
 	"""create the dictionnary entityToUniqueSynonym from a
 	set of entities having the same name.
 
+	.. todo:: COMMENTAIRES !
+
 	:param entities: a set set of entities having the same name
 	:param dictPhysicalEntity: Dictionnary of biopax physicalEntities,
 		created by the function query.getPhysicalEntities()
@@ -420,12 +422,15 @@ def findUniqueSynonym(entities, dictPhysicalEntity):
 def getCadbiomName(entity, dictLocation, synonym=None):
 	"""Get entity name formatted for Cadbiom.
 
-	:param arg1:
-	:param arg2:
-	:param arg3:
-	:type arg1:
-	:type arg2:
-	:type arg3:
+	:param arg1: PhysicalEntity for which the name will be encoded.
+	:param arg2: Dictionnary of biopax locations created by
+		query.getLocations().
+		keys: CellularLocationVocabulary uri; values: Location object
+	:param arg3: (Optional) Synonym that will be used instead of the name
+		of the given entity.
+	:type arg1: <PhysicalEntity>
+	:type arg2: <dict>
+	:type arg3: <str>
 	:return: Encoded name with location if it exists.
 	:rtype: <str>
 	"""
@@ -530,7 +535,7 @@ def refInCommon(entities1, entities2, dictPhysicalEntity):
 		entityRef = dictPhysicalEntity[entity].entityRef
 		if entityRef != None and entityRef != set():
 			entityRefs2.add(entityRef)
-	
+
 	if entityRefs1 == set() or entityRefs2 == set():
 		return False
 	return set(entityRefs1)<=set(entityRefs2) or set(entityRefs1)>=set(entityRefs2)
@@ -687,8 +692,24 @@ def updateTransitions(reaction, dictPhysicalEntity, dictReaction, dictTransition
 
 
 def getTransitions(dictReaction, dictPhysicalEntity):
-	"""
+	"""Return transitions with (ori/ext nodes) and their respective events.
 
+	:param dictReaction: Dictionnary of biopax reactions,
+		created by the function query.getReactions()
+	:param dictPhysicalEntity: Dictionnary of biopax physicalEntities,
+		created by the function query.getPhysicalEntities()
+	:type dictReaction: <dict <str>: <Reaction>>
+		keys: uris; values reaction objects
+	:type dictPhysicalEntity: <dict <str>: <PhysicalEntity>>
+		keys: uris; values entity objects
+	:return: Dictionnary of transitions and their respective set of events.
+		.. example::
+			subDictTransition[(cadbiomL,right)].append({
+				'event': transition['event'],
+				'reaction': reaction,
+				'sympyCond': transitionSympyCond
+			}
+	:rtype: <dict <tuple <str>, <str>>: <list <dict>>>
 	"""
 
 	def update_transitions(transitions, left_entity, right_entity, reaction):
