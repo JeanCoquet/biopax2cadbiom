@@ -299,96 +299,133 @@ def createGraphOfInteractionsBetweenPathways(pathwayToName, pathwayToSuperPathwa
 
 
 def addCadbiomNameToEntities(dictPhysicalEntity, dictLocation):
-	"""This function creates the dictionnary cadbiomNameToPhysicalEntity, it adds the keys 'cadbiomName' and 'listOfCadbiomNames' to the dictionnary dictPhysicalEntity[entity].
-	The value of dictPhysicalEntity[entity]['cadbiomName'] corresponds to an unique cadbiom ID for the entity.
-	The value of dictPhysicalEntity[entity]['listOfCadbiomNames'] corresponds to a list if unique cadbiom IDs. Each member of the list is a unique cadbiom ID of each set of dictPhysicalEntity[entity]['listOfFlatComponents'].
+	"""Creates the dictionnary cadbiomNameToPhysicalEntity,
+	it adds the keys 'cadbiomName' and 'listOfCadbiomNames'
+	to entities in dictPhysicalEntity.
 
+	.. note:: The attribute 'cadbiomName' corresponds to an unique
+		cadbiom ID for the entity.
 
-	:param dictPhysicalEntity: the dictionnary of biopax physicalEntities created by the function query.getPhysicalEntities()
-	:param dictLocation: the dictionnary of biopax reactions created by the function query.getLocations()
-	:type dictPhysicalEntity: dict
-	:type dictLocation: dict
-	:returns: cadbiomNameToPhysicalEntity
-	:rtype: dict
+	.. note:: The attribute 'listOfCadbiomNames' corresponds to a list
+		of unique cadbiom IDs.
+		Each member of the list is a unique cadbiom ID of each
+		subcomponent in the attribute 'listOfFlatComponents'.
+
+	:param dictPhysicalEntity: Dictionnary of biopax physicalEntities,
+		created by the function query.getPhysicalEntities()
+	:param dictLocation: Dictionnary of biopax locations created by
+		query.getLocations().
+		keys: CellularLocationVocabulary uri; values: Location object
+	:type dictPhysicalEntity: <dict <str>: <PhysicalEntity>>
+		keys: uris; values entity objects
+	:type dictLocation: <dict>
 	"""
-	cadbiomNameToPhysicalEntities = defaultdict(set)
 
-	for entity in dictPhysicalEntity:
-		cadbiomName = getCadbiomName(entity, dictPhysicalEntity, dictLocation)
-		cadbiomNameToPhysicalEntities[cadbiomName].add(entity)
+	# Get all names and entities for them
+	entities_names = defaultdict(set)
+	for uri, entity in dictPhysicalEntity.iteritems():
+		cadbiomName = getCadbiomName(entity, dictLocation)
+		entities_names[cadbiomName].add(entity)
 
-	cadbiomNameToPhysicalEntity = {}
-	for cadbiomName in cadbiomNameToPhysicalEntities:
-		if len(cadbiomNameToPhysicalEntities[cadbiomName]) == 1:
-			entity = cadbiomNameToPhysicalEntities[cadbiomName].pop()
-			cadbiomNameToPhysicalEntity[cadbiomName] = entity
-			dictPhysicalEntity[entity].cadbiomName = cadbiomName
+	# Key: name, value: entities using this name
+	for cadbiom_name, entities in entities_names.iteritems():
+		# test findunique directement ici ?
+		if len(entities) == 1:
+			# This name is used only 1 time
+			next(iter(entities)).cadbiomName = cadbiom_name
 		else:
-			entities = cadbiomNameToPhysicalEntities[cadbiomName]
-			entityToUniqueSynonym = findUniqueSynonym(entities, dictPhysicalEntity)
+			# This name is used by many entities.
+			# We decide to replace it by a uniq name for each entity
+			# Key: uri, value: uniq name
+			uniq_synonyms = findUniqueSynonym(
+				{entity.idEntity for entity in entities},
+				dictPhysicalEntity,
+			)
+
+			# Set synonyms found to each entity and
+			# convert them according to cadbiom rules
 			for entity in entities:
-				cadbiomName = getCadbiomName(entity, dictPhysicalEntity, dictLocation, synonym=entityToUniqueSynonym[entity])
-				cadbiomNameToPhysicalEntity[cadbiomName] = entity
-				dictPhysicalEntity[entity].cadbiomName = cadbiomName
+				cadbiomName = getCadbiomName(
+					entity,
+					dictLocation,
+					synonym=uniq_synonyms[entity.idEntity]
+				)
+				entity.cadbiomName = cadbiomName
 
-	for entity in dictPhysicalEntity:
-		dictPhysicalEntity[entity].listOfCadbiomNames = []
-		if len(dictPhysicalEntity[entity].listOfFlatComponents) == 1:
-			dictPhysicalEntity[entity].listOfCadbiomNames.append(dictPhysicalEntity[entity].cadbiomName)
+	# Attribution of names for complex/classes with subentities
+	for uri, entity in dictPhysicalEntity.iteritems():
+		if len(entity.listOfFlatComponents) == 1:
+			# 1 sub component:
+			# listOfCadbiomNames will contain the parent's name
+			entity.listOfCadbiomNames.append(entity.cadbiomName)
 		else:
-			for flatComponents in dictPhysicalEntity[entity].listOfFlatComponents:
-				s = "_".join([dictPhysicalEntity[subEntity].cadbiomName for subEntity in flatComponents])
-				dictPhysicalEntity[entity].listOfCadbiomNames.append(s)
-	return cadbiomNameToPhysicalEntity
+			# Many sub components
+			# listOfFlatComponents will contain a list of subcomponent's names
+			for flatComponents in entity.listOfFlatComponents:
+				s = "_".join(
+					[dictPhysicalEntity[subEntity].cadbiomName
+						for subEntity in flatComponents]
+				)
+				entity.listOfCadbiomNames.append(s)
 
 
 def findUniqueSynonym(entities, dictPhysicalEntity):
-	"""This function creates the dictionnary entityToUniqueSynonym from a set of entities having the same name.
+	"""create the dictionnary entityToUniqueSynonym from a
+	set of entities having the same name.
 
 	:param entities: a set set of entities having the same name
-	:param dictPhysicalEntity: the dictionnary of biopax reactions created by the function query.getPhysicalEntities()
+	:param dictPhysicalEntity: Dictionnary of biopax physicalEntities,
+		created by the function query.getPhysicalEntities()
 	:type entities: set
-	:type dictPhysicalEntity: dict
+	:type dictPhysicalEntity: <dict <str>: <PhysicalEntity>>
+		keys: uris; values entity objects
 	:returns: entityToUniqueSynonym
 	:rtype: dict
 	"""
+
 	entityToUniqueSynonym = {}
 
 	while len(entities) != len(entityToUniqueSynonym):
 		entityToUniqueSynonyms = {}
 		for entity in entities:
 			if entity not in entityToUniqueSynonym:
-				entityToUniqueSynonyms[entity] = copy.copy(dictPhysicalEntity[entity].synonyms)
-		for entity1,entity2 in itertools.combinations(entityToUniqueSynonyms.keys(),2):
+				entityToUniqueSynonyms[entity] = \
+					copy.copy(dictPhysicalEntity[entity].synonyms)
+
+		for entity1, entity2 in it.combinations(entityToUniqueSynonyms.keys(), 2):
 			entityToUniqueSynonyms[entity1] -= dictPhysicalEntity[entity2].synonyms
 			entityToUniqueSynonyms[entity2] -= dictPhysicalEntity[entity1].synonyms
 
 		nbEntitiesSelected = 0
-		for entity in entityToUniqueSynonyms:
-			if len(entityToUniqueSynonyms[entity]) > 0:
-				entityToUniqueSynonym[entity] = dictPhysicalEntity[entity].name+"_("+entityToUniqueSynonyms[entity].pop()+")"
+		for entity_uri, synonyms in entityToUniqueSynonyms.iteritems():
+			if len(synonyms) > 0:
+				entityToUniqueSynonym[entity_uri] = \
+					"{}_{}".format(
+						dictPhysicalEntity[entity_uri].name,
+						next(iter(synonyms)), # take first element
+					)
 				nbEntitiesSelected += 1
 
 		if nbEntitiesSelected == 0:
-			vI = 1
-			for entity in entityToUniqueSynonyms:
-				entityToUniqueSynonym[entity] = dictPhysicalEntity[entity].name+"_(v"+str(vI)+")"
-				vI += 1
+			for entity_version, entity_uri in enumerate(entityToUniqueSynonyms.keys(), 1):
+				entityToUniqueSynonym[entity_uri] = \
+					"{}_v{}".format(
+						dictPhysicalEntity[entity_uri].name,
+						entity_version,
+					)
 
 	return entityToUniqueSynonym
 
 
-def getCadbiomName(entity, dictPhysicalEntity, dictLocation, synonym=None):
+def getCadbiomName(entity, dictLocation, synonym=None):
 	"""Get entity name formatted for Cadbiom.
 
 	:param arg1:
 	:param arg2:
 	:param arg3:
-	:param arg4:
 	:type arg1:
 	:type arg2:
 	:type arg3:
-	:type arg4:
 	:return: Encoded name with location if it exists.
 	:rtype: <str>
 	"""
@@ -399,21 +436,17 @@ def getCadbiomName(entity, dictPhysicalEntity, dictLocation, synonym=None):
 		return re.sub('([^a-zA-Z0-9_])', '_', name)
 
 
-	if synonym == None:
-		if dictPhysicalEntity[entity].name != None:
-			name = dictPhysicalEntity[entity].name
-		else:
-			name = entity.rsplit("#", 1)[1]
-	else:
+	if synonym:
 		name = synonym
-
-	# Add location info if exists
-	location = dictPhysicalEntity[entity].location
-	if location != None and location != set():
-		locationId = dictLocation[location].cadbiomId
-		return clean_name(name) + "_" + locationId
 	else:
-		return clean_name(name)
+		# Check if name is present, otherwise take the uri
+		name = entity.name if entity.name else entity.idEntity.rsplit("#", 1)[1]
+
+	# Add location id to the name if it exists
+	location_uri = entity.location
+	return \
+		clean_name(name) + "_" + dictLocation[location_uri].cadbiomId \
+			if location_uri else clean_name(name)
 
 
 def getSetOfCadbiomPossibilities(entity, dictPhysicalEntity):
