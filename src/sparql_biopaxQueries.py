@@ -119,24 +119,49 @@ def getPhysicalEntities(listOfGraphUri):
 		}
 	"""
 
-	for entity, \
+	def get_entity(entity_uri):
+
+		try:
+			# If present, return it
+			return dictPhysicalEntity[entity_uri]
+		except KeyError:
+			# If not present, create it and the return it
+			new_entity = \
+				PhysicalEntity(entity_uri, name, location, entityType, entityRef)
+
+			dictPhysicalEntity[entity_uri] = new_entity
+			return new_entity
+
+
+	for entity_uri, \
 		name, \
 		synonym, \
 		location, \
 		entityType, \
-		component, \
+		component_uri, \
 		member, \
 		entityRef, \
 		dbRef, \
 		idRef in sparql_wrapper.sparql_query(query):
 
-		if entity not in dictPhysicalEntity:
-			dictPhysicalEntity[entity] = PhysicalEntity(entity, name, location, entityType, entityRef)
+		# Entity creation if not already met
+		entity = get_entity(entity_uri)
 
-		if synonym != None: dictPhysicalEntity[entity].synonyms.add(synonym)
-		if component != None: dictPhysicalEntity[entity].components.add(component)
-		if member != None: dictPhysicalEntity[entity].members.add(member)
-		if idRef != None: dictPhysicalEntity[entity].idRefs.add((idRef,dbRef))
+		if synonym != None:
+			entity.synonyms.add(synonym)
+
+		if component_uri != None:
+			# todo : reflechir à avoir 1 set de PhysicalEntity et non d'uri...
+			# !!!!! le component hérite de par le fait des parametres de son parent là...
+#		   component = get_entity(component_uri)
+#		   entity.components.add(component)
+			entity.components.add(component_uri)
+
+		if member != None:
+			entity.members.add(member)
+
+		if idRef != None:
+			entity.idRefs.add((idRef,dbRef))
 
 	return dictPhysicalEntity
 
