@@ -708,7 +708,7 @@ def getTransitions(dictReaction, dictPhysicalEntity):
 
 	for reaction_uri, reaction in dictReaction.iteritems():
 
-		typeName = dictReaction[reaction_uri].reactiontype
+		typeName = reaction.reactiontype
 
 		if typeName in ["BiochemicalReaction", "ComplexAssembly", "Transport",
 			"TransportWithBiochemicalReaction"]:
