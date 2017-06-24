@@ -472,42 +472,100 @@ def getSetOfCadbiomPossibilities(entity, dictPhysicalEntity):
 	return cadbiomPossibilities
 
 
-def addCadbiomSympyCondToReactions(dictReaction, dictPhysicalEntity):
-	"""TODO !
+def get_control_group_condition(controls, dictPhysicalEntity):
+	"""Get condition a group of controllers, linked by the same evidences.
 
+	:param controls: Set of Control objects.
+	:param dictPhysicalEntity: Dictionnary of biopax physicalEntities,
+		created by the function query.getPhysicalEntities()
+	:type dictPhysicalEntity: <dict <str>: <PhysicalEntity>>
+		keys: uris; values entity objects
+	:return: Sympy condition.
+	:rtype: <sympy.core.symbol.Symbol>
+	"""
+
+	sub_sub_cond = None
+	# set of Control objects linked by same evidences => Logical AND
+	for control in controls:
+		possibilities_it = iter(
+			getSetOfCadbiomPossibilities(
+				dictPhysicalEntity[control.controller],
+				dictPhysicalEntity
+			)
+		)
+
+		if control.controlType == "ACTIVATION" :
+			# Init the condition with the first possibility
+			sub_cond = sympy.Or(sympy.Symbol(next(possibilities_it)))
+			for possibilitity in possibilities_it:
+				sub_cond = sympy.Or(sub_cond,
+									sympy.Symbol(possibilitity))
+
+		elif control.controlType == "INHIBITION":
+			# Init the condition with the first possibility
+			sub_cond = sympy.Not(sympy.Symbol(next(possibilities_it)))
+			for possibilitity in possibilities_it:
+				sub_cond = sympy.Or(sub_cond,
+									sympy.Not(sympy.Symbol(possibilitity)))
+		else:
+			raise AssertionError("You should never have been there ! "
+					 "Your Controller type is not supported...")
+
+		# Init the condition with the first controller
+		if sub_sub_cond == None:
+			sub_sub_cond = sub_cond
+		else:
+			sub_sub_cond = sympy.And(sub_sub_cond, sub_cond)
+
+	return sub_sub_cond
+
+
+def addCadbiomSympyCondToReactions(dictReaction, dictPhysicalEntity):
+	"""Forge condition for each reaction.
+
+	:param dictReaction: Dictionnary of biopax reactions,
+		created by the function query.getReactions()
+	:param dictPhysicalEntity: Dictionnary of biopax physicalEntities,
+		created by the function query.getPhysicalEntities()
+	:type dictReaction: <dict <str>: <Reaction>>
+		keys: uris; values reaction objects
+	:type dictPhysicalEntity: <dict <str>: <PhysicalEntity>>
+		keys: uris; values entity objects
 	"""
 
 	# Begin event's numeration from 1
-	for event_number, (uri, reaction) in enumerate(dictReaction.iteritems(), 1):
+	for event_number, (_, reaction) in enumerate(dictReaction.iteritems(), 1):
 
-		cadbiomSympyCond = None
-		# set of Control objects
+		# Get groups of controllers that regulate the same reaction
+		# => Conditions IN a group are linked to each other with a logical AND
+		# => Groups are linked to each other with a logical OR
+		# (because there is no evidence which proves that they regulate at the
+		# same time the same reaction).
+		groups_of_controllers = defaultdict(set)
 		for control in reaction.controllers:
-			possibilities_it = iter(
-				getSetOfCadbiomPossibilities(
-					dictPhysicalEntity[control.controller], dictPhysicalEntity
-				)
+			groups_of_controllers[frozenset(control.evidences)].add(control)
+
+		# We don't care of the dict key (set of evidence) for the moment.
+		# TODO: souvent, des sets sont VIDES. => pas d'évidence.
+		# Comment statuer sur le fait que ces controlleurs agissent
+		# en meme temps ou non sur la reaction ?
+		cadbiomSympyCond = None
+		# Set of Groups of Controllers. Groups are linked with a logical OR
+		for controls in groups_of_controllers.values():
+
+			# Get condition for the given group of controllers,
+			# linked by the same evidences => Logical AND
+			sub_sub_cond = get_control_group_condition(
+				controls,
+				dictPhysicalEntity
 			)
-
-			if control.controlType == "ACTIVATION" :
-				# Init the condition with the first possibility
-				sub_cond = sympy.Or(sympy.Symbol(next(possibilities_it)))
-				for possibilitity in possibilities_it:
-					sub_cond = sympy.Or(sub_cond,
-										sympy.Symbol(possibilitity))
-
-			elif control.controlType == "INHIBITION":
-				# Init the condition with the first possibility
-				sub_cond = sympy.Not(sympy.Symbol(next(possibilities_it)))
-				for possibilitity in possibilities_it:
-					sub_cond = sympy.Or(sub_cond,
-										sympy.Not(sympy.Symbol(possibilitity)))
 
 			# Init the condition with the first controller
 			if cadbiomSympyCond == None:
-				cadbiomSympyCond = sub_cond
+				cadbiomSympyCond = sub_sub_cond
 			else:
-				cadbiomSympyCond = sympy.And(cadbiomSympyCond, sub_cond)
+				cadbiomSympyCond = sympy.Or(cadbiomSympyCond, sub_sub_cond)
+
 
 		# No controller ?
 		if cadbiomSympyCond == None:
