@@ -116,9 +116,11 @@ class Control(object):
 	Class for Control:
 		Attributes
 			classType
-			controlType  => type of control (ACTIVATION or INHIBITION)
-			reaction		=> reaction controlled
-			controller	=> entity that controls the reaction
+			controlType => type of control (ACTIVATION or INHIBITION)
+			reaction	=> reaction controlled
+			controller  => entity that controls the reaction
+			evidences   => set of evidences uris (identify controllers of the
+						same reaction)
 
 	.. note: controlType is in (ACTIVATION, INHIBITION)
 	"""
@@ -128,6 +130,7 @@ class Control(object):
 		self.controlType = controlType
 		self.reaction = reaction
 		self.controller = controller
+		self.evidences = set()
 
 	@property
 	def controlType(self):

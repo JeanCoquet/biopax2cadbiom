@@ -153,8 +153,8 @@ def getPhysicalEntities(listOfGraphUri):
 		if component_uri != None:
 			# todo : reflechir à avoir 1 set de PhysicalEntity et non d'uri...
 			# !!!!! le component hérite de par le fait des parametres de son parent là...
-#		   component = get_entity(component_uri)
-#		   entity.components.add(component)
+			# component = get_entity(component_uri)
+			# entity.components.add(component)
 			entity.components.add(component_uri)
 
 		if member != None:
@@ -197,11 +197,12 @@ def getControls(listOfGraphUri):
 	"""
 
 	.. note: controlType is in (ACTIVATION, INHIBITION)
+	.. note: PID: Evidences nb: 15523, for controls nb: 8203
 	"""
 
 	dictControl = {}
 	query = """
-		SELECT DISTINCT ?control ?type ?controlType ?reaction ?controller
+		SELECT DISTINCT ?control ?type ?controlType ?reaction ?controller ?evidence
 	"""
 	for graphUri in listOfGraphUri:
 		query += "FROM <"+graphUri+">\n"
@@ -213,14 +214,34 @@ def getControls(listOfGraphUri):
 			OPTIONAL { ?control biopax3:controlled ?reaction . }
 			OPTIONAL { ?control biopax3:controlType ?controlType . }
 			OPTIONAL { ?control biopax3:controller ?controller . }
+			OPTIONAL { ?control biopax3:evidence ?evidence . }
 		}
 	"""
 
-	for control, \
+	def get_entity(control_uri):
+
+		try:
+			# If present, return it
+			return dictControl[control_uri]
+		except KeyError:
+			# If not present, create it and the return it
+			new_control = \
+				Control(control_uri, classType, controlType, reaction, controller)
+
+			dictControl[control_uri] = new_control
+			return new_control
+
+	for control_uri, \
 		classType, \
 		controlType, \
 		reaction, \
-		controller in sparql_wrapper.sparql_query(query):
-		if control not in dictControl:
-			dictControl[control] = Control(control, classType, controlType, reaction, controller)
+		controller, \
+		evidence in sparql_wrapper.sparql_query(query):
+
+		# Entity creation if not already met
+		control = get_entity(control_uri)
+
+		if evidence is not None:
+			control.evidences.add(evidence)
+
 	return dictControl
