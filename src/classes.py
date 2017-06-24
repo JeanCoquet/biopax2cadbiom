@@ -17,8 +17,8 @@ class PhysicalEntity(object):
 			listOfFlatComponents (list)
 			listOfCadbiomNames (list)
 	"""
-	def __init__(self,idEntity,name,location,entityType,entityRef):
-		self.idEntity = idEntity
+	def __init__(self,uri,name,location,entityType,entityRef):
+		self.uri = uri
 		self.name = name
 		self.location = location
 		self.entityType = entityType
@@ -43,7 +43,7 @@ class PhysicalEntity(object):
 
 	def __hash__(self):
 		"""Define object's unicity"""
-		return hash(self.idEntity)
+		return hash(self.uri)
 
 
 class Reaction(object):
@@ -63,8 +63,8 @@ class Reaction(object):
 			event
 	"""
 
-	def __init__(self,idReaction,name,reactiontype,productComponent,participantComponent):
-		self.idReaction = idReaction
+	def __init__(self,uri,name,reactiontype,productComponent,participantComponent):
+		self.uri = uri
 		self.name = name
 		self.reactiontype = reactiontype
 		self.productComponent = productComponent
@@ -86,7 +86,7 @@ class Reaction(object):
 
 	def __hash__(self):
 		"""Define object's unicity"""
-		return hash(self.idReaction)
+		return hash(self.uri)
 
 
 class Location(object):
@@ -100,15 +100,15 @@ class Location(object):
 			cadbiomId
 	"""
 
-	def __init__(self, idLocation,locationTerm):
-		self.idLocation = idLocation
+	def __init__(self, uri,locationTerm):
+		self.uri = uri
 		self.name = locationTerm
 		self.idRefs = set()
 		self.cadbiomId = None
 
 	def __hash__(self):
 		"""Define object's unicity"""
-		return hash(self.idLocation)
+		return hash(self.uri)
 
 
 class Control(object):
@@ -125,7 +125,7 @@ class Control(object):
 	.. note: controlType is in (ACTIVATION, INHIBITION)
 	"""
 	def __init__(self,idControl,classType,controlType,reaction,controller):
-		self.idControl = idControl
+		self.uri = idControl
 		self.classType = classType
 		self.controlType = controlType
 		self.reaction = reaction
@@ -143,4 +143,4 @@ class Control(object):
 
 	def __hash__(self):
 		"""Define object's unicity"""
-		return hash(self.idControl)
+		return hash(self.uri)

@@ -338,7 +338,7 @@ def addCadbiomNameToEntities(dictPhysicalEntity, dictLocation):
 			# We decide to replace it by a uniq name for each entity
 			# Key: uri, value: uniq name
 			uniq_synonyms = findUniqueSynonym(
-				{entity.idEntity for entity in entities},
+				{entity.uri for entity in entities},
 				dictPhysicalEntity,
 			)
 
@@ -348,7 +348,7 @@ def addCadbiomNameToEntities(dictPhysicalEntity, dictLocation):
 				cadbiomName = getCadbiomName(
 					entity,
 					dictLocation,
-					synonym=uniq_synonyms[entity.idEntity]
+					synonym=uniq_synonyms[entity.uri]
 				)
 				entity.cadbiomName = cadbiomName
 
@@ -445,7 +445,7 @@ def getCadbiomName(entity, dictLocation, synonym=None):
 		name = synonym
 	else:
 		# Check if name is present, otherwise take the uri
-		name = entity.name if entity.name else entity.idEntity.rsplit("#", 1)[1]
+		name = entity.name if entity.name else entity.uri.rsplit("#", 1)[1]
 
 	# Add location id to the name if it exists
 	location_uri = entity.location
@@ -733,7 +733,7 @@ def getTransitions(dictReaction, dictPhysicalEntity):
 		transitions[(left_entity, right_entity)].append(
 			{
 				'event': reaction.event,
-				'reaction': reaction.idReaction,
+				'reaction': reaction.uri,
 				'sympyCond': reaction.cadbiomSympyCond
 			}
 		)
