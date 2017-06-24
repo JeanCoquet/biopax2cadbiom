@@ -455,15 +455,19 @@ def getCadbiomName(entity, dictLocation, synonym=None):
 
 
 def getSetOfCadbiomPossibilities(entity, dictPhysicalEntity):
+	"""
+	set de composants possibles pour 1 complexe
+
+	"""
 	cadbiomPossibilities = set()
 
-	if len(dictPhysicalEntity[entity].listOfFlatComponents) != 0:
-		cadbiomPossibilities = set(dictPhysicalEntity[entity].listOfCadbiomNames)
-	elif len(dictPhysicalEntity[entity].members) != 0 and dictPhysicalEntity[entity].membersUsed:
-		for subEntity in dictPhysicalEntity[entity].members:
-			cadbiomPossibilities |= getSetOfCadbiomPossibilities(subEntity, dictPhysicalEntity)
+	if len(entity.listOfFlatComponents) != 0:
+		cadbiomPossibilities = set(entity.listOfCadbiomNames)
+	elif len(entity.members) != 0 and entity.membersUsed:
+		for subEntity in entity.members:
+			cadbiomPossibilities |= getSetOfCadbiomPossibilities(dictPhysicalEntity[subEntity], dictPhysicalEntity)
 	else:
-		cadbiomPossibilities.add(dictPhysicalEntity[entity].cadbiomName)
+		cadbiomPossibilities.add(entity.cadbiomName)
 
 	return cadbiomPossibilities
 
@@ -479,24 +483,34 @@ def addCadbiomSympyCondToReactions(dictReaction, dictPhysicalEntity):
 		cadbiomSympyCond = None
 		# set of Control objects
 		for control in reaction.controllers:
-			cadbiomPossibilities = getSetOfCadbiomPossibilities(control.controller, dictPhysicalEntity)
+			possibilities_it = iter(
+				getSetOfCadbiomPossibilities(
+					dictPhysicalEntity[control.controller], dictPhysicalEntity
+				)
+			)
 
 			if control.controlType == "ACTIVATION" :
-				subCadbiomSympyCond = sympy.Or(sympy.Symbol(cadbiomPossibilities.pop()))
-				for cadbiom in cadbiomPossibilities:
-					subCadbiomSympyCond = sympy.Or(subCadbiomSympyCond,sympy.Symbol(cadbiom))
+				# Init the condition with the first possibility
+				sub_cond = sympy.Or(sympy.Symbol(next(possibilities_it)))
+				for possibilitity in possibilities_it:
+					sub_cond = sympy.Or(sub_cond,
+										sympy.Symbol(possibilitity))
 
 			elif control.controlType == "INHIBITION":
-				subCadbiomSympyCond = sympy.Not(sympy.Symbol(cadbiomPossibilities.pop()))
-				for cadbiom in cadbiomPossibilities:
-					subCadbiomSympyCond = sympy.Or(subCadbiomSympyCond,sympy.Not(sympy.Symbol(cadbiom)))
+				# Init the condition with the first possibility
+				sub_cond = sympy.Not(sympy.Symbol(next(possibilities_it)))
+				for possibilitity in possibilities_it:
+					sub_cond = sympy.Or(sub_cond,
+										sympy.Not(sympy.Symbol(possibilitity)))
 
-			if cadbiomSympyCond ==  None:
-				cadbiomSympyCond = subCadbiomSympyCond
+			# Init the condition with the first controller
+			if cadbiomSympyCond == None:
+				cadbiomSympyCond = sub_cond
 			else:
-				cadbiomSympyCond = sympy.And(cadbiomSympyCond, subCadbiomSympyCond)
+				cadbiomSympyCond = sympy.And(cadbiomSympyCond, sub_cond)
 
-		if cadbiomSympyCond ==  None:
+		# No controller ?
+		if cadbiomSympyCond == None:
 			reaction.cadbiomSympyCond = sympy.sympify(True)
 		else:
 			reaction.cadbiomSympyCond = cadbiomSympyCond
