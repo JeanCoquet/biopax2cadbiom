@@ -90,7 +90,7 @@ def createCadbiomFile(dictTransition, dictPhysicalEntity, nameModel, filePath):
 			ori=left_entity, ext=right_entity,
 			event=event,
 			condition=condition,
-			action="", fact_ids="[]"
+			#action="", fact_ids="[]"
 		).text = \
 			text
 
@@ -109,10 +109,14 @@ def createCadbiomFile(dictTransition, dictPhysicalEntity, nameModel, filePath):
 				{tuple((transition["event"], transition["sympyCond"]))
 					for transition in transitions}
 
+			# Get all uris of reactions involved in this transition
+			uris = \
+				','.join(transition['reaction'] for transition in transitions)
+
 			write_transitions(
 				ori_ext_nodes, formatEventAndCond(events_conds),
 				"",
-				"reaction=" #TODO: + transition["reaction"] # Many reactions here
+				"reaction=" + uris
 			)
 
 	tree = ET.ElementTree(model)
