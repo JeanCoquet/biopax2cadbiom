@@ -299,9 +299,8 @@ def createGraphOfInteractionsBetweenPathways(pathwayToName, pathwayToSuperPathwa
 
 
 def addCadbiomNameToEntities(dictPhysicalEntity, dictLocation):
-	"""Creates the dictionnary cadbiomNameToPhysicalEntity,
-	it adds the keys 'cadbiomName' and 'listOfCadbiomNames'
-	to entities in dictPhysicalEntity.
+	"""Add 'cadbiomName' and 'listOfCadbiomNames' attributes to entities
+	in dictPhysicalEntity.
 
 	.. note:: The attribute 'cadbiomName' corresponds to an unique
 		cadbiom ID for the entity.
@@ -541,6 +540,7 @@ def addCadbiomSympyCondToReactions(dictReaction, dictPhysicalEntity):
 		# => Groups are linked to each other with a logical OR
 		# (because there is no evidence which proves that they regulate at the
 		# same time the same reaction).
+		# key: <set of uris>; value: <Control>
 		groups_of_controllers = defaultdict(set)
 		for control in reaction.controllers:
 			groups_of_controllers[frozenset(control.evidences)].add(control)
