@@ -5,7 +5,7 @@ class PhysicalEntity(object):
 			name
 			location
 			entityType
-			entityRef
+			entityRef (str) (not a set!)
 		Optional
 			synonym (set)
 			components (set)

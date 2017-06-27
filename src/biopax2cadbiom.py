@@ -613,22 +613,39 @@ def getListOfPossibilitiesAndCadbiomNames(entity, dictPhysicalEntity):
 
 
 def refInCommon(entities1, entities2, dictPhysicalEntity):
-	if set(entities1)<=set(entities2) or set(entities1)>=set(entities2): return True
+	"""Check common references between 2 sets of entities.
 
-	entityRefs1 = set()
-	for entity in entities1:
-		entityRef = dictPhysicalEntity[entity].entityRef
-		if entityRef != None and entityRef != set():
-			entityRefs1.add(entityRef)
-	entityRefs2 = set()
-	for entity in entities2:
-		entityRef = dictPhysicalEntity[entity].entityRef
-		if entityRef != None and entityRef != set():
-			entityRefs2.add(entityRef)
+	:param entities1: List of uris of entities.
+	:param entities2: List of uris of entities.
+	:param dictPhysicalEntity: Dictionnary of biopax physicalEntities,
+		created by the function query.getPhysicalEntities()
+	:type entities1: <list>
+	:type entities2: <list>
+	:type dictPhysicalEntity: <dict <str>: <PhysicalEntity>>
+		keys: uris; values entity objects
+	:return: False if a set of entities have no entityRefs or if
+		entityRefs in 1 are not in 2 and if entityRefs in 2 are not in 1.
+		True otherwhise or if entities1 is a subset of entities2,
+		or if entities2 is a subset of entities1.
+	:rtype: <bool>
+	"""
 
-	if entityRefs1 == set() or entityRefs2 == set():
+	# Check if entities in 1 are in 2, or entities in 2 are in 1
+	if set(entities1) <= set(entities2) or set(entities1) >= set(entities2):
+		return True
+
+	# Get all entityRefs from entities1 (if they are present in these entities)
+	g = (dictPhysicalEntity[entity_uri].entityRef for entity_uri in entities1)
+	entityRefs1 = {entity_ref for entity_ref in g if entity_ref != None}
+
+	# Get all entityRefs from entities2 (if they are present in these entities)
+	g = (dictPhysicalEntity[entity_uri].entityRef for entity_uri in entities2)
+	entityRefs2 = {entity_ref for entity_ref in g if entity_ref != None}
+
+	if len(entityRefs1) == 0 or len(entityRefs2) == 0:
 		return False
-	return set(entityRefs1)<=set(entityRefs2) or set(entityRefs1)>=set(entityRefs2)
+	# Check if entities in 1 are in 2, or entities in 2 are in 1
+	return (entityRefs1 <= entityRefs2) or (entityRefs1 >= entityRefs2)
 
 
 def getProductCadbioms(entities, entityToListOfEquivalentsAndCadbiomName):
