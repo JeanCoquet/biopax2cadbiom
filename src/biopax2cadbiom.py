@@ -457,14 +457,28 @@ def getSetOfCadbiomPossibilities(entity, dictPhysicalEntity):
 	"""
 	set de composants possibles pour 1 complexe
 
+	:param entity: A Physical entity object that is a controller.
+	:param dictPhysicalEntity: Dictionnary of biopax physicalEntities,
+		created by the function query.getPhysicalEntities()
+	:type entity: <PhysicalEntity>
+	:type dictPhysicalEntity: <dict <str>: <PhysicalEntity>>
+		keys: uris; values entity objects
+	:return:
+	:rtype: <set>
 	"""
 	cadbiomPossibilities = set()
 
+	# TODO: pourquoi ces conditions ??!
 	if len(entity.listOfFlatComponents) != 0:
 		cadbiomPossibilities = set(entity.listOfCadbiomNames)
 	elif len(entity.members) != 0 and entity.membersUsed:
+		# It's a class with members that are used elsewhere: Destruct it
 		for subEntity in entity.members:
-			cadbiomPossibilities |= getSetOfCadbiomPossibilities(dictPhysicalEntity[subEntity], dictPhysicalEntity)
+			cadbiomPossibilities |= \
+				getSetOfCadbiomPossibilities(
+					dictPhysicalEntity[subEntity],
+					dictPhysicalEntity
+				)
 	else:
 		cadbiomPossibilities.add(entity.cadbiomName)
 
@@ -577,19 +591,23 @@ def addCadbiomSympyCondToReactions(dictReaction, dictPhysicalEntity):
 
 
 def getListOfPossibilitiesAndCadbiomNames(entity, dictPhysicalEntity):
+	"""
+	"""
+
 	listOfEquivalentsAndCadbiomName = []
 
-	if len(dictPhysicalEntity[entity].listOfFlatComponents) != 0:
-		for i in range(len(dictPhysicalEntity[entity].listOfFlatComponents)):
-			flatComponents = dictPhysicalEntity[entity].listOfFlatComponents[i]
-			cadbiomName = dictPhysicalEntity[entity].listOfCadbiomNames[i]
+	if len(entity.listOfFlatComponents) != 0:
+		for i in range(len(entity.listOfFlatComponents)):
+			flatComponents = entity.listOfFlatComponents[i]
+			cadbiomName = entity.listOfCadbiomNames[i]
 			listOfEquivalentsAndCadbiomName.append((flatComponents,cadbiomName))
 
-	elif len(dictPhysicalEntity[entity].members) != 0 and dictPhysicalEntity[entity].membersUsed:
-		for subEntity in dictPhysicalEntity[entity].members:
-			listOfEquivalentsAndCadbiomName += getListOfPossibilitiesAndCadbiomNames(subEntity, dictPhysicalEntity)
+	elif len(entity.members) != 0 and entity.membersUsed:
+		for subEntity in entity.members:
+			listOfEquivalentsAndCadbiomName += \
+				getListOfPossibilitiesAndCadbiomNames(dictPhysicalEntity[subEntity], dictPhysicalEntity)
 	else:
-		listOfEquivalentsAndCadbiomName.append((tuple([entity]),dictPhysicalEntity[entity].cadbiomName))
+		listOfEquivalentsAndCadbiomName.append((tuple([entity.uri]),entity.cadbiomName))
 
 	return listOfEquivalentsAndCadbiomName
 
@@ -644,13 +662,32 @@ def getEntityNameUnmatched(entities, entityToEntitiesMatched, dictPhysicalEntity
 	return nameUnmatched
 
 
-def updateTransitions(reaction, dictPhysicalEntity, dictReaction, dictTransition):
-	leftEntities = dictReaction[reaction].leftComponents
-	rightEntities = dictReaction[reaction].rightComponents
+def updateTransitions(reaction, dictPhysicalEntity, dictTransition):
+	"""
+
+	"""
+
+
+	def update_subtransitions(left_entity, right_entity, event, cond):
+		""".. todo: Move this function and reuse it elsewhere.
+		"""
+
+		subDictTransition[(left_entity, right_entity)].append(
+			{
+				'event': event,
+				'reaction': reaction.uri,
+				'sympyCond': cond,
+			}
+		)
+
+
+	leftEntities = reaction.leftComponents
+	rightEntities = reaction.rightComponents
 
 	entityToListOfEquivalentsAndCadbiomName = {}
 	for entity in leftEntities|rightEntities:
-		entityToListOfEquivalentsAndCadbiomName[entity] = getListOfPossibilitiesAndCadbiomNames(entity, dictPhysicalEntity)
+		entityToListOfEquivalentsAndCadbiomName[entity] = \
+			getListOfPossibilitiesAndCadbiomNames(dictPhysicalEntity[entity], dictPhysicalEntity)
 
 	cadbiomToCadbiomsMatched = defaultdict(set)
 	entityToEntitiesMatched = defaultdict(set)
@@ -678,16 +715,17 @@ def updateTransitions(reaction, dictPhysicalEntity, dictReaction, dictTransition
 		for productCadbiomsL in getProductCadbioms(leftEntities, entityToListOfEquivalentsAndCadbiomName):
 			for productCadbiomsR in getProductCadbioms(rightEntities, entityToListOfEquivalentsAndCadbiomName):
 				for cadbiomL, cadbiomR in it.product(productCadbiomsL,productCadbiomsR):
-					transitionSympyCond = dictReaction[reaction].cadbiomSympyCond
+					transitionSympyCond = reaction.cadbiomSympyCond
 					for otherCadbiomL in set(productCadbiomsL)-set([cadbiomL]):
 						sympySymbol = sympy.Symbol(otherCadbiomL)
 						transitionSympyCond = sympy.And(transitionSympyCond, sympySymbol)
 
-					subDictTransition[(cadbiomL,cadbiomR)].append({
-						'event': dictReaction[reaction].event+"_"+str(subH),
-						'reaction': reaction,
-						'sympyCond': transitionSympyCond
-					})
+					update_subtransitions(
+						cadbiomL, cadbiomR,
+						reaction.event + "_" + str(subH),
+						transitionSympyCond,
+					)
+
 				subH += 1
 
 	else:
@@ -707,29 +745,29 @@ def updateTransitions(reaction, dictPhysicalEntity, dictReaction, dictTransition
 					cadbiomsR = set(productCadbiomsR)|getEntityNameUnmatched(rightEntities, entityToEntitiesMatched, dictPhysicalEntity)
 
 					for cadbiomL, cadbiomR in it.product(productCadbiomsL,cadbiomsR):
-						transitionSympyCond = dictReaction[reaction].cadbiomSympyCond
+						transitionSympyCond = reaction.cadbiomSympyCond
 						for otherCadbiomL in set(productCadbiomsL)-set([cadbiomL]):
 							sympySymbol = sympy.Symbol(otherCadbiomL)
 							transitionSympyCond = sympy.And(transitionSympyCond, sympySymbol)
 
-						subDictTransition[(cadbiomL,cadbiomR)].append({
-							'event': dictReaction[reaction].event+"_"+str(subH),
-							'reaction': reaction,
-							'sympyCond': transitionSympyCond
-						})
+						update_subtransitions(
+							cadbiomL, cadbiomR,
+							reaction.event + "_" + str(subH),
+							transitionSympyCond,
+						)
 					subH += 1
 
 		for entityR in rightEntities:
 			if entityToEntitiesMatched[entityR] == set():
 				nameEntityR = dictPhysicalEntity[entityR].cadbiomName
 				for subEquis,subCadbiom in entityToListOfEquivalentsAndCadbiomName[entityR]:
-					transitionSympyCond = dictReaction[reaction].cadbiomSympyCond
+					transitionSympyCond = reaction.cadbiomSympyCond
 
-					subDictTransition[(nameEntityR,subCadbiom)].append({
-						'event': dictReaction[reaction].event+"_"+str(subH),
-						'reaction': reaction,
-						'sympyCond': transitionSympyCond
-					})
+					update_subtransitions(
+						nameEntityR, subCadbiom,
+						reaction.event + "_" + str(subH),
+						transitionSympyCond,
+					)
 					subH += 1
 
 		currentKeys = list(subDictTransition.keys())
@@ -742,25 +780,24 @@ def updateTransitions(reaction, dictPhysicalEntity, dictReaction, dictTransition
 							sympySymbol = sympy.Symbol(left)
 							transitionSympyCond = sympy.And(transitionSympyCond, sympySymbol)
 
-							subDictTransition[(cadbiomL,right)].append({
-								'event': transition['event'],
-								'reaction': reaction,
-								'sympyCond': transitionSympyCond
-							})
+							update_subtransitions(
+								cadbiomL, right,
+								transition['event'],
+								transitionSympyCond,
+							)
 
-	for left,right in subDictTransition.keys():
-		for transition in subDictTransition[(left,right)]:
+	for left_right, transitions in subDictTransition.iteritems():
+		for transition in transitions:
 			if subH > 2:
 				event = transition['event']
 			else:
-				event = dictReaction[reaction].event
+				event = reaction.event
 
-			dictTransition[(left,right)].append({
+			dictTransition[left_right].append({
 				'event': event,
-				'reaction': reaction,
+				'reaction': reaction.uri,
 				'sympyCond': transition['sympyCond']
 			})
-
 
 
 def getTransitions(dictReaction, dictPhysicalEntity):
@@ -809,7 +846,7 @@ def getTransitions(dictReaction, dictPhysicalEntity):
 			# ou bien 'rightComponents' sont vides ?
 			# /!\ This modifies dictTransition in place
 			updateTransitions(
-				reaction_uri, dictPhysicalEntity, dictReaction, dictTransition
+				reaction, dictPhysicalEntity, dictTransition
 			)
 
 		elif typeName == "Degradation":
