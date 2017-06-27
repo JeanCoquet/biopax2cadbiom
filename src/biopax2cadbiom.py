@@ -649,34 +649,45 @@ def refInCommon(entities1, entities2, dictPhysicalEntity):
 
 
 def getProductCadbioms(entities, entityToListOfEquivalentsAndCadbiomName):
-	listOfCadbioms = []
-	for entity in entities:
-		cadbioms = []
-		for equis,cadbiom in entityToListOfEquivalentsAndCadbiomName[entity]:
-			cadbioms.append(cadbiom)
-		listOfCadbioms.append(cadbioms)
+	"""Get all cartesian product of all possible names of entities.
 
-	return it.product(*listOfCadbioms)
+	:return:
+		.. example::
+		Input:
+		set([u'http://pathwaycommons.org/pc2/#Complex_aa82041945ad0f6a68f33a25a9720863', u'http://pathwaycommons.org/pc2/#Complex_3fe118eaca425fc3b269b691cd9239df', u'http://pathwaycommons.org/pc2/#Protein_597e0393013973540c8ec5d34766c8b0'])
+		Output:
+		[(u'AP_2_adaptor_complex', 'IL8_CXCR2_v2_integral_to_membrane', u'beta_Arrestin1'), (u'AP_2_adaptor_complex', 'IL8_CXCR2_v2_integral_to_membrane', 'beta_Arrestin2_v1')]
+
+	"""
+
+	# Get a list of cadbiom names, for each entity
+	cadbiom_names_per_entity = list()
+	[cadbiom_names_per_entity.append(
+		# Get all possible names for this entity
+		[name for _, name in entityToListOfEquivalentsAndCadbiomName[uri]]
+	) for uri in entities]
+
+	return it.product(*cadbiom_names_per_entity)
 
 
-def getProductCadbiomsMatched(entities, entityToListOfEquivalentsAndCadbiomName, entityToEntitiesMatched):
-	listOfCadbioms = []
-	for entity in entities:
-		if entityToEntitiesMatched[entity] != set():
-			cadbioms = []
-			for equis,cadbiom in entityToListOfEquivalentsAndCadbiomName[entity]:
-				cadbioms.append(cadbiom)
-			listOfCadbioms.append(cadbioms)
+def getProductCadbiomsMatched(entities, entityToListOfEquivalentsAndCadbiomName,
+							  entityToEntitiesMatched):
 
-	return it.product(*listOfCadbioms)
+	# Get a list of cadbiom names, for each entity if entityToEntitiesMatched ????
+	cadbiom_names_per_entity = list()
+	[cadbiom_names_per_entity.append(
+		# Get all possible names for this entity
+		[name for _, name in entityToListOfEquivalentsAndCadbiomName[uri]]
+	) for uri in entities if entityToEntitiesMatched[uri] != set()]
+
+	return it.product(*cadbiom_names_per_entity)
 
 
-def getEntityNameUnmatched(entities, entityToEntitiesMatched, dictPhysicalEntity):
-	nameUnmatched = set()
-	for entity in entities:
-		if entityToEntitiesMatched[entity] == set():
-			nameUnmatched.add(dictPhysicalEntity[entity].cadbiomName)
-	return nameUnmatched
+def getEntityNameUnmatched(entities, entityToEntitiesMatched,
+						   dictPhysicalEntity):
+
+	return {dictPhysicalEntity[entity].cadbiomName for entity in entities
+		if entityToEntitiesMatched[entity] == set()}
 
 
 def updateTransitions(reaction, dictPhysicalEntity, dictTransition):
