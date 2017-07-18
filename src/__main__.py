@@ -49,6 +49,11 @@ if __name__ == "__main__" :
 							 'reference (if it exists).'
 	)
 
+    parser.add_argument('--cof_blacklist', action='store_true',
+                        help='If set, the cofactors in the given file will be'
+                             'banished from conditions of transitions'
+    )
+
 	parser.set_defaults(func=biopax2cadbiom.main)
 
 	# Get program args and launch associated command

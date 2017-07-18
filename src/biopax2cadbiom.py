@@ -934,10 +934,22 @@ def filter_control(controls, pathways_names):
 			if controls[control].controller not in pathways_names}
 
 
+def load_blacklisted_confactors(blacklist):
+	"""
+	"""
+
+	with open(blacklist, 'r') as fd:
+		return {line.rsplit('\n') for line in fd}
+
+
 def main(params):
 	"""Entry point"""
 
 	if not os.path.isfile(params['pickleBackup']):
+
+		if params['cof_blacklist'] is not False:
+			# Load cofactors to be blacklisted from conditions
+			cofactors = load_blacklisted_confactors(params['cof_blacklist'])
 
 		dictPhysicalEntity = query.getPhysicalEntities(params['listOfGraphUri'])
 		dictReaction	   = query.getReactions(params['listOfGraphUri'])
