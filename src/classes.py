@@ -45,6 +45,11 @@ class PhysicalEntity(object):
 		"""Define object's unicity"""
 		return hash(self.uri)
 
+	def __repr__(self):
+		return "\n".join(
+			attr + ':' + str(val) for attr, val in self.__dict__.iteritems()
+		)
+
 
 class Reaction(object):
 	"""
