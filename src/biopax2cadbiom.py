@@ -864,12 +864,17 @@ def getTransitions(dictReaction, dictPhysicalEntity):
 
 	dictTransition = defaultdict(list)
 
+	reaction_types = ("BiochemicalReaction", "ComplexAssembly", "Transport",
+			"TransportWithBiochemicalReaction")
+	regulator_types = ("Catalysis", "Control", "TemplateReactionRegulation")
+
 	for reaction_uri, reaction in dictReaction.iteritems():
 
 		typeName = reaction.reactiontype
 
-		if typeName in ["BiochemicalReaction", "ComplexAssembly", "Transport",
-			"TransportWithBiochemicalReaction"]:
+
+
+		if typeName in reaction_types:
 			# ATTENTION: que faire si 'leftComponents'
 			# ou bien 'rightComponents' sont vides ?
 			# /!\ This modifies dictTransition in place
@@ -907,11 +912,12 @@ def getTransitions(dictReaction, dictPhysicalEntity):
 					dictTransition, cadbiomR + "_gene", cadbiomR, reaction
 				)
 
-		elif typeName in ["Catalysis", "Control", "TemplateReactionRegulation"]:
+		elif typeName in regulator_types:
 			continue
 
 		else:
-			LOGGER.error("UNEXCEPTED REACTION: " + str(reaction_uri))
+			LOGGER.error("UNEXCEPTED REACTION: " + reaction_uri)
+			raise AssertionError("UNEXCEPTED REACTION: " + reaction_uri)
 
 	return dictTransition
 
