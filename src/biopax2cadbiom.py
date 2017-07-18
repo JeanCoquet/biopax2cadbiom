@@ -10,6 +10,7 @@ import copy, dill, sympy, os, re
 import itertools as it
 from collections import defaultdict
 import networkx as nx
+from logging import DEBUG
 
 # Custom imports
 from src import sparql_biopaxQueries as query
@@ -226,7 +227,7 @@ def numerotateLocations(dictLocation, full_compartment_name=False):
 		# Update dictLocation with encoded id
 		location.cadbiomId = str(currentId)
 
-	LOGGER.debug("Encoded locations:" + str(idLocationToLocation))
+	LOGGER.debug("Encoded locations: " + str(idLocationToLocation))
 
 	return idLocationToLocation
 
@@ -592,6 +593,8 @@ def addCadbiomSympyCondToReactions(dictReaction, dictPhysicalEntity):
 
 def getListOfPossibilitiesAndCadbiomNames(entity, dictPhysicalEntity):
 	"""
+	:return: list of tuples (uris, name)
+	:rtype: <list>
 	"""
 
 	listOfEquivalentsAndCadbiomName = []
@@ -614,6 +617,10 @@ def getListOfPossibilitiesAndCadbiomNames(entity, dictPhysicalEntity):
 
 def refInCommon(entities1, entities2, dictPhysicalEntity):
 	"""Check common references between 2 sets of entities.
+
+	.. note:: This function is used to make a transition between 2 set of
+		entities. => Is there any transition between these 2 sets ?
+
 
 	:param entities1: List of uris of entities.
 	:param entities2: List of uris of entities.
