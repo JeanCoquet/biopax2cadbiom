@@ -960,9 +960,11 @@ def main(params):
 
 	if not os.path.isfile(params['pickleBackup']):
 
-		if params['cof_blacklist'] is not False:
+		blacklisted_cofactors = set()
+		if params['blacklist'] is not False:
 			# Load cofactors to be blacklisted from conditions
-			cofactors = load_blacklisted_confactors(params['cof_blacklist'])
+			blacklisted_cofactors = \
+				load_blacklisted_cofactors(params['blacklist'])
 
 		dictPhysicalEntity = query.getPhysicalEntities(params['listOfGraphUri'])
 		dictReaction	   = query.getReactions(params['listOfGraphUri'])

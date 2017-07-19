@@ -48,11 +48,10 @@ if __name__ == "__main__" :
 							 'and compares them with the cadbiom model '
 							 'reference (if it exists).'
 	)
-
-    parser.add_argument('--cof_blacklist', action='store_true',
-                        help='If set, the cofactors in the given file will be'
-                             'banished from conditions of transitions'
-    )
+	parser.add_argument('--blacklist', action='store_true',
+						help='If set, the cofactors in the given file will be'
+							 'banished from conditions of transitions'
+	)
 
 	parser.set_defaults(func=biopax2cadbiom.main)
 

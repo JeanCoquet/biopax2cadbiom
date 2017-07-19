@@ -80,6 +80,7 @@ def t_model(feed_statement):
 			'pickleBackup': DIR_TEST_CASES + 'backup.p',
 			'testCasesDir': DIR_TEST_CASES,
 			'fullCompartmentsNames': True,
+			'blacklist': False,
 		}
 
 		biopax2cadbiom.main(params)
