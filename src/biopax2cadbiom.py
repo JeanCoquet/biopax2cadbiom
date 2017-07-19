@@ -951,7 +951,16 @@ def filter_control(controls, pathways_names, cofactors=set()):
 
 
 def load_blacklisted_cofactors(blacklist):
-	"""
+	"""Get all uris of blacklisted elements in the given file.
+
+	.. note:: The csv can be written with ',;' delimiters.
+		In the first column we expect the uri,
+		In the second users can put the corresponding cadbiom name (not used).
+
+	:param: Blacklist filename.
+	:type: <str>
+	:return: Set of uris.
+	:rtype: <set>
 	"""
 
 	with open(blacklist, 'r') as fd:
