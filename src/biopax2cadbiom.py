@@ -10,6 +10,7 @@ import copy, dill, sympy, os, re
 import itertools as it
 from collections import defaultdict
 import networkx as nx
+import csv
 from logging import DEBUG
 
 # Custom imports
@@ -929,7 +930,7 @@ def getTransitions(dictReaction, dictPhysicalEntity):
 	return dictTransition
 
 
-def filter_control(controls, pathways_names):
+def filter_control(controls, pathways_names, cofactors=set()):
 	"""Remove pathways from controls and keep others (entities + ?).
 
 	We want ONLY entities and by default there are pathways + entities.
@@ -943,16 +944,26 @@ def filter_control(controls, pathways_names):
 	:rtype: <dict>
 	"""
 
+	blacklisted_controllers = set(pathways_names.keys()) | cofactors
+
 	return {control: controls[control] for control in controls
-			if controls[control].controller not in pathways_names}
+			if controls[control].controller not in blacklisted_controllers}
 
 
-def load_blacklisted_confactors(blacklist):
+def load_blacklisted_cofactors(blacklist):
 	"""
 	"""
 
 	with open(blacklist, 'r') as fd:
-		return {line.rsplit('\n') for line in fd}
+
+		# Try to detect csv format
+		dialect = csv.Sniffer().sniff(fd.read(1024), delimiters=',;')
+		fd.seek(0)
+
+		reader = csv.reader(fd, dialect)
+
+		# Take uri in first position only, right now...
+		return {line[0] for line in reader}
 
 
 def main(params):
@@ -960,20 +971,24 @@ def main(params):
 
 	if not os.path.isfile(params['pickleBackup']):
 
+		# Load cofactors to be blacklisted from conditions
 		blacklisted_cofactors = set()
-		if params['blacklist'] is not False:
-			# Load cofactors to be blacklisted from conditions
+		if params['blacklist'] is not None:
 			blacklisted_cofactors = \
 				load_blacklisted_cofactors(params['blacklist'])
 
+		# Query the SPARQL endpoint
 		dictPhysicalEntity = query.getPhysicalEntities(params['listOfGraphUri'])
 		dictReaction	   = query.getReactions(params['listOfGraphUri'])
 		dictLocation	   = query.getLocations(params['listOfGraphUri'])
 		dictPathwayName = query.getPathways(params['listOfGraphUri'])
+
+		# Filter cofactors from controls and remove pathways as controllers
 		dictControl = \
 			filter_control(
 				query.getControls(params['listOfGraphUri']),
 				dictPathwayName,
+				blacklisted_cofactors,
 			)
 
 		addReactionToEntities(dictReaction, dictControl, dictPhysicalEntity)

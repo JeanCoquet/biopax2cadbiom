@@ -48,7 +48,7 @@ if __name__ == "__main__" :
 							 'and compares them with the cadbiom model '
 							 'reference (if it exists).'
 	)
-	parser.add_argument('--blacklist', action='store_true',
+	parser.add_argument('--blacklist', type=str, nargs='?',
 						help='If set, the cofactors in the given file will be'
 							 'banished from conditions of transitions'
 	)
