@@ -69,21 +69,32 @@ def createCadbiomFile(dictTransition, dictPhysicalEntity, nameModel, filePath):
 			for atom in transition['sympyCond'].atoms()
 		)
 
+	# We want uri and cadbiom name for each entity in the model
+	# Get all names and their uris
+	cadbiomNames = {entity.cadbiomName: entity.uri
+						for entity in dictPhysicalEntity.values()}
+
 	# Put these nodes in the model
 	# PS: why we don't do that in the following iteration of dictTransition ?
 	# Because the cadbiom model is parsed from the top to the end ><
 	# If nodes are at the end, the model will fail to be loaded...
 	# Awesome.
-	[ET.SubElement(model, "CSimpleNode",
-				   name=cadbiomName,
-				   xloc="0.0", yloc="0.0") for cadbiomName in cadbiomNodes]
+	def write_nodes(name, uri):
+		"""Convenient func to add CSimpleNode entity"""
+		ET.SubElement(model, "CSimpleNode",
+		   name=name,
+		   xloc="0.0", yloc="0.0"
+		).text = \
+			uri
+
+	[write_nodes(cadbiomName, cadbiomNames[cadbiomName])
+		for cadbiomName in cadbiomNodes]
 
 	############################################################################
 	# Anyway, next...
 	# Get all transitions
-	def write_transitions(ori_ext_nodes, event, condition, text):
-		"""
-		"""
+	def write_transitions(ori_ext_nodes, event, condition, uris):
+		"""Convenient func to add a transition"""
 		left_entity, right_entity = ori_ext_nodes
 		ET.SubElement(
 			model, "transition",
@@ -92,7 +103,7 @@ def createCadbiomFile(dictTransition, dictPhysicalEntity, nameModel, filePath):
 			condition=condition,
 			#action="", fact_ids="[]"
 		).text = \
-			text
+			uris
 
 	for ori_ext_nodes, transitions in dictTransition.iteritems():
 
