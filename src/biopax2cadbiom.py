@@ -992,7 +992,7 @@ def removeEntitiesBlacklistedFromReactions(dictReaction, blacklisted_entities):
 			reaction.participantComponent = None
 
 
-def load_blacklisted_cofactors(blacklist):
+def load_blacklisted_entities(blacklist):
 	"""Get all uris of blacklisted elements in the given file.
 
 	.. note:: The csv can be written with ',;' delimiters.
@@ -1022,17 +1022,17 @@ def main(params):
 
 	if not os.path.isfile(params['pickleBackup']):
 
-		# Load cofactors to be blacklisted from conditions
-		blacklisted_cofactors = set()
+		# Load entities to be blacklisted from conditions
+		blacklisted_entities = set()
 		if params['blacklist'] is not None:
-			blacklisted_cofactors = \
-				load_blacklisted_cofactors(params['blacklist'])
+			blacklisted_entities = \
+				load_blacklisted_entities(params['blacklist'])
 
 		# Query the SPARQL endpoint
 		dictPhysicalEntity = \
 			filter_entity(
 				query.getPhysicalEntities(params['listOfGraphUri']),
-				blacklisted_cofactors
+				blacklisted_entities
 			)
 
 		dictReaction	   = query.getReactions(params['listOfGraphUri'])
@@ -1044,10 +1044,10 @@ def main(params):
 			filter_control(
 				query.getControls(params['listOfGraphUri']),
 				dictPathwayName,
-				blacklisted_cofactors,
+				blacklisted_entities,
 			)
 
-		removeEntitiesBlacklistedFromReactions(dictReaction, blacklisted_cofactors)
+		removeEntitiesBlacklistedFromReactions(dictReaction, blacklisted_entities)
 
 		addReactionToEntities(dictReaction, dictControl, dictPhysicalEntity)
 
