@@ -949,6 +949,48 @@ def filter_control(controls, pathways_names, cofactors=set()):
 	return {control: controls[control] for control in controls
 			if controls[control].controller not in blacklisted_controllers}
 
+def filter_entity(dictPhysicalEntity, blacklisted_entities):
+	"""Remove blacklisted entities from entities.
+
+	:param dictPhysicalEntity: Dictionnary of biopax physicalEntities,
+		created by the function query.getPhysicalEntities()
+	:param blacklisted_entities: set of entity uris blacklisted
+	:type dictPhysicalEntity: <dict <str>: <PhysicalEntity>>
+		keys: uris; values entity objects
+	:type blacklisted_entities: <set>
+	:return: Dictionnary of biopax physicalEntities without entities blacklisted
+	:rtype: <dict <str>: <PhysicalEntity>>
+	"""
+	dictPhysicalEntityFiltered = {entity_uri: dictPhysicalEntity[entity_uri] for entity_uri in dictPhysicalEntity
+			if entity_uri not in blacklisted_entities}
+
+	# Remove blacklisted entities from members and components
+	for entity_uri, entity in dictPhysicalEntityFiltered.iteritems():
+		entity.components.difference_update(blacklisted_entities)
+		entity.members.difference_update(blacklisted_entities)
+
+	return dictPhysicalEntityFiltered
+
+
+def removeEntitiesBlacklistedFromReactions(dictReaction, blacklisted_entities):
+	"""Remove blacklisted entities from reactions.
+
+	:param dictReaction: Dictionnary of biopax reactions,
+		created by the function query.getReactions()
+	:param blacklisted_entities: set of entity uris blacklisted
+	:type dictReaction: <dict <str>: <Reaction>>
+		keys: uris; values reaction objects
+	:type blacklisted_entities: <set>
+	"""
+	for reaction_uri, reaction in dictReaction.iteritems():
+		reaction.leftComponents.difference_update(blacklisted_entities)
+		reaction.rightComponents.difference_update(blacklisted_entities)
+
+		if reaction.productComponent in blacklisted_entities:
+			reaction.productComponent = None
+		if reaction.participantComponent in blacklisted_entities:
+			reaction.participantComponent = None
+
 
 def load_blacklisted_cofactors(blacklist):
 	"""Get all uris of blacklisted elements in the given file.
@@ -987,7 +1029,12 @@ def main(params):
 				load_blacklisted_cofactors(params['blacklist'])
 
 		# Query the SPARQL endpoint
-		dictPhysicalEntity = query.getPhysicalEntities(params['listOfGraphUri'])
+		dictPhysicalEntity = \
+			filter_entity(
+				query.getPhysicalEntities(params['listOfGraphUri']),
+				blacklisted_cofactors
+			)
+
 		dictReaction	   = query.getReactions(params['listOfGraphUri'])
 		dictLocation	   = query.getLocations(params['listOfGraphUri'])
 		dictPathwayName = query.getPathways(params['listOfGraphUri'])
@@ -999,6 +1046,8 @@ def main(params):
 				dictPathwayName,
 				blacklisted_cofactors,
 			)
+
+		removeEntitiesBlacklistedFromReactions(dictReaction, blacklisted_cofactors)
 
 		addReactionToEntities(dictReaction, dictControl, dictPhysicalEntity)
 

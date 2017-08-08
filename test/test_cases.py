@@ -31,34 +31,37 @@ from cadbiom_cmd.solution_repr import graph_isomorph_test
 
 
 def test_1():
-	t_model({'homarus': ['http://biopax.org/lvl3', 'http://reactome.org/homarus']})
+	t_model({'homarus': (['http://biopax.org/lvl3', 'http://reactome.org/homarus'], None)})
 
 def test_2():
-	t_model({'crithidia': ['http://biopax.org/lvl3', 'http://reactome.org/crithidia']})
+	t_model({'crithidia': (['http://biopax.org/lvl3', 'http://reactome.org/crithidia'], None)})
 
 def test_3():
-	t_model({'vigna': ['http://biopax.org/lvl3', 'http://reactome.org/vigna']})
+	t_model({'vigna': (['http://biopax.org/lvl3', 'http://reactome.org/vigna'], None)})
 
 def test_4():
-	t_model({'triticum': ['http://biopax.org/lvl3', 'http://reactome.org/triticum']})
+	t_model({'triticum': (['http://biopax.org/lvl3', 'http://reactome.org/triticum'], None)})
 
 def test_5():
-	t_model({'cavia': ['http://biopax.org/lvl3', 'http://reactome.org/cavia']})
+	t_model({'cavia': (['http://biopax.org/lvl3', 'http://reactome.org/cavia'], None)})
 
 def test_6():
-	t_model({'escherichia': ['http://biopax.org/lvl3', 'http://reactome.org/escherichia']})
+	t_model({'escherichia': (['http://biopax.org/lvl3', 'http://reactome.org/escherichia'], None)})
 
 def test_7():
-	t_model({'cricetulus': ['http://biopax.org/lvl3', 'http://reactome.org/cricetulus']})
+	t_model({'cricetulus': (['http://biopax.org/lvl3', 'http://reactome.org/cricetulus'], None)})
 
 def test_8():
-	t_model({'mycobacterium': ['http://biopax.org/lvl3', 'http://reactome.org/mycobacterium']})
+	t_model({'cricetulusWithoutSmallMolecules': (['http://biopax.org/lvl3', 'http://reactome.org/cricetulus'], DIR_TEST_CASES+'blacklists/cricetulusSmallMolecules.csv')})
 
 def test_9():
-	t_model({'virtualCase1': ['http://biopax.org/lvl3', 'http://virtualcases.org/1']})
+	t_model({'mycobacterium': (['http://biopax.org/lvl3', 'http://reactome.org/mycobacterium'], None)})
 
 def test_10():
-	t_model({'virtualCase2': ['http://biopax.org/lvl3', 'http://virtualcases.org/2']})
+	t_model({'virtualCase1': (['http://biopax.org/lvl3', 'http://virtualcases.org/1'], None)})
+
+def test_11():
+	t_model({'virtualCase2': (['http://biopax.org/lvl3', 'http://virtualcases.org/2'], None)})
 
 
 def t_model(feed_statement):
@@ -70,7 +73,8 @@ def t_model(feed_statement):
 
 	clean_test_env(DIR_TEST_CASES)
 
-	for model_name, uris in feed_statement.iteritems():
+	for model_name in feed_statement:
+		uris, blacklistPath = feed_statement[model_name]
 
 		# Build parameters for biopax2cadbiom
 		params = {
@@ -80,7 +84,7 @@ def t_model(feed_statement):
 			'pickleBackup': DIR_TEST_CASES + 'backup.p',
 			'testCasesDir': DIR_TEST_CASES,
 			'fullCompartmentsNames': True,
-			'blacklist': None,
+			'blacklist': blacklistPath,
 		}
 
 		biopax2cadbiom.main(params)
