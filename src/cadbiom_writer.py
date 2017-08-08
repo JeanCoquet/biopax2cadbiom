@@ -71,8 +71,11 @@ def createCadbiomFile(dictTransition, dictPhysicalEntity, nameModel, filePath):
 
 	# We want uri and cadbiom name for each entity in the model
 	# Get all names and their uris
-	cadbiomNames = {entity.cadbiomName: entity.uri
-						for entity in dictPhysicalEntity.values()}
+	cadbiomNames = {}
+	for entity in dictPhysicalEntity.values():
+		cadbiomNames[entity.cadbiomName] = entity.uri
+		for cadbiomNameWithMembers in entity.listOfCadbiomNames:
+			cadbiomNames[cadbiomNameWithMembers] = entity.uri
 
 	# Put these nodes in the model
 	# PS: why we don't do that in the following iteration of dictTransition ?
