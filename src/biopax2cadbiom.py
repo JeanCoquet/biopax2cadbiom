@@ -323,35 +323,36 @@ def addCadbiomNameToEntities(dictPhysicalEntity, dictLocation):
 	"""
 
 	# Get all names and entities for them
-	entities_names = defaultdict(set)
+	entities_cadbiom_names = defaultdict(set)
 	for uri, entity in dictPhysicalEntity.iteritems():
 		cadbiomName = getCadbiomName(entity, dictLocation)
-		entities_names[cadbiomName].add(entity)
+		entities_cadbiom_names[cadbiomName].add(entity)
+
+	# Set of unique cadbiom names
+	unique_cadbiom_names = {cadbiom_name for cadbiom_name, entities in entities_cadbiom_names.iteritems() if len(entities) == 1}
 
 	# Key: name, value: entities using this name
-	for cadbiom_name, entities in entities_names.iteritems():
+	for cadbiom_name, entities in entities_cadbiom_names.iteritems():
 		# test findunique directement ici ?
 		if len(entities) == 1:
 			# This name is used only 1 time
 			next(iter(entities)).cadbiomName = cadbiom_name
 		else:
 			# This name is used by many entities.
-			# We decide to replace it by a uniq name for each entity
-			# Key: uri, value: uniq name
-			uniq_synonyms = findUniqueSynonym(
+			# We decide to replace it by a unique name for each entity
+			# and convert it according to cadbiom rules
+			# Key: uri, value: unique name
+			unique_cadbiom_synonyms = findUniqueCadbiomSynonym(
+				cadbiom_name,
 				{entity.uri for entity in entities},
+				unique_cadbiom_names,
 				dictPhysicalEntity,
+				dictLocation,
 			)
 
-			# Set synonyms found to each entity and
-			# convert them according to cadbiom rules
+			# Set synonyms found to each entity 
 			for entity in entities:
-				cadbiomName = getCadbiomName(
-					entity,
-					dictLocation,
-					synonym=uniq_synonyms[entity.uri]
-				)
-				entity.cadbiomName = cadbiomName
+				entity.cadbiomName = unique_cadbiom_synonyms[entity.uri]
 
 	# Attribution of names for complex/classes with subentities
 	for uri, entity in dictPhysicalEntity.iteritems():
@@ -363,57 +364,71 @@ def addCadbiomNameToEntities(dictPhysicalEntity, dictLocation):
 			# Many sub components
 			# listOfFlatComponents will contain a list of subcomponent's names
 			for flatComponents in entity.listOfFlatComponents:
-				s = "_".join(
+				s = entity.cadbiomName+"_".join(
 					[dictPhysicalEntity[subEntity].cadbiomName
 						for subEntity in flatComponents]
 				)
 				entity.listOfCadbiomNames.append(s)
 
 
-def findUniqueSynonym(entities, dictPhysicalEntity):
+def findUniqueCadbiomSynonym(cadbiom_name, entity_uris, unique_cadbiom_names, dictPhysicalEntity, dictLocation):
 	"""create the dictionnary entityToUniqueSynonym from a
-	set of entities having the same name.
+	set of entity uris having the same cadbiom name.
 
 	.. todo:: COMMENTAIRES !
 
-	:param entities: a set set of entities having the same name
+	:param cadbiom_name: the redundant cadbiom name
+	:param entity_uris: a set set of entity_uris having the same name
+	:param unique_cadbiom_names: Set of unique cadbiom names already used
 	:param dictPhysicalEntity: Dictionnary of biopax physicalEntities,
 		created by the function query.getPhysicalEntities()
-	:type entities: set
+	:param dictLocation: Dictionnary of biopax locations created by
+		query.getLocations().
+		keys: CellularLocationVocabulary uri; values: Location object
+	:type cadbiom_name: str
+	:type entity_uris: set
+	:type unique_cadbiom_names: set
 	:type dictPhysicalEntity: <dict <str>: <PhysicalEntity>>
 		keys: uris; values entity objects
+	:type dictLocation: <dict>
 	:returns: entityToUniqueSynonym
 	:rtype: dict
 	"""
 
 	entityToUniqueSynonym = {}
 
-	while len(entities) != len(entityToUniqueSynonym):
+	while len(entity_uris) != len(entityToUniqueSynonym):
 		entityToUniqueSynonyms = {}
-		for entity in entities:
-			if entity not in entityToUniqueSynonym:
-				entityToUniqueSynonyms[entity] = \
-					copy.copy(dictPhysicalEntity[entity].synonyms)
+		for uri in entity_uris:
+			if uri not in entityToUniqueSynonym:
+				entityToUniqueSynonyms[uri] = {
+					getCadbiomName(dictPhysicalEntity[uri], dictLocation, synonym=synonymEntity)
+					for synonymEntity in dictPhysicalEntity[uri].synonyms
+				}
 
-		for entity1, entity2 in it.combinations(entityToUniqueSynonyms.keys(), 2):
-			entityToUniqueSynonyms[entity1] -= dictPhysicalEntity[entity2].synonyms
-			entityToUniqueSynonyms[entity2] -= dictPhysicalEntity[entity1].synonyms
+		for uri1, uri2 in it.combinations(entityToUniqueSynonyms.keys(), 2):
+			synonyms1 = copy.copy(entityToUniqueSynonyms[uri1])
+			synonyms2 = copy.copy(entityToUniqueSynonyms[uri2])
+			entityToUniqueSynonyms[uri1] -= synonyms2
+			entityToUniqueSynonyms[uri2] -= synonyms1
+
+		# Remove cadbiom names already used
+		for uri in entityToUniqueSynonyms:
+			entityToUniqueSynonyms[uri] -= unique_cadbiom_names
 
 		nbEntitiesSelected = 0
-		for entity_uri, synonyms in entityToUniqueSynonyms.iteritems():
-			if len(synonyms) > 0:
-				entityToUniqueSynonym[entity_uri] = \
-					"{}_{}".format(
-						dictPhysicalEntity[entity_uri].name,
-						next(iter(synonyms)), # take first element
-					)
+		for entity_uri, cadbiom_synonyms in entityToUniqueSynonyms.iteritems():
+			if len(cadbiom_synonyms) > 0:
+				cadbiomName = next(iter(cadbiom_synonyms)) # take first element
+				entityToUniqueSynonym[entity_uri] = cadbiomName
+				unique_cadbiom_names.add(cadbiomName)
 				nbEntitiesSelected += 1
 
 		if nbEntitiesSelected == 0:
 			for entity_version, entity_uri in enumerate(entityToUniqueSynonyms.keys(), 1):
 				entityToUniqueSynonym[entity_uri] = \
 					"{}_v{}".format(
-						dictPhysicalEntity[entity_uri].name,
+						cadbiom_name,
 						entity_version,
 					)
 
