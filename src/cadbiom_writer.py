@@ -6,6 +6,7 @@ This module is used export biopax processed data to cabiom model file format.
 # Standard imports
 import sympy
 from lxml import etree as ET
+from collections import defaultdict
 
 
 def formatCadbiomSympyCond(cadbiomSympyCond):
@@ -71,7 +72,7 @@ def createCadbiomFile(dictTransition, dictPhysicalEntity, nameModel, filePath):
 
 	# We want uri and cadbiom name for each entity in the model
 	# Get all names and their uris
-	cadbiomNames = {}
+	cadbiomNames = defaultdict(lambda: "")
 	for entity in dictPhysicalEntity.values():
 		cadbiomNames[entity.cadbiomName] = entity.uri
 		for cadbiomNameWithMembers in entity.listOfCadbiomNames:
