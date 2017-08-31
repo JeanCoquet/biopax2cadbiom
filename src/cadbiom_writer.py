@@ -2,11 +2,20 @@
 """
 This module is used export biopax processed data to cabiom model file format.
 """
+from __future__ import unicode_literals
+from __future__ import print_function
 
 # Standard imports
 import sympy
 from lxml import etree as ET
 from collections import defaultdict
+from cadbiom.models.guard_transitions.analyser.static_analysis \
+	import StaticAnalyzer
+from cadbiom.models.guard_transitions.translators.chart_xml \
+	import XmlVisitor
+import src.commons as cm
+
+LOGGER = cm.logger()
 
 
 def formatCadbiomSympyCond(cadbiomSympyCond):
@@ -32,6 +41,49 @@ def formatEventAndCond(setOfEventAndCond):
 		return s
 	else:
 		return "("+s+") default ("+formatEventAndCond(setOfEventAndCond)+")"
+
+class ErrorRep(object):
+	# Cf class CompilReporter(object):
+	# gt_gui/utils/reporter.py
+	def __init__(self):
+		self.context = ""
+		self.error = False
+
+	def display(self, mess):
+		self.error = True
+		LOGGER.error(">> Context: {}; {}".format(self.context, mess))
+		exit()
+
+	def display_info(self, mess):
+		LOGGER.error("-- Context: {}; {}".format(self.context, mess))
+		exit()
+
+	def set_context(self, cont):
+		self.context = cont
+
+
+def add_start_nodes(filePath):
+	"""
+	"""
+
+	# Build StaticAnalyzer with Error Reporter
+	staticanalyser = StaticAnalyzer(ErrorRep())
+	staticanalyser.build_from_chart_file(filePath)
+	sccs = staticanalyser.get_frontier_scc()
+	print(staticanalyser.get_statistics())
+
+	# Lexicographic sort of nodes in each Strongly Connected Components
+	for scc in sccs:
+		scc.sort(key=str.lower)
+		# Mark the first node as a frontier
+		print("first elem", scc[0])
+		staticanalyser.model.mark_as_frontier(scc[0])
+
+	# Save the model
+	xml = XmlVisitor(staticanalyser.model)
+	mfile = open(filePath,'w')
+	mfile.write(xml.return_xml())
+	mfile.close()
 
 
 def createCadbiomFile(dictTransition, dictPhysicalEntity, nameModel, filePath):
@@ -136,3 +188,6 @@ def createCadbiomFile(dictTransition, dictPhysicalEntity, nameModel, filePath):
 
 	tree = ET.ElementTree(model)
 	tree.write(filePath, pretty_print=True)
+
+	add_start_nodes(filePath)
+
