@@ -45,7 +45,7 @@ def order_results(query, orderby='?uri', limit=9999):
     http://vos.openlinksw.com/owiki/wiki/VOS/VirtTipsAndTricksHowToHandleBandwidthLimitExceed
     https://etl.linkedpipes.com/components/e-sparqlendpointselectscrollablecursor
 
-    .. warning:: WE ASSUME THAT THE SECOND OF THE QUERY CONTAINS THE FULL
+    .. warning:: WE ASSUME THAT THE SECOND LINE OF THE QUERY CONTAINS THE FULL
         SELECT COMMAND !!!
 
     :param arg1: Original normal SPARQL query.
@@ -91,9 +91,10 @@ def order_results(query, orderby='?uri', limit=9999):
 def load_sparql_endpoint():
     """Make a connection to SPARQL endpoint & retrieve a cursor.
 
-    :return: sparql cursor in version 2!
-             => this cursor is made for servers that return JSON by default !
-    :rtype: <SPARQLWrapper2>
+    :return: sparql cursor in version 1!
+        => we don't use SPARQLWrapper2 cursor that provides
+        SPARQLWrapper.SmartWrapper.Bindings-class to convert JSON from server.
+    :rtype: <SPARQLWrapper>
 
     """
 
@@ -106,11 +107,10 @@ def sparql_query(query):
     Yields all triplets returned by the query.
     The query need to yield three values, named object, relation and subject.
 
-    .. warning:: SPARQLWrapper2: http://rdflib.github.io/sparqlwrapper/doc/latest/
-              with SPARQLWrapper2, server must return JSON data !
-              if not, please use SPARQLWrapper:
-              sparql.setReturnFormat(SPARQLWrapper.JSON)
-              followed by: sparql.queryAndConvert()
+    :param: SPARQL query
+    :type: <str>
+    :return: Generator of results.
+    :rtype: <generator <tuple>>
     """
 
     LOGGER.debug(query)
@@ -148,27 +148,3 @@ def sparql_query(query):
     for binding in results['results']['bindings']:
         yield tuple(binding.get(var, dict()).get('value', None)
                     for var in results['head']['vars'])
-
-
-def get_all_names():
-    """Get all entities with names in graph"""
-
-    query = """
-    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    PREFIX biopax3: <http://www.biopax.org/release/biopax-level3.owl#>
-
-    SELECT DISTINCT ?pathway ?pathwayname
-    WHERE
-    {
-        ?pathway rdf:type biopax3:Pathway .
-        ?pathway biopax3:displayName ?pathwayname
-    }
-    LIMIT 100
-    """
-
-    for tab in sparql_query(query): print("ORIG:   ", tab)
-
-
-if __name__ == "__main__":
-    get_all_names()
-

@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-This module contains a list of functions to request Reactome
+This module contains a list of functions to query any SPARQL endpoint with
+BIOPax data.
 """
+from __future__ import unicode_literals
 
-from src import sparql_wrapper
+# Standard imports
 from collections import defaultdict
+
+# Custom imports
+from src import sparql_wrapper
 from classes import *
 
 
@@ -23,11 +28,15 @@ def getPathways(listOfGraphUri):
 		}
 	"""
 
-	for pathway, name  in sparql_wrapper.order_results(query, orderby='?pathway'):
-		if name != None:
+	for pathway, name  in sparql_wrapper.order_results(
+			query,
+			orderby='?pathway'):
+
+		if name is not None:
 			pathwayToName[pathway] = name
 		else:
 			pathwayToName[pathway] = pathway
+
 	return pathwayToName
 
 
@@ -49,12 +58,22 @@ def getPathwayAncestorsHierarchy(listOfGraphUri):
 	"""
 
 	pathwayToSuperPathways = defaultdict(set)
-	for pathway, superPathway in sparql_wrapper.sparql_query(query):
+	for pathway, superPathway in sparql_wrapper.order_results(
+			query,
+			orderby='?pathway'):
+
 		pathwayToSuperPathways[pathway].add(superPathway)
+
 	return pathwayToSuperPathways
 
 
 def getReactions(listOfGraphUri):
+	"""
+		.. warning:: si on fait 'rdfs:subClassOf* biopax3:Interaction'
+		alors on recupere aussi les 'Control', ce qui est doit etre fait
+		par getControls(listOfGraphUri)
+	"""
+
 	dictReaction = {}
 	query = """
 		SELECT DISTINCT ?reaction ?nameReaction ?reactionType ?pathway ?leftComponent ?rightComponent ?productComponent ?participantComponent
@@ -74,7 +93,6 @@ def getReactions(listOfGraphUri):
 			OPTIONAL { ?reaction biopax3:participant ?participantComponent . }
 		}
 	"""
-	# ATTENTION: si on fait 'rdfs:subClassOf* biopax3:Interaction' alors on recupere aussi les 'Control', ce qui est doit etre fait par getControls(listOfGraphUri)
 
 	for reaction, \
 		nameReaction, \
@@ -83,9 +101,14 @@ def getReactions(listOfGraphUri):
 		leftComponent, \
 		rightComponent, \
 		productComponent, \
-		participantComponent in sparql_wrapper.order_results(query, orderby='?reaction'):
+		participantComponent in sparql_wrapper.order_results(
+			query,
+			orderby='?reaction'):
+
 		if reaction not in dictReaction:
-			dictReaction[reaction] = Reaction(reaction, nameReaction, reactionType, productComponent, participantComponent)
+			dictReaction[reaction] = \
+				Reaction(reaction, nameReaction,
+						 reactionType, productComponent, participantComponent)
 		if pathway is not None:
 			dictReaction[reaction].pathways.add(pathway)
 		if leftComponent is not None:
@@ -130,7 +153,8 @@ def getPhysicalEntities(listOfGraphUri):
 		except KeyError:
 			# If not present, create it and the return it
 			new_entity = \
-				PhysicalEntity(entity_uri, name, location, entityType, entityRef)
+				PhysicalEntity(entity_uri, name,
+							   location, entityType, entityRef)
 
 			dictPhysicalEntity[entity_uri] = new_entity
 			return new_entity
@@ -189,10 +213,15 @@ def getLocations(listOfGraphUri):
 		}
 	"""
 
-	for location, locationTerm, dbRef, idRef in sparql_wrapper.order_results(query, orderby='?location'):
+	for location, locationTerm, dbRef, idRef in sparql_wrapper.order_results(
+		query,
+		orderby='?location'):
+
 		if location not in dictLocation:
 			dictLocation[location] = Location(location, locationTerm)
-		if idRef != None: dictLocation[location].idRefs.add((idRef,dbRef))
+		if idRef is not None:
+			dictLocation[location].idRefs.add((idRef,dbRef))
+
 	return dictLocation
 
 
@@ -229,7 +258,8 @@ def getControls(listOfGraphUri):
 		except KeyError:
 			# If not present, create it and the return it
 			new_control = \
-				Control(control_uri, classType, controlType, reaction, controller)
+				Control(control_uri, classType,
+						controlType, reaction, controller)
 
 			dictControl[control_uri] = new_control
 			return new_control
