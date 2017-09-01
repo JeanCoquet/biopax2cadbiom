@@ -245,3 +245,34 @@ def getControls(listOfGraphUri):
 			control.evidences.add(evidence)
 
 	return dictControl
+
+def getUniprots(listOfGraphUri, nameDB):
+
+	query = """
+		SELECT DISTINCT ?entity ?idRef
+	"""
+	for graphUri in listOfGraphUri:
+		query += "FROM <"+graphUri+">\n"
+	query += """
+		WHERE
+		{
+			?entity rdf:type ?type.
+			?type rdfs:subClassOf* biopax3:PhysicalEntity.
+			{
+				{
+					?entity biopax3:entityReference ?entityRef .
+					?entityRef biopax3:xref ?ref .
+				}
+				UNION
+				{ ?entity biopax3:xref ?ref .}
+			}
+			?ref biopax3:db ?dbRef .
+			?ref biopax3:id ?idRef .
+			FILTER (?dbRef='"""+nameDB+"""'^^XMLSchema:string)
+		}
+	"""
+
+	entityToUniprots = defaultdict(set)
+	for entity, uniprot in sparql_wrapper.sparql_query(query):
+		entityToUniprots[entity].add(uniprot)
+	return entityToUniprots
