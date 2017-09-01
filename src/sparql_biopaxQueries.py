@@ -23,7 +23,7 @@ def getPathways(listOfGraphUri):
 		}
 	"""
 
-	for pathway, name  in sparql_wrapper.sparql_query(query):
+	for pathway, name  in sparql_wrapper.order_results(query, orderby='?pathway'):
 		if name != None:
 			pathwayToName[pathway] = name
 		else:
@@ -83,12 +83,15 @@ def getReactions(listOfGraphUri):
 		leftComponent, \
 		rightComponent, \
 		productComponent, \
-		participantComponent in sparql_wrapper.sparql_query(query):
+		participantComponent in sparql_wrapper.order_results(query, orderby='?reaction'):
 		if reaction not in dictReaction:
 			dictReaction[reaction] = Reaction(reaction, nameReaction, reactionType, productComponent, participantComponent)
-		if pathway != None: dictReaction[reaction].pathways.add(pathway)
-		if leftComponent != None: dictReaction[reaction].leftComponents.add(leftComponent)
-		if rightComponent != None: dictReaction[reaction].rightComponents.add(rightComponent)
+		if pathway is not None:
+			dictReaction[reaction].pathways.add(pathway)
+		if leftComponent is not None:
+			dictReaction[reaction].leftComponents.add(leftComponent)
+		if rightComponent is not None:
+			dictReaction[reaction].rightComponents.add(rightComponent)
 
 	return dictReaction
 
@@ -142,7 +145,7 @@ def getPhysicalEntities(listOfGraphUri):
 		member, \
 		entityRef, \
 		dbRef, \
-		idRef in sparql_wrapper.sparql_query(query):
+		idRef in sparql_wrapper.order_results(query, orderby='?entity'):
 
 		# Entity creation if not already met
 		entity = get_entity(entity_uri)
@@ -186,7 +189,7 @@ def getLocations(listOfGraphUri):
 		}
 	"""
 
-	for location, locationTerm, dbRef, idRef in sparql_wrapper.sparql_query(query):
+	for location, locationTerm, dbRef, idRef in sparql_wrapper.order_results(query, orderby='?location'):
 		if location not in dictLocation:
 			dictLocation[location] = Location(location, locationTerm)
 		if idRef != None: dictLocation[location].idRefs.add((idRef,dbRef))
@@ -236,7 +239,7 @@ def getControls(listOfGraphUri):
 		controlType, \
 		reaction, \
 		controller, \
-		evidence in sparql_wrapper.sparql_query(query):
+		evidence in sparql_wrapper.order_results(query, orderby='?control'):
 
 		# Entity creation if not already met
 		control = get_entity(control_uri)

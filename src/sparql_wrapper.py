@@ -2,9 +2,10 @@
 """Module used to query SPARQL endpoint.
 
 """
+from __future__ import print_function
 
-from src.commons import SPARQL_PATH
-
+# Standard imports
+import itertools as it
 try:
     from SPARQLWrapper import SPARQLWrapper, JSON
 except ImportError:
@@ -15,8 +16,11 @@ except ImportError:
           pip install --user SPARQLWrapper")
 
 # Custom imports
-#from rdfstore import commons as cm
 from src import namespaces as nm
+import src.commons as cm
+
+LOGGER = cm.logger()
+
 
 # TODO revoir le json avec sparqlwrapper2
 def auto_add_prefixes(func):
@@ -30,6 +34,60 @@ def auto_add_prefixes(func):
     return fonction_modifiee
 
 
+def order_results(query, orderby='?uri', limit=9999):
+    """Build nested query for access points with restrictions.
+
+    Build the nested query by encapsulate the original between
+    the same SELECT command (minus useless DISTINCT clause),
+    and the OFFSET & LIMIT clauses at the end.
+    PS: don't forget to add the ORDER BY at the end of the original query.
+
+    http://vos.openlinksw.com/owiki/wiki/VOS/VirtTipsAndTricksHowToHandleBandwidthLimitExceed
+    https://etl.linkedpipes.com/components/e-sparqlendpointselectscrollablecursor
+
+    .. warning:: WE ASSUME THAT THE SECOND OF THE QUERY CONTAINS THE FULL
+        SELECT COMMAND !!!
+
+    :param arg1: Original normal SPARQL query.
+    :param arg2: Order queries by this variable.
+    :param arg3: Max items queried for 1 block.
+    :type arg1: <str>
+    :type arg2: <str>
+    :type arg3: <int>
+    :return: A generator of lines of results.
+    :rtype: <dict>
+    """
+
+    # Assume that the second line contains the SELECT command
+    second_query_line = query.split('\n')[1]
+    assert 'SELECT' in second_query_line
+
+    # Build the nested query by encapsulate the original between
+    # the same SELECT command (minus useless DISTINCT clause),
+    # and the OFFSET & LIMIT clauses at the end.
+    # PS: don't forget to add the ORDER BY at the end of the original query.
+    query_prefix = query.split('\n')[1].replace('DISTINCT', '') + '\nWHERE { '
+
+    for offset in it.count():
+
+        query_suffix = """
+                ORDER BY """ + orderby + """
+            }
+            OFFSET """ + str(limit*offset) + """
+            LIMIT """ + str(limit)
+
+        # Begin from 1 (avoid to break at limit-1 later)
+        for count, result in enumerate(
+            sparql_query(query_prefix + query + query_suffix), 1
+        ):
+            # print(result)
+            yield result
+
+        # The last block size is less than limit => we stop iteration
+        if count < limit:
+            break
+
+
 def load_sparql_endpoint():
     """Make a connection to SPARQL endpoint & retrieve a cursor.
 
@@ -39,7 +97,7 @@ def load_sparql_endpoint():
 
     """
 
-    return SPARQLWrapper(SPARQL_PATH, 'POST') # CHECK THIS
+    return SPARQLWrapper(cm.SPARQL_PATH, 'POST') # CHECK THIS
 
 
 @auto_add_prefixes
@@ -55,6 +113,7 @@ def sparql_query(query):
               followed by: sparql.queryAndConvert()
     """
 
+    LOGGER.debug(query)
     sparql = load_sparql_endpoint()
 
     # data in JSON format => proper python dict()
@@ -81,6 +140,7 @@ def sparql_query(query):
         #  }
         # }
 #        print(results)
+#        print("results: ", len(results['results']['bindings']))
     except Exception as e:
         print("SPARQL query error" + str(e))
         raise
