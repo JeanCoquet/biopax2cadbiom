@@ -324,12 +324,14 @@ def addCadbiomNameToEntities(dictPhysicalEntity, dictLocation):
 
 	# Get all names and entities for them
 	entities_cadbiom_names = defaultdict(set)
-	for uri, entity in dictPhysicalEntity.iteritems():
+	for entity in dictPhysicalEntity.values():
 		cadbiomName = getCadbiomName(entity, dictLocation)
 		entities_cadbiom_names[cadbiomName].add(entity)
 
-	# Set of unique cadbiom names
-	unique_cadbiom_names = {cadbiom_name for cadbiom_name, entities in entities_cadbiom_names.iteritems() if len(entities) == 1}
+	# Set of unique cadbiom names (not used more than 1 time)
+	unique_cadbiom_names = \
+		{cadbiom_name for cadbiom_name, entities
+			in entities_cadbiom_names.iteritems() if len(entities) == 1}
 
 	# Key: name, value: entities using this name
 	for cadbiom_name, entities in entities_cadbiom_names.iteritems():
@@ -350,7 +352,7 @@ def addCadbiomNameToEntities(dictPhysicalEntity, dictLocation):
 				dictLocation,
 			)
 
-			# Set synonyms found to each entity 
+			# Set synonyms found to each entity
 			for entity in entities:
 				entity.cadbiomName = unique_cadbiom_synonyms[entity.uri]
 
@@ -364,7 +366,7 @@ def addCadbiomNameToEntities(dictPhysicalEntity, dictLocation):
 			# Many sub components
 			# listOfFlatComponents will contain a list of subcomponent's names
 			for flatComponents in entity.listOfFlatComponents:
-				s = entity.cadbiomName+"_".join(
+				s = entity.cadbiomName + "_".join(
 					[dictPhysicalEntity[subEntity].cadbiomName
 						for subEntity in flatComponents]
 				)
