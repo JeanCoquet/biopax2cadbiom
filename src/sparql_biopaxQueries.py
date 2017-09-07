@@ -279,7 +279,13 @@ def getControls(listOfGraphUri):
 
 	return dictControl
 
-def getUniprots(listOfGraphUri, nameDB):
+
+def get_xref_from_database(listOfGraphUri, database_name):
+	"""Get corresponding xref from the given database name for all entities.
+
+	.. note:: Each ontology can name its database differently.
+		Ex: 'UniProt' vs 'uniprot knowledgebase', 'ChEBI' vs 'chebi'
+	"""
 
 	query = """
 		SELECT DISTINCT ?entity ?idRef
@@ -299,9 +305,8 @@ def getUniprots(listOfGraphUri, nameDB):
 				UNION
 				{ ?entity biopax3:xref ?ref .}
 			}
-			?ref biopax3:db ?dbRef .
+			?ref biopax3:db '""" + database_name + """'^^XMLSchema:string .
 			?ref biopax3:id ?idRef .
-			FILTER (?dbRef='"""+nameDB+"""'^^XMLSchema:string)
 		}
 	"""
 
