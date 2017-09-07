@@ -22,7 +22,6 @@ import src.commons as cm
 LOGGER = cm.logger()
 
 
-# TODO revoir le json avec sparqlwrapper2
 def auto_add_prefixes(func):
     """Decorator: Add all prefixes to the SPARQL query at first argument
     of sparql_query()
@@ -73,14 +72,15 @@ def order_results(query, orderby='?uri', limit=9999):
         query_suffix = """
                 ORDER BY """ + orderby + """
             }
-            OFFSET """ + str(limit*offset) + """
+            OFFSET """ + str(limit * offset) + """
             LIMIT """ + str(limit)
 
         # Begin from 1 (avoid to break at limit-1 later)
+        count = 1 # No result in the query => count not initialized
         for count, result in enumerate(
             sparql_query(query_prefix + query + query_suffix), 1
         ):
-            # print(result)
+            # print(result, offset, count)
             yield result
 
         # The last block size is less than limit => we stop iteration
