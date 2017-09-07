@@ -3,18 +3,10 @@
 This module is used to translate Biopax test cases to cadbiom models
 and compare them with the cadbiom model reference (if it exists).
 
-Tests:
+.. note:: To add a test, please add it to test_pool dictionnary.
+	key: name of the test,
+	value: tuple of a list of uris and path to a potential blacklist file.
 
-'homarus': ['http://biopax.org/lvl3', 'http://reactome.org/homarus'],
-'crithidia': ['http://biopax.org/lvl3', 'http://reactome.org/crithidia'],
-'vigna': ['http://biopax.org/lvl3', 'http://reactome.org/vigna'],
-'triticum': ['http://biopax.org/lvl3', 'http://reactome.org/triticum'],
-'cavia': ['http://biopax.org/lvl3', 'http://reactome.org/cavia'],
-'virtualCase1': ['http://biopax.org/lvl3', 'http://virtualcases.org/1'],
-'virtualCase2': ['http://biopax.org/lvl3', 'http://virtualcases.org/2'],
-'escherichia': ['http://biopax.org/lvl3', 'http://reactome.org/escherichia'],
-'cricetulus': ['http://biopax.org/lvl3', 'http://reactome.org/cricetulus'],
-'mycobacterium': ['http://biopax.org/lvl3', 'http://reactome.org/mycobacterium']
 """
 
 from __future__ import unicode_literals
@@ -22,94 +14,69 @@ from __future__ import print_function
 
 # Standard imports
 import os
+from functools import partial
+import pytest
 
 # Custom imports
 import src.biopax2cadbiom as biopax2cadbiom
 from src.commons import DIR_TEST_CASES
-#from src.commons import FILE_README
 from cadbiom_cmd.solution_repr import graph_isomorph_test
 
 
-def test_1():
-	t_model({'homarus': (['http://biopax.org/lvl3', 'http://reactome.org/homarus'], None)})
-
-def test_2():
-	t_model({'crithidia': (['http://biopax.org/lvl3', 'http://reactome.org/crithidia'], None)})
-
-def test_3():
-	t_model({'vigna': (['http://biopax.org/lvl3', 'http://reactome.org/vigna'], None)})
-
-def test_4():
-	t_model({'triticum': (['http://biopax.org/lvl3', 'http://reactome.org/triticum'], None)})
-
-def test_5():
-	t_model({'cavia': (['http://biopax.org/lvl3', 'http://reactome.org/cavia'], None)})
-
-def test_6():
-	t_model({'escherichia': (['http://biopax.org/lvl3', 'http://reactome.org/escherichia'], None)})
-
-def test_7():
-	t_model({'cricetulus': (['http://biopax.org/lvl3', 'http://reactome.org/cricetulus'], None)})
-
-def test_8():
-	t_model({'cricetulusWithoutSmallMolecules': (['http://biopax.org/lvl3', 'http://reactome.org/cricetulus'], DIR_TEST_CASES+'blacklists/cricetulusSmallMolecules.csv')})
-
-def test_9():
-	t_model({'mycobacterium': (['http://biopax.org/lvl3', 'http://reactome.org/mycobacterium'], None)})
-
-def test_10():
-	t_model({'virtualCase1': (['http://biopax.org/lvl3', 'http://virtualcases.org/1'], None)})
-
-def test_11():
-	t_model({'virtualCase2': (['http://biopax.org/lvl3', 'http://virtualcases.org/2'], None)})
+test_pool = {
+		'homarus': (['http://biopax.org/lvl3', 'http://reactome.org/homarus'], None),
+		'crithidia': (['http://biopax.org/lvl3', 'http://reactome.org/crithidia'], None),
+		'vigna': (['http://biopax.org/lvl3', 'http://reactome.org/vigna'], None),
+		'triticum': (['http://biopax.org/lvl3', 'http://reactome.org/triticum'], None),
+		'cavia': (['http://biopax.org/lvl3', 'http://reactome.org/cavia'], None),
+		'escherichia': (['http://biopax.org/lvl3', 'http://reactome.org/escherichia'], None),
+		'cricetulus': (['http://biopax.org/lvl3', 'http://reactome.org/cricetulus'], None),
+		'cricetulusWithoutSmallMolecules': (['http://biopax.org/lvl3', 'http://reactome.org/cricetulus'], DIR_TEST_CASES + 'blacklists/cricetulusSmallMolecules.csv'),
+		'mycobacterium': (['http://biopax.org/lvl3', 'http://reactome.org/mycobacterium'], None),
+		'virtualCase1': (['http://biopax.org/lvl3', 'http://virtualcases.org/1'], None),
+		'virtualCase2': (['http://biopax.org/lvl3', 'http://virtualcases.org/2'], None),
+	}
 
 
-def t_model(feed_statement):
+def t_model(model_name, uris, blacklist_file):
 	"""Build model & check it vs a reference model.
 
 	.. note:: convertFullGraph = True: We decompose entities in classes even
 		if they are not involved elsewhere.
 	"""
 
-	clean_test_env(DIR_TEST_CASES)
+	# Build parameters for biopax2cadbiom
+	params = {
+		'cadbiomFile': DIR_TEST_CASES + 'model.bcx',
+		'convertFullGraph': True,
+		'listOfGraphUri': uris,
+		'pickleBackup': DIR_TEST_CASES + 'backup.p',
+		'testCasesDir': DIR_TEST_CASES,
+		'fullCompartmentsNames': True,
+		'blacklist': blacklist_file,
+	}
 
-	for model_name in feed_statement:
-		uris, blacklistPath = feed_statement[model_name]
+	biopax2cadbiom.main(params)
 
-		# Build parameters for biopax2cadbiom
-		params = {
-			'cadbiomFile': DIR_TEST_CASES + 'model.bcx',
-			'convertFullGraph': True,
-			'listOfGraphUri': uris,
-			'pickleBackup': DIR_TEST_CASES + 'backup.p',
-			'testCasesDir': DIR_TEST_CASES,
-			'fullCompartmentsNames': True,
-			'blacklist': blacklistPath,
-		}
+	# Build files path
+	found_model = params['cadbiomFile']
+	ref_model = DIR_TEST_CASES + 'refs/' + model_name + '.bcx'
 
-		biopax2cadbiom.main(params)
+	# Run isomorphic test between the 2 models (constructed and reference)
+	check_state = \
+		graph_isomorph_test(
+			found_model,
+			ref_model,
+			output_dir=DIR_TEST_CASES,
+		)
 
-		# Build files path
-		found_model = params['cadbiomFile']
-		ref_model = DIR_TEST_CASES + 'refs/' + model_name + '.bcx'
-
-		# Run isomorphic test between the 2 models (constructed and reference)
-		check_state = \
-			graph_isomorph_test(
-				found_model,
-				ref_model,
-				output_dir=DIR_TEST_CASES,
-			)
-
-		# Check if tests are ok
-		for test, found_state in check_state.iteritems():
-			test_message = "{} test failed for '{}' !".format(
-				test.title(),
-				model_name,
-			)
-			assert found_state == True, test_message
-
-		clean_test_env(DIR_TEST_CASES)
+	# Check if tests are ok
+	for test, found_state in check_state.iteritems():
+		test_message = "{} test failed for '{}' !".format(
+			test.title(),
+			model_name,
+		)
+		assert found_state == True, test_message
 
 
 def clean_test_env(dir):
@@ -124,3 +91,20 @@ def clean_test_env(dir):
 		os.remove(dir + 'backup.p')
 	except OSError:
 		pass
+
+
+@pytest.yield_fixture(autouse=True)
+def fixture_me():
+	"""Fixture that is launched before and after all tests.
+
+	.. note:: autouse allows to launch the fixture without explicitly noting it.
+	"""
+
+	clean_test_env(DIR_TEST_CASES)
+
+
+for specie, params in test_pool.iteritems():
+	"""Create test functions based on test_pool variable."""
+	func = partial(t_model,
+				   model_name=specie, uris=params[0], blacklist_file=params[1])
+	globals()['test_' + specie] = func
