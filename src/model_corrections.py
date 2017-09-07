@@ -63,7 +63,8 @@ def add_start_nodes(filePath):
 	LOGGER.info(staticanalyser.get_statistics())
 
 	# Lexicographic sort of nodes in each Strongly Connected Components
-	for scc in sccs:
+	g = (scc for scc in sccs if len(scc) != 0)
+	for scc in g:
 		scc.sort(key=str.lower)
 		# Mark the first node as a frontier
 		LOGGER.debug("SCC {}; first lexicographic node:{}".format(scc, scc[0]))
