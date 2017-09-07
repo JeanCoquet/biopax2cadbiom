@@ -60,7 +60,7 @@ def add_start_nodes(filePath):
 	sccs = staticanalyser.get_frontier_scc()
 
 	LOGGER.info("{} SCC found: {}".format(len(sccs), sccs))
-	LOGGER.info(staticanalyser.get_statistics())
+	LOGGER.info("Before adding start nodes: " + staticanalyser.get_statistics())
 
 	# Lexicographic sort of nodes in each Strongly Connected Components
 	g = (scc for scc in sccs if len(scc) != 0)
@@ -70,9 +70,9 @@ def add_start_nodes(filePath):
 		LOGGER.debug("SCC {}; first lexicographic node:{}".format(scc, scc[0]))
 		staticanalyser.model.mark_as_frontier(scc[0])
 
-	# Save the model with "_edited" suffix in filename
+	# Save the model with "_without_scc" suffix in filename
 	xml = XmlVisitor(staticanalyser.model)
 	filename, file_extension = os.path.splitext(filePath)
-	mfile = open(filename + "_edited" + file_extension, 'w')
+	mfile = open(filename + "_without_scc" + file_extension, 'w')
 	mfile.write(xml.return_xml())
 	mfile.close()
