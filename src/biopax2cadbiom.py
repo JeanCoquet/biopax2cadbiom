@@ -1049,9 +1049,23 @@ def load_blacklisted_entities(blacklist):
 
 
 def main(params):
-	"""Entry point"""
+	"""Entry point
 
-	if not os.path.isfile(params['pickleBackup']):
+	Here we detect the presence of the pickle backup and of its settings.
+	If there is no backup or if the user doesn't want to use this functionality,
+	normal queries are made against the triplestore.
+
+	We construct a Cadbiom model with all the data retrieved.
+
+	"""
+
+	backup_file_status = os.path.isfile(params['pickleDir'])
+
+	# Set triplestore url
+	cm.SPARQL_PATH = params['triplestore']
+
+	# No pickle or not backup file => do queries
+	if not params['pickleBackup'] or not backup_file_status:
 
 		# Load entities to be blacklisted from conditions
 		blacklisted_entities = set()
@@ -1066,8 +1080,8 @@ def main(params):
 				blacklisted_entities
 			)
 
-		dictReaction	   = query.getReactions(params['listOfGraphUri'])
-		dictLocation	   = query.getLocations(params['listOfGraphUri'])
+		dictReaction	= query.getReactions(params['listOfGraphUri'])
+		dictLocation	= query.getLocations(params['listOfGraphUri'])
 		dictPathwayName = query.getPathways(params['listOfGraphUri'])
 
 		# Filter cofactors from controls and remove pathways as controllers
@@ -1078,33 +1092,50 @@ def main(params):
 				blacklisted_entities,
 			)
 
-		removeEntitiesBlacklistedFromReactions(dictReaction, blacklisted_entities)
+	# Pickle but no backup file => save queries
+	if params['pickleBackup'] and not backup_file_status:
 
-		addReactionToEntities(dictReaction, dictControl, dictPhysicalEntity)
-
-		detectMembersUsedInEntities(dictPhysicalEntity, params['convertFullGraph'])
-		developComplexs(dictPhysicalEntity)
-		addControllersToReactions(dictReaction, dictControl)
-		numerotateLocations(dictLocation, params['fullCompartmentsNames'])
-		addCadbiomNameToEntities(dictPhysicalEntity, dictLocation)
-		addCadbiomSympyCondToReactions(dictReaction, dictPhysicalEntity)
-
+		LOGGER.debug("Variables saving...")
 		dill.dump(
 			[
-				dictPhysicalEntity, dictReaction, dictControl, dictLocation,
+				dictPhysicalEntity, dictReaction, dictLocation, dictControl,
+				blacklisted_entities, params
 			],
-			open(params['pickleBackup'], "wb")
+			open(params['pickleDir'], "wb")
 		)
 
-	else:
-		dictPhysicalEntity, dictReaction, dictControl, dictLocation = \
-			dill.load(open(params['pickleBackup'], "rb"))
+	# Pickle and backup file => load queries
+	if params['pickleBackup'] and backup_file_status:
 
+		LOGGER.debug("Variables loading...")
+		dictPhysicalEntity, dictReaction, dictLocation, dictControl, \
+		blacklisted_entities, params_loaded = \
+			dill.load(open(params['pickleDir'], "rb"))
+
+		# Check if given parameters are equal to those loaded from backup
+		assert params_loaded == params, \
+			"The settings are different from those you have previously entered!"
+
+
+	# Do the magic...
+	removeEntitiesBlacklistedFromReactions(dictReaction, blacklisted_entities)
+
+	addReactionToEntities(dictReaction, dictControl, dictPhysicalEntity)
+
+	detectMembersUsedInEntities(dictPhysicalEntity, params['convertFullGraph'])
+	developComplexs(dictPhysicalEntity)
+	addControllersToReactions(dictReaction, dictControl)
+	numerotateLocations(dictLocation, params['fullCompartmentsNames'])
+	addCadbiomNameToEntities(dictPhysicalEntity, dictLocation)
+	addCadbiomSympyCondToReactions(dictReaction, dictPhysicalEntity)
+
+	# Compute final transitions
 	dictTransition = getTransitions(dictReaction, dictPhysicalEntity)
 
+	# Make the Cadbiom model
 	createCadbiomFile(
 		dictTransition,
 		dictPhysicalEntity,
-		params['cadbiomFile'].rsplit('/', 1)[-1].rsplit('.', 1)[0], # model name
+		str(params['listOfGraphUri']), # model name
 		params['cadbiomFile'] # path
 	)
