@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 """
-This module is used export biopax processed data to cabiom model file format.
+This module is used to export biopax processed data to cabiom model file format.
 """
+from __future__ import unicode_literals
+from __future__ import print_function
 
 # Standard imports
 import sympy
 from lxml import etree as ET
 from collections import defaultdict
+
+# Custom imports
+from src import model_corrections as mc
 
 
 def formatCadbiomSympyCond(cadbiomSympyCond):
@@ -136,3 +141,6 @@ def createCadbiomFile(dictTransition, dictPhysicalEntity, nameModel, filePath):
 
 	tree = ET.ElementTree(model)
 	tree.write(filePath, pretty_print=True)
+
+	# Remove SCC (Strongly Connected Components) from the model
+	mc.add_start_nodes(filePath)
