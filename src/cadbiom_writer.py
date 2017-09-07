@@ -8,13 +8,16 @@ from __future__ import print_function
 # Standard imports
 import sympy
 from lxml import etree as ET
-from collections import defaultdict
 
 # Custom imports
 from src import model_corrections as mc
 
 
 def formatCadbiomSympyCond(cadbiomSympyCond):
+	"""
+	:return type: <str>
+	"""
+
 	if cadbiomSympyCond == True:
 		return ''
 	elif type(cadbiomSympyCond) == sympy.Or:
@@ -23,20 +26,54 @@ def formatCadbiomSympyCond(cadbiomSympyCond):
 		return "("+" and ".join([formatCadbiomSympyCond(arg) for arg in cadbiomSympyCond.args])+")"
 	elif type(cadbiomSympyCond) == sympy.Not:
 		subCadbiomStrCond = formatCadbiomSympyCond(cadbiomSympyCond.args[0])
-		if subCadbiomStrCond[0] == "(": return "not"+subCadbiomStrCond
-		else: return "not("+subCadbiomStrCond+")"
+		if subCadbiomStrCond[0] == "(":
+			return "not"+subCadbiomStrCond
+		else:
+			return "not("+subCadbiomStrCond+")"
 
 	return str(cadbiomSympyCond)
 
 
 def formatEventAndCond(setOfEventAndCond):
+	"""
+	:return type: <str>
+	"""
+
 	# remove and return an arbitrary element from s; raises KeyError if empty ?????????????????????
 	event, cond = setOfEventAndCond.pop()
-	s = "("+event+") when ("+formatCadbiomSympyCond(cond)+")"
+	condition_str = '({}) when ({})'.format(event, formatCadbiomSympyCond(cond))
 	if len(setOfEventAndCond) == 0:
-		return s
+		return condition_str
 	else:
-		return "("+s+") default ("+formatEventAndCond(setOfEventAndCond)+")"
+		return '({}) default ({})'.format(condition_str,
+										  formatEventAndCond(setOfEventAndCond))
+
+
+def get_names_of_missing_physical_entities(dictPhysicalEntity):
+	"""Get uri and cadbiom name for each entity in the model.
+
+	:param: Dictionnary of uris as keys and PhysicalEntities as values.
+	:type: <dict>
+	:return: Dictionnary of names as keys and uris as values.
+	:rtype: <dict>
+	"""
+
+	# We want uri and cadbiom name for each entity in the model
+	# Get all names and their uris
+	cadbiomNames = {entity.cadbiomName: entity.uri
+						for entity in dictPhysicalEntity.values()}
+
+	# Fix: Some components are created by our scripts
+	# => ex: complexes with members involved that are classes
+	# PS: classes are already in dictPhysicalEntity
+	# PS: genes aren't in BioPAX format. getTransitions() from biopax2cadbiom
+	# added these entities.
+	cadbiomNames.update(
+		{cadbiomNameWithMembers: entity.uri
+			for entity in dictPhysicalEntity.values()
+			for cadbiomNameWithMembers in entity.listOfCadbiomNames}
+	)
+	return cadbiomNames
 
 
 def createCadbiomFile(dictTransition, dictPhysicalEntity, nameModel, filePath):
@@ -61,27 +98,10 @@ def createCadbiomFile(dictTransition, dictPhysicalEntity, nameModel, filePath):
 	"""
 
 	# Header
-	model = ET.Element("model", xmlns="http://cadbiom", name=nameModel)
+	model = ET.Element("model", xmlns="http://cadbiom.genouest.org/",
+					   name=nameModel)
 
-	# Get all nodes
-	cadbiomNodes = set()
-	for ori_ext_nodes, transitions in dictTransition.iteritems():
-
-		# In transitions (ori/ext)
-		cadbiomNodes.update(ori_ext_nodes)
-		# In conditions
-		cadbiomNodes.update(
-			str(atom) for transition in transitions
-			for atom in transition['sympyCond'].atoms()
-		)
-
-	# We want uri and cadbiom name for each entity in the model
-	# Get all names and their uris
-	cadbiomNames = defaultdict(lambda: "")
-	for entity in dictPhysicalEntity.values():
-		cadbiomNames[entity.cadbiomName] = entity.uri
-		for cadbiomNameWithMembers in entity.listOfCadbiomNames:
-			cadbiomNames[cadbiomNameWithMembers] = entity.uri
+	# Get all nodes in transitions
 
 	# Put these nodes in the model
 	# PS: why we don't do that in the following iteration of dictTransition ?
@@ -95,6 +115,20 @@ def createCadbiomFile(dictTransition, dictPhysicalEntity, nameModel, filePath):
 		   xloc="0.0", yloc="0.0"
 		).text = \
 			uri
+
+	cadbiomNodes = set()
+	for ori_ext_nodes, transitions in dictTransition.iteritems():
+
+		# In transitions (ori/ext)
+		cadbiomNodes.update(ori_ext_nodes)
+		# In conditions
+		cadbiomNodes.update(
+			str(atom) for transition in transitions
+			for atom in transition['sympyCond'].atoms()
+		)
+
+	# We want uri and cadbiom name for each entity in the model
+	cadbiomNames = get_names_of_missing_physical_entities(dictPhysicalEntity)
 
 	[write_nodes(cadbiomName, cadbiomNames[cadbiomName])
 		for cadbiomName in cadbiomNodes]
