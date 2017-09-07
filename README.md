@@ -8,43 +8,72 @@ Supplementary data: https://data-access.cesgo.org/index.php/s/bIbYc7B1dmnFGCd
 ## Help
 
     $ python -m src -h
-    usage: __main__.py [-h] [-vv [VERBOSE]] [--pickleBackup [PICKLEBACKUP]]
-                   [--listOfGraphUri LISTOFGRAPHURI [LISTOFGRAPHURI ...]]
-                   [--cadbiomFile [CADBIOMFILE]] [--convertFullGraph]
-                   [--fullCompartmentsNames] [--testCases]
+    usage: __main__.py [-h] [-vv [VERBOSE]] {tests,model} ...
 
-    biopax2cabiom.py is a script to transform a Biopax data from a RDBMS to a
-    Cabiom model.
+	biopax2cabiom is a script to transform a BioPAX RDF data from a triplestore to
+	a CADBIOM model.
 
-    optional arguments:
-    -h, --help            show this help message and exit
-    -vv [VERBOSE], --verbose [VERBOSE]
-    --pickleBackup [PICKLEBACKUP]
-                            output file path to save the script variables.
-    --listOfGraphUri LISTOFGRAPHURI [LISTOFGRAPHURI ...]
-                            list of RDF graph.
-    --cadbiomFile [CADBIOMFILE]
-                            output file path to generate the Cadbiom model.
-    --convertFullGraph    converts all entities to cadbiom nodes, even the
-                            entities not used.
-    --fullCompartmentsNames
-                            If set, compartments will be encoded on the base of
-                            their real names instead of numeric values.
-    --testCases           translates Biopax test cases to cadbiom models and
-                            compares them with the cadbiom model reference (if it
-                            exists).
+	optional arguments:
+	-h, --help            show this help message and exit
+	-vv [VERBOSE], --verbose [VERBOSE]
+
+	subcommands:
+	{tests,model}
+		tests               Translates BioPAX test cases to cadbiom models and
+							compares them with the cadbiom model reference (if it
+							exists).
+		model               Make CADBIOM model with BioPAX data obtained from a
+							triplestore.
+
+
+	$ python -m src model -h
+	usage: __main__.py model [-h] [--pickleBackup] [--pickleDir [PICKLEDIR]]
+							[--listOfGraphUri LISTOFGRAPHURI [LISTOFGRAPHURI ...]]
+							[--triplestore [TRIPLESTORE]]
+							[--cadbiomFile [CADBIOMFILE]] [--convertFullGraph]
+							[--fullCompartmentsNames] [--blacklist [BLACKLIST]]
+
+	optional arguments:
+	-h, --help            show this help message and exit
+	--pickleBackup        Allows to save/reuse the results of SPARQL queries.The
+							goal is to save querying time during tests with same
+							inputs. (default: False)
+	--pickleDir [PICKLEDIR]
+							Output file path to save the script variables.
+							(default: backupPickle/backup.p)
+	--listOfGraphUri LISTOFGRAPHURI [LISTOFGRAPHURI ...]
+							List of RDF graph to be queried on the triplestore.
+							(default: None)
+	--triplestore [TRIPLESTORE]
+							URL of the triplestore. (default: https://openstack-19
+							2-168-100-241.genouest.org/sparql/)
+	--cadbiomFile [CADBIOMFILE]
+							Output file path to generate the Cadbiom model.2
+							models are created: A basic model and a model without
+							strongly connected components that block CADBIOM
+							solver. (default: output/model.bcx)
+	--convertFullGraph    Converts all entities to cadbiom nodes, even the
+							entities not used. (default: False)
+	--fullCompartmentsNames
+							If set, compartments will be encoded on the base of
+							their real names instead of numeric values. (default:
+							False)
+	--blacklist [BLACKLIST]
+							If set, the entities in the given file will bebanished
+							from conditions of transitions (ex: cofactors or
+							entities of energy metabolism) (default: None)
 
 
 ## Examples of command line
 
-    python -m src --listOfGraphUri http://biopax.org/lvl3 http://www.pathwaycommons.org/reactome_v56
-    python -m src --pickleBackup backupPickle/backup.p --cadbiomFile output/tgfBetaTestModel.bcx --listOfGraphUri http://biopax.org/lvl3 http://www.pathwaycommons.org/tgfbrpathway
+    python -m src model --listOfGraphUri http://biopax.org/lvl3 http://www.pathwaycommons.org/reactome_v56
+    python -m src model --pickleBackup --pickleDir backupPickle/backup.p --cadbiomFile output/tgfBetaTestModel.bcx --listOfGraphUri http://biopax.org/lvl3 http://www.pathwaycommons.org/tgfbrpathway
 
 ## Test cases
 
 [//]: # (TESTS_START)
 ### {+ Reactome - Homarus_americanus.owl +}
-__Command__: `python -m src --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/homarus`
+__Command__: `python -m src model --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/homarus`
   * [x] Expected result
   * [x] No errors
   * [x] No unexpected reactions
@@ -54,7 +83,7 @@ __Command__: `python -m src --listOfGraphUri http://biopax.org/lvl3 http://react
 <br/>
 
 ### {+ Reactome - Crithidia_fasciculata.owl +}
-__Command__: `python -m src --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/crithidia`
+__Command__: `python -m src model --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/crithidia`
   * [x] Expected result
   * [x] No errors
   * [x] No unexpected reactions
@@ -64,7 +93,7 @@ __Command__: `python -m src --listOfGraphUri http://biopax.org/lvl3 http://react
 <br/>
 
 ### {+ Reactome - Vigna_radiata_var._radiata.owl +}
-__Command__: `python -m src --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/vigna`
+__Command__: `python -m src model --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/vigna`
   * [x] Expected result
   * [x] No errors
   * [x] No unexpected reactions
@@ -74,7 +103,7 @@ __Command__: `python -m src --listOfGraphUri http://biopax.org/lvl3 http://react
 <br/>
 
 ### {+ Reactome - Triticum_aestivum.owl +}
-__Command__: `python -m src --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/triticum`
+__Command__: `python -m src model --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/triticum`
   * [x] Expected result
   * [x] No errors
   * [x] No unexpected reactions
@@ -84,7 +113,7 @@ __Command__: `python -m src --listOfGraphUri http://biopax.org/lvl3 http://react
 <br/>
 
 ### {+ Reactome - Cavia_porcellus.owl +}
-__Command__: `python -m src --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/cavia`
+__Command__: `python -m src model --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/cavia`
   * [x] Expected result
   * [x] No errors
   * [x] No unexpected reactions
@@ -94,7 +123,7 @@ __Command__: `python -m src --convertFullGraph --listOfGraphUri http://biopax.or
 <br/>
 
 ### {+ Virtual Cases - virtualCase1.owl +}
-__Command__: `python -m src --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 http://virtualcases.org/1`
+__Command__: `python -m src model --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 http://virtualcases.org/1`
   * [x] Expected result
   * [x] No errors
   * [x] No unexpected reactions
@@ -104,7 +133,7 @@ __Command__: `python -m src --convertFullGraph --listOfGraphUri http://biopax.or
 <br/>
 
 ### {+ Virtual Cases - virtualCase2.owl +}
-__Command__: `python -m src --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 http://virtualcases.org/2`
+__Command__: `python -m src model --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 http://virtualcases.org/2`
   * [x] Expected result
   * [x] No errors
   * [x] No unexpected reactions
@@ -114,7 +143,7 @@ __Command__: `python -m src --convertFullGraph --listOfGraphUri http://biopax.or
 <br/>
 
 ### {+ Reactome - Escherichia_coli.owl +}
-__Command__: `python -m src --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/escherichia`
+__Command__: `python -m src model --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/escherichia`
   * [x] Expected result
   * [x] No errors
   * [x] No unexpected reactions
@@ -134,7 +163,7 @@ __Command__: `python -m src --convertFullGraph --listOfGraphUri http://biopax.or
 <br/>
 
 ### {+ Reactome - Mycobacterium_tuberculosis.owl +}
-__Command__: `python -m src --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/mycobacterium`
+__Command__: `python -m src model --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 http://reactome.org/mycobacterium`
   * [x] Expected result
   * [x] No errors
   * [x] No unexpected reactions
