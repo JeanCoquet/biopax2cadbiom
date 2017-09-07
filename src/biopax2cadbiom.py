@@ -854,6 +854,12 @@ def updateTransitions(reaction, dictPhysicalEntity, dictTransition):
 def getTransitions(dictReaction, dictPhysicalEntity):
 	"""Return transitions with (ori/ext nodes) and their respective events.
 
+	.. warning:: dictPhysicalEntity is modified in place.
+		We add "virtual nodes" for genes that are not in BioPAX format.
+
+	.. todo:: handle TRASH nodes => will crash cadbiom writer because
+		they are not entities...
+
 	:param dictReaction: Dictionnary of biopax reactions,
 		created by the function query.getReactions()
 	:param dictPhysicalEntity: Dictionnary of biopax physicalEntities,
@@ -872,11 +878,11 @@ def getTransitions(dictReaction, dictPhysicalEntity):
 	:rtype: <dict <tuple <str>, <str>>: <list <dict>>>
 	"""
 
-	def update_transitions(transitions, left_entity, right_entity, reaction):
+	def update_transitions(left_entity, right_entity, reaction):
 		""".. todo: Move this function and reuse it elsewhere.
 		"""
 
-		transitions[(left_entity, right_entity)].append(
+		dictTransition[(left_entity, right_entity)].append(
 			{
 				'event': reaction.event,
 				'reaction': reaction.uri,
@@ -894,8 +900,6 @@ def getTransitions(dictReaction, dictPhysicalEntity):
 	for reaction_uri, reaction in dictReaction.iteritems():
 
 		typeName = reaction.reactiontype
-
-
 
 		if typeName in reaction_types:
 			# ATTENTION: que faire si 'leftComponents'
@@ -917,7 +921,7 @@ def getTransitions(dictReaction, dictPhysicalEntity):
 
 				# /!\ This modifies dictTransition in place
 				update_transitions(
-					dictTransition, cadbiomL, "#TRASH", reaction
+					cadbiomL, "#TRASH", reaction
 				)
 
 		elif typeName == "TemplateReaction":
@@ -927,12 +931,22 @@ def getTransitions(dictReaction, dictPhysicalEntity):
 			# Sometimes, there is no entityR
 			# ex: http://pathwaycommons.org/pc2/#TemplateReaction_3903f25156da4c9000a93bbc85b18572).
 			# It is a bug in BioPax.
-			if entityR != None:
-				cadbiomR = dictPhysicalEntity[entityR].cadbiomName
+			if entityR is None:
+				LOGGER.error("BioPAX bug; Transcription reaction without" + \
+							 " product: " + reaction_uri)
+			else:
+				# Update dictPhysicalEntity with entities corresponding to genes
+				# PS: These entities are not in BioPAX formalisation
+				cadbiomR = dictPhysicalEntity[entityR]
+				cadbiomL = copy.deepcopy(cadbiomR)
+				cadbiomL.cadbiomName += '_gene'
+				cadbiomL.uri = reaction_uri
+				# /!\ This modifies dictPhysicalEntity in place
+				dictPhysicalEntity[reaction_uri] = cadbiomL
 
 				# /!\ This modifies dictTransition in place
 				update_transitions(
-					dictTransition, cadbiomR + "_gene", cadbiomR, reaction
+					cadbiomL.cadbiomName, cadbiomR.cadbiomName, reaction
 				)
 
 		elif typeName in regulator_types:
