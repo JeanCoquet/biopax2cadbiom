@@ -19,7 +19,7 @@ import pytest
 
 # Custom imports
 import src.biopax2cadbiom as biopax2cadbiom
-from src.commons import DIR_TEST_CASES
+from src.commons import DIR_TEST_CASES, SPARQL_PATH
 from cadbiom_cmd.solution_repr import graph_isomorph_test
 
 
@@ -50,10 +50,12 @@ def t_model(model_name, uris, blacklist_file):
 		'cadbiomFile': DIR_TEST_CASES + 'model.bcx',
 		'convertFullGraph': True,
 		'listOfGraphUri': uris,
-		'pickleBackup': DIR_TEST_CASES + 'backup.p',
+		'pickleBackup': False,
+		'pickleDir': DIR_TEST_CASES + 'backup.p', # osef, pickleBackup = False
 		'testCasesDir': DIR_TEST_CASES,
 		'fullCompartmentsNames': True,
 		'blacklist': blacklist_file,
+		'triplestore': SPARQL_PATH,
 	}
 
 	biopax2cadbiom.main(params)
