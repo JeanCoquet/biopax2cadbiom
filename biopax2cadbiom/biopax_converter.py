@@ -24,7 +24,7 @@
 # Contributor(s): Jean Coquet, Pierre Vignet
 
 """
-This module is used to translate biopax to a cadbiom model
+This module is used to translate BioPAX to a CADBIOM model.
 """
 
 from __future__ import print_function
@@ -33,9 +33,7 @@ from __future__ import print_function
 import copy, dill, sympy, os, re
 import itertools as it
 from collections import defaultdict
-import networkx as nx
 import csv
-from logging import DEBUG
 
 # Custom imports
 from biopax2cadbiom import sparql_biopaxQueries as query
@@ -258,17 +256,23 @@ def numerotateLocations(dictLocation, full_compartment_name=False):
 
 
 def getPathwayToPhysicalEntities(dictReaction, dictControl, dictPhysicalEntity):
-	"""This function creates the dictionnary pathwayToPhysicalEntities. The keys are the pathway IDs and the values are the set of entities involved in the pathway.
+	"""This function creates the dictionnary pathwayToPhysicalEntities.
 
-
-	:param dictReaction: the dictionnary of biopax reactions created by the function query.getReactions()
-	:param dictControl: the dictionnary of biopax controls created by the function query.getControls()
-	:param dictPhysicalEntity: the dictionnary of biopax physicalEntities created by the function query.getPhysicalEntities()
-	:type dictReaction: dict
-	:type dictControl: dict
-	:type dictPhysicalEntity: dict
+	:param dictReaction: Dictionnary of biopax reactions,
+		created by the function query.getReactions()
+	:param dictControl: Dictionnary of biopax controls,
+		created by the function query.getControls()
+	:param dictPhysicalEntity: Dictionnary of biopax physicalEntities,
+		created by the function query.getPhysicalEntities()
+	:type dictReaction: <dict <str>: <Reaction>>
+		keys: uris; values reaction objects
+	:type dictControl: <dict <str>: <Control>>
+		keys: uris; values control objects
+	:type dictPhysicalEntity: <dict <str>: <PhysicalEntity>>
+		keys: uris; values entity objects
 	:returns: pathwayToPhysicalEntities
-	:rtype: dict
+		keys: pathway uris; values set of entities involved in the pathway.
+	:rtype: <dict <str>: <set>>
 	"""
 	pathwayToPhysicalEntities = defaultdict(set)
 	allPhysicalEntities = set(dictPhysicalEntity.keys())
@@ -291,37 +295,6 @@ def getPathwayToPhysicalEntities(dictReaction, dictControl, dictPhysicalEntity):
 				pathwayToPhysicalEntities[pathway].add(dictControl[control].controller)
 
 	return pathwayToPhysicalEntities
-
-
-def createGraphOfInteractionsBetweenPathways(pathwayToName, pathwayToSuperPathways, dictTransition, dictReaction, pathGexfFile):
-	G = nx.DiGraph()
-	for pathway in pathwayToName:
-		s = pathwayToName[pathway]
-		#if len(pathwayToSuperPathways[pathway]) != 0: s = ""
-		G.add_node(pathway, label=s, Type='pathway')
-
-	for pathway in pathwayToSuperPathways:
-		for superPathway in pathwayToSuperPathways[pathway]:
-			G.add_edge(superPathway, pathway, Type='Inclusion of pathway')
-
-	cadbiomLToPathways = {}
-	cadbiomRToPathways = {}
-	for cadbiomL,cadbiomR in dictTransition:
-		pathways = set()
-		for transition in dictTransition[(cadbiomL,cadbiomR)]:
-			pathways |= dictReaction[transition.reaction].pathways
-		cadbiomLToPathways[cadbiomL] = pathways
-		cadbiomRToPathways[cadbiomR] = pathways
-
-	for cadbiomL,cadbiomR in it.product(cadbiomLToPathways.keys(),cadbiomRToPathways.keys()):
-		if cadbiomL == cadbiomR:
-			specificPathwaysR = cadbiomRToPathways[cadbiomR]-cadbiomLToPathways[cadbiomL]
-			specificPathwaysL = cadbiomLToPathways[cadbiomL]-cadbiomRToPathways[cadbiomR]
-			for pathwayR,pathwayL in it.product(specificPathwaysR,specificPathwaysL):
-				if not G.has_edge(pathwayR,pathwayL):
-					G.add_edge(pathwayR, pathwayL, Type='Sharing of cadbiom nodes')
-
-	nx.write_gexf(G, pathGexfFile)
 
 
 def addCadbiomNameToEntities(dictPhysicalEntity, dictLocation):
