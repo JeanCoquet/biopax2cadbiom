@@ -1,0 +1,3 @@
+include README.md
+include testCases/refs/*.bcx
+include testCases/blacklists/*.csv
