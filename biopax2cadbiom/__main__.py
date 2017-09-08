@@ -51,10 +51,19 @@ if __name__ == "__main__" :
 
 	# subparser: Make model
 	#
-	parser_make_model = subparsers.add_parser('model',
-		help=make_model.__doc__,
-		formatter_class=argparse.ArgumentDefaultsHelpFormatter
+	parser_make_model = subparsers.add_parser('model',\
+		help=make_model.__doc__,\
+		formatter_class=argparse.ArgumentDefaultsHelpFormatter\
 	)
+	# Triplestore settings
+	parser_make_model.add_argument('--listOfGraphUri', nargs='+', required=True,
+		help="List of RDF graph to be queried on the triplestore."
+	)
+	parser_make_model.add_argument('--triplestore', type=str, nargs='?',
+		default=cm.SPARQL_PATH,
+		help="URL of the triplestore."
+	)
+
 	# Pickle backup of queries
 	parser_make_model.add_argument('--pickleBackup', action='store_true',
 		help="Allows to save/reuse the results of SPARQL queries."
@@ -63,15 +72,6 @@ if __name__ == "__main__" :
 	parser_make_model.add_argument('--pickleDir', type=str, nargs='?',
 		default=cm.DIR_PICKLE + 'backup.p',
 		help="Output file path to save the script variables."
-	)
-
-	# Triplestore settings
-	parser_make_model.add_argument('--listOfGraphUri', nargs='+',
-		help="List of RDF graph to be queried on the triplestore."
-	)
-	parser_make_model.add_argument('--triplestore', type=str, nargs='?',
-		default=cm.SPARQL_PATH,
-		help="URL of the triplestore."
 	)
 
 	# Model options
