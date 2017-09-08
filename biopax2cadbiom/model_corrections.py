@@ -17,7 +17,7 @@ from cadbiom.models.guard_transitions.analyser.static_analysis \
 	import StaticAnalyzer
 from cadbiom.models.guard_transitions.translators.chart_xml \
 	import XmlVisitor
-import src.commons as cm
+import biopax2cadbiom.commons as cm
 
 LOGGER = cm.logger()
 

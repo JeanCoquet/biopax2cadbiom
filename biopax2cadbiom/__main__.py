@@ -5,8 +5,8 @@ import argparse
 import pytest
 
 # Custom imports
-import src.biopax2cadbiom as biopax2cadbiom
-import src.commons as cm
+import biopax2cadbiom.biopax_converter as b2c
+import biopax2cadbiom.commons as cm
 
 LOGGER = cm.logger()
 
@@ -24,7 +24,7 @@ def make_model(args):
 
 	# Take argparse arguments and put them in a standard dict
 	params = args_to_param(args)
-	biopax2cadbiom.main(params)
+	b2c.main(params)
 
 
 def args_to_param(args):

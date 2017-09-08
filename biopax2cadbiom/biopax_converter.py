@@ -14,9 +14,9 @@ import csv
 from logging import DEBUG
 
 # Custom imports
-from src import sparql_biopaxQueries as query
-from src.cadbiom_writer import createCadbiomFile
-import src.commons as cm
+from biopax2cadbiom import sparql_biopaxQueries as query
+from biopax2cadbiom.cadbiom_writer import createCadbiomFile
+import biopax2cadbiom.commons as cm
 
 LOGGER = cm.logger()
 
@@ -606,6 +606,10 @@ def addCadbiomSympyCondToReactions(dictReaction, dictPhysicalEntity):
 		else:
 			reaction.cadbiomSympyCond = cadbiomSympyCond
 
+#   print(cadbiomSympyCond)
+#   if event_number == 9492:
+#   raw_input('PAUSE')
+
 		reaction.event = "_h_" + str(event_number)
 
 
@@ -1131,6 +1135,66 @@ def main(params):
 
 	# Compute final transitions
 	dictTransition = getTransitions(dictReaction, dictPhysicalEntity)
+
+
+	if LOGGER.getEffectiveLevel() == DEBUG:
+
+		g = [entity for entity in dictPhysicalEntity.itervalues()
+			 if entity.membersUsed]
+
+
+
+		g_uris = { entity.uri for entity in g}
+		g1 = {entity for entity in dictPhysicalEntity.itervalues()
+				if len(entity.components & g_uris) > 0}
+
+#
+#	 print(g1, len(g1))
+#	 print(len(g_uris))
+#	 exit()
+
+
+		# Dump classes
+		with open('classes_with_used_memebers.csv', 'w') as fd:
+
+			[fd.write('{};{}\n'.format(entity.cadbiomName, entity.uri))
+				for entity in g]
+
+
+		# Load degree informations
+		import json
+		with open('nouveau 27juin.json') as fd:
+			model_infos = json.load(fd)
+
+		max_degree = max(model_infos['degree'].values())
+
+		from collections import Counter
+		all_names = Counter()
+		for entity in g:
+			print(entity.cadbiomName)
+			for subentity_uri in entity.members:
+				subentity = dictPhysicalEntity[subentity_uri]
+				if len(subentity.reactions) != 0:
+
+					names = [subentity.cadbiomName] if len(subentity.listOfCadbiomNames) == 0 else  subentity.listOfCadbiomNames
+					all_names.update(dict.fromkeys(names, len(subentity.reactions)))
+
+		for entity in g1:
+			if len(entity.listOfCadbiomNames) > 1:
+				all_names.update(dict.fromkeys(list(entity.listOfCadbiomNames), len(entity.reactions)))
+
+		with open('members_of_dissociated_classes.csv', 'w') as fd:
+			[fd.write('{};{};{}\n'.format(
+					name,
+					str(model_infos['degree'].get(name, 'NOT FOUND')).replace('.', ','), # French format thanks to Excel & Calc...
+					nb_reac,
+				)) for name, nb_reac in all_names.iteritems()]
+
+			fd.write("MAX DEGREE;" + str(max_degree) + '\n')
+
+
+
+
 
 	# Make the Cadbiom model
 	createCadbiomFile(

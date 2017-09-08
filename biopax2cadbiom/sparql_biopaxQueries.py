@@ -9,7 +9,7 @@ from __future__ import unicode_literals
 from collections import defaultdict
 
 # Custom imports
-from src import sparql_wrapper
+from biopax2cadbiom import sparql_wrapper
 from classes import *
 
 

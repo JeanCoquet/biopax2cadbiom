@@ -16,8 +16,8 @@ except ImportError:
           pip install --user SPARQLWrapper")
 
 # Custom imports
-from src import namespaces as nm
-import src.commons as cm
+from biopax2cadbiom import namespaces as nm
+import biopax2cadbiom.commons as cm
 
 LOGGER = cm.logger()
 

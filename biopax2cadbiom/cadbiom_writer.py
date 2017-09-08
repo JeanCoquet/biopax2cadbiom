@@ -10,7 +10,7 @@ import sympy
 from lxml import etree as ET
 
 # Custom imports
-from src import model_corrections as mc
+from biopax2cadbiom import model_corrections as mc
 
 
 def formatCadbiomSympyCond(cadbiomSympyCond):

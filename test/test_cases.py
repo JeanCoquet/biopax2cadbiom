@@ -18,8 +18,8 @@ from functools import partial
 import pytest
 
 # Custom imports
-import src.biopax2cadbiom as biopax2cadbiom
-from src.commons import DIR_TEST_CASES, SPARQL_PATH
+import biopax2cadbiom.biopax_converter as b2c
+from biopax2cadbiom.commons import DIR_TEST_CASES, SPARQL_PATH
 from cadbiom_cmd.solution_repr import graph_isomorph_test
 
 
@@ -58,7 +58,7 @@ def t_model(model_name, uris, blacklist_file):
 		'triplestore': SPARQL_PATH,
 	}
 
-	biopax2cadbiom.main(params)
+	b2c.main(params)
 
 	# Build files path
 	found_model = params['cadbiomFile']
