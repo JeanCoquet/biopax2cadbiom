@@ -26,17 +26,22 @@
 # Standard imports
 from logging.handlers import RotatingFileHandler
 import logging
+import tempfile
+import pkg_resources
 
 # Paths
-DIR_LOGS            = 'logs/'
+DIR_LOGS            = tempfile.gettempdir() + '/'
 DIR_DATA            = 'data/'
-DIR_PICKLE          = 'backupPickle/'
+DIR_PICKLE          = DIR_LOGS + 'backupPickle/'
 DIR_OUTPUT          = 'output/'
-DIR_TEST_CASES      = 'testCases/'
+DIR_TEST_CASES      = pkg_resources.resource_filename(
+                        __name__,       # current package name
+                        '../testCases/'
+                    )
 
 # Logging
 LOGGER_NAME         = "biopax2cadbiom"
-LOG_LEVEL           = logging.DEBUG
+LOG_LEVEL           = logging.INFO
 
 # SPARQL endpoint
 SPARQL_PATH         = "https://openstack-192-168-100-241.genouest.org/sparql/"

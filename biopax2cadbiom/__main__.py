@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
+"""Entry point and argument parser for cadbiom2biopax"""
 
 # Standard imports
 import argparse
 import pytest
+import pkg_resources
 
 # Custom imports
 import biopax2cadbiom.biopax_converter as b2c
@@ -11,12 +13,19 @@ import biopax2cadbiom.commons as cm
 LOGGER = cm.logger()
 
 
-def run_tests(args):
+def run_tests(dummy_args):
 	"""Translates BioPAX test cases to cadbiom models and compares
 	them with the cadbiom model reference (if it exists).
 	"""
 
-	pytest.main(['./'])
+	# Run pytest on the current package directory (where 'test' dir is)
+	package_dir = pkg_resources.resource_filename(
+		__name__,
+		'../'
+	)
+
+	pytest.main([package_dir])
+	exit()
 
 
 def make_model(args):
@@ -32,7 +41,8 @@ def args_to_param(args):
 	return {k: v for k, v in vars(args).items() if k != 'func'}
 
 
-if __name__ == "__main__" :
+def main():
+	"""Entry point"""
 
 	parser = argparse.ArgumentParser(
 		description="biopax2cabiom is a script to transform a BioPAX RDF data \

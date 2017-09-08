@@ -43,7 +43,7 @@ import pytest
 
 # Custom imports
 import biopax2cadbiom.biopax_converter as b2c
-from biopax2cadbiom.commons import DIR_TEST_CASES, SPARQL_PATH
+from biopax2cadbiom.commons import DIR_TEST_CASES, DIR_LOGS, SPARQL_PATH
 from cadbiom_cmd.solution_repr import graph_isomorph_test
 
 
@@ -71,11 +71,11 @@ def t_model(model_name, uris, blacklist_file):
 
 	# Build parameters for biopax2cadbiom
 	params = {
-		'cadbiomFile': DIR_TEST_CASES + 'model.bcx',
+		'cadbiomFile': DIR_LOGS + 'model.bcx',
 		'convertFullGraph': True,
 		'listOfGraphUri': uris,
 		'pickleBackup': False,
-		'pickleDir': DIR_TEST_CASES + 'backup.p', # osef, pickleBackup = False
+		'pickleDir': DIR_LOGS + 'backup.p', # osef, pickleBackup = False
 		'testCasesDir': DIR_TEST_CASES,
 		'fullCompartmentsNames': True,
 		'blacklist': blacklist_file,
@@ -93,7 +93,6 @@ def t_model(model_name, uris, blacklist_file):
 		graph_isomorph_test(
 			found_model,
 			ref_model,
-			output_dir=DIR_TEST_CASES,
 		)
 
 	# Check if tests are ok
