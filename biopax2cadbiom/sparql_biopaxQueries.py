@@ -111,10 +111,22 @@ def getReactions(listOfGraphUri):
 			?reactionType rdfs:subClassOf* biopax3:Interaction .
 			OPTIONAL { ?reaction biopax3:displayName ?nameReaction . }
 			OPTIONAL { ?pathway biopax3:pathwayComponent ?reaction . }
-			OPTIONAL { ?reaction biopax3:left ?leftComponent . }
-			OPTIONAL { ?reaction biopax3:right ?rightComponent . }
-			OPTIONAL { ?reaction biopax3:product ?productComponent . }
-			OPTIONAL { ?reaction biopax3:participant ?participantComponent . }
+			OPTIONAL {
+				?reaction biopax3:left ?leftComponent .
+				FILTER NOT EXISTS { ?leftComponent rdf:type biopax3:Pathway }
+			}
+			OPTIONAL {
+				?reaction biopax3:right ?rightComponent .
+				FILTER NOT EXISTS { ?rightComponent rdf:type biopax3:Pathway }
+			}
+			OPTIONAL {
+				?reaction biopax3:product ?productComponent .
+				FILTER NOT EXISTS { ?productComponent rdf:type biopax3:Pathway }
+			}
+			OPTIONAL {
+				?reaction biopax3:participant ?participantComponent .
+				FILTER NOT EXISTS { ?participantComponent rdf:type biopax3:Pathway }
+			}
 		}
 	"""
 
