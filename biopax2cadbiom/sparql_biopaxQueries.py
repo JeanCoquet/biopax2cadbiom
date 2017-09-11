@@ -279,9 +279,9 @@ def getControls(listOfGraphUri):
 		{
 			?control rdf:type ?type.
 			?type rdfs:subClassOf* biopax3:Control .
-			OPTIONAL { ?control biopax3:controlled ?reaction . }
-			OPTIONAL { ?control biopax3:controlType ?controlType . }
-			OPTIONAL { ?control biopax3:controller ?controller . }
+			?control biopax3:controlled ?reaction .
+			?control biopax3:controlType ?controlType .
+			?control biopax3:controller ?controller .
 			OPTIONAL { ?control biopax3:evidence ?evidence . }
 		}
 	"""
