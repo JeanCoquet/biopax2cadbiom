@@ -1045,6 +1045,33 @@ def load_blacklisted_entities(blacklist):
 		return {line[0] for line in reader}
 
 
+def createControlFromEntityOnBothSides(dictReaction, dictControl):
+	"""Remove from reaction the entity on both sides and create a control instead.
+
+	:param dictReaction: Dictionnary of biopax reactions,
+		created by the function query.getReactions()
+	:param dictControl: Dictionnary of biopax controls,
+		created by the function query.getControls()
+	:type dictReaction: <dict <str>: <Reaction>>
+		keys: uris; values reaction objects
+	:type dictControl: <dict <str>: <Control>>
+		keys: uris; values control objects
+	"""
+
+	for reaction_uri, reaction in dictReaction.iteritems():
+		# extract entity_uri at the same time in reaction.leftComponents and in reaction.rightComponents
+		for entityOnBothSides_uri in reaction.leftComponents&reaction.rightComponents:
+			# remove from reaction the entity on both sides
+			reaction.leftComponents.remove(entityOnBothSides_uri)
+			reaction.rightComponents.remove(entityOnBothSides_uri)
+
+			# create a entity control of the reaction 
+			# that entity is not in original BioPAX data
+			# /!\ the control uri is formatted by reactionUri+entityUri
+			control = Control(reaction.uri+"+"+entityOnBothSides_uri, "entityOnBothSides", "ACTIVATION", reaction.uri, entityOnBothSides_uri)
+			dictControl[control.uri] = control
+
+
 def main(params):
 	"""Entry point
 
@@ -1116,6 +1143,8 @@ def main(params):
 
 	# Do the magic...
 	removeEntitiesBlacklistedFromReactions(dictReaction, blacklisted_entities)
+
+	createControlFromEntityOnBothSides(dictReaction, dictControl)
 
 	addReactionToEntities(dictReaction, dictControl, dictPhysicalEntity)
 
