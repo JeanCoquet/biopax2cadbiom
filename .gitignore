@@ -15,3 +15,11 @@ pip-selfcheck.json
 logs/*
 .cache/*
 backupPickle/*
+*egg-info/
+graphs/
+poc/
+src/
+dist/
+*.csv
+*.txt
+*.json

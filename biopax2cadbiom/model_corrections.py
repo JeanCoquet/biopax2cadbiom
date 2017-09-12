@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # MIT License
 #
-# Copyright (c) 2017 IRISA, Jean Coquet, Pierre Vignet
+# Copyright (c) 2017 IRISA, Jean Coquet, Pierre Vignet, Mateo Boudet
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 #
-# Contributor(s): Jean Coquet, Pierre Vignet
+# Contributor(s): Jean Coquet, Pierre Vignet, Mateo Boudet
 
 """
 This module is used to bring some corrections to Cadbiom model processed before.
