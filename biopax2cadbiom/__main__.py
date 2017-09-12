@@ -139,3 +139,8 @@ def main():
 
 	# Launch associated command
 	args.func(args)
+
+
+if __name__ == "__main__":
+
+	main()
