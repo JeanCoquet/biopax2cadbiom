@@ -1,9 +1,25 @@
 # biopax2cadbiom
 
 Convert Biopax data (http://biopax.org) to Cabiom model (http://cadbiom.genouest.org).
-Supplementary data: https://data-access.cesgo.org/index.php/s/bIbYc7B1dmnFGCd
 
 Supplementary data: https://data-access.cesgo.org/index.php/s/bIbYc7B1dmnFGCd
+
+
+## Installation
+
+From PyPI:
+
+	$ pip install biopax2cadbiom
+
+
+From sources for development:
+
+	# Install the package for developers...
+	$ python2.7 setup.py develop
+
+	# Uninstalling the package for developers...
+	$ python2.7 setup.py develop --uninstall
+
 
 ## Help
 
