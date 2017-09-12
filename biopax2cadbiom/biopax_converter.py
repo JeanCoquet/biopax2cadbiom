@@ -39,7 +39,7 @@ import csv
 from biopax2cadbiom import sparql_biopaxQueries as query
 from biopax2cadbiom.cadbiom_writer import createCadbiomFile
 import biopax2cadbiom.commons as cm
-from classes import *
+from classes import Control
 
 LOGGER = cm.logger()
 
