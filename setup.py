@@ -99,7 +99,7 @@ setup(
         ],
     },
 
-    install_requires=['cadbiom', 'SPARQLWrapper', 'sympy', 'lxml', 'dill'],
+    install_requires=['cadbiom>0.1.2', 'SPARQLWrapper', 'sympy', 'lxml', 'dill'],
 
     # Tests
     tests_require=['pytest', 'cadbiom-cmd'],

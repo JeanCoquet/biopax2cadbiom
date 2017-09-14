@@ -34,7 +34,7 @@ import sympy
 from lxml import etree as ET
 
 # Custom imports
-from biopax2cadbiom import model_corrections as mc
+import cadbiom.models.guard_transitions.analyser.model_corrections as mc
 
 
 def formatCadbiomSympyCond(cadbiomSympyCond):
@@ -100,7 +100,8 @@ def get_names_of_missing_physical_entities(dictPhysicalEntity):
 	return cadbiomNames
 
 
-def createCadbiomFile(dictTransition, dictPhysicalEntity, nameModel, filePath):
+def createCadbiomFile(dictTransition, dictPhysicalEntity, nameModel, filePath,
+					  no_scc_fix):
 	"""Export data into a cadbiom model file format.
 
 	:param arg1: Dictionnary of transitions and their respective set of events.
@@ -200,5 +201,7 @@ def createCadbiomFile(dictTransition, dictPhysicalEntity, nameModel, filePath):
 	tree = ET.ElementTree(model)
 	tree.write(filePath, pretty_print=True)
 
-	# Remove SCC (Strongly Connected Components) from the model
-	mc.add_start_nodes(filePath)
+	# Remove SCC (Strongly Connected Components) if needed
+	if not no_scc_fix:
+		# Make a new model file (with "_without_scc" suffix in filename)
+		mc.add_start_nodes(filePath)

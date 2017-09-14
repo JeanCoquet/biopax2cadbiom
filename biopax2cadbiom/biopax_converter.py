@@ -1164,5 +1164,6 @@ def main(params):
 		dictTransition,
 		dictPhysicalEntity,
 		str(params['listOfGraphUri']), # model name
-		params['cadbiomFile'] # path
+		params['cadbiomFile'],		 # model path
+		params['no_scc_fix'],
 	)

@@ -46,7 +46,8 @@ import biopax2cadbiom.biopax_converter as b2c
 from biopax2cadbiom.commons import DIR_TEST_CASES, DIR_LOGS, SPARQL_PATH
 from cadbiom_cmd.solution_repr import graph_isomorph_test
 
-
+# Tests and params
+# tuple: 0: list of uris, 1: blacklist_file
 test_pool = {
 		'homarus': (['http://biopax.org/lvl3', 'http://reactome.org/homarus'], None),
 		'crithidia': (['http://biopax.org/lvl3', 'http://reactome.org/crithidia'], None),
@@ -76,10 +77,10 @@ def t_model(model_name, uris, blacklist_file):
 		'listOfGraphUri': uris,
 		'pickleBackup': False,
 		'pickleDir': DIR_LOGS + 'backup.p', # osef, pickleBackup = False
-		'testCasesDir': DIR_TEST_CASES,
 		'fullCompartmentsNames': True,
 		'blacklist': blacklist_file,
 		'triplestore': SPARQL_PATH,
+		'no_scc_fix': False, # Change this if you don't want SCC fix
 	}
 
 	b2c.main(params)
