@@ -1066,7 +1066,7 @@ def createControlFromEntityOnBothSides(dictReaction, dictControl):
 			reaction.leftComponents.remove(entityOnBothSides_uri)
 			reaction.rightComponents.remove(entityOnBothSides_uri)
 
-			# create a entity control of the reaction 
+			# create a entity control of the reaction
 			# that entity is not in original BioPAX data
 			# /!\ the control uri is formatted by reactionUri+entityUri
 			control = Control(reaction.uri+"+"+entityOnBothSides_uri, "entityOnBothSides", "ACTIVATION", reaction.uri, entityOnBothSides_uri)
@@ -1084,10 +1084,10 @@ def main(params):
 
 	"""
 
-	backup_file_status = os.path.isfile(params['pickleDir'])
-
 	# Set triplestore url
 	cm.SPARQL_PATH = params['triplestore']
+
+	backup_file_status = os.path.isfile(params['pickleDir'])
 
 	# No pickle or not backup file => do queries
 	if not params['pickleBackup'] or not backup_file_status:

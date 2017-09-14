@@ -123,6 +123,10 @@ def main():
 		help="If set, compartments will be encoded on the base "
 			 "of their real names instead of numeric values."
 	)
+	parser_make_model.add_argument('--no_scc_fix', action='store_true',
+		help="If set, strongly connected components will NOT be fixed in "
+			 "a second model file."
+	)
 	parser_make_model.add_argument('--blacklist', type=str, nargs='?',
 		help="If set, the entities in the given file will be"
 			 "banished from conditions of transitions "
