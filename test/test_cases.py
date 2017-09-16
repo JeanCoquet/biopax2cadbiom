@@ -47,23 +47,24 @@ from biopax2cadbiom.commons import DIR_TEST_CASES, DIR_LOGS, SPARQL_PATH
 from cadbiom_cmd.solution_repr import graph_isomorph_test
 
 # Tests and params
-# tuple: 0: list of uris, 1: blacklist_file
+# tuple: 0: list of uris, 1: blacklist_file, 2: convertFullGraph
 test_pool = {
-		'homarus': (['http://biopax.org/lvl3', 'http://reactome.org/homarus'], None),
-		'crithidia': (['http://biopax.org/lvl3', 'http://reactome.org/crithidia'], None),
-		'vigna': (['http://biopax.org/lvl3', 'http://reactome.org/vigna'], None),
-		'triticum': (['http://biopax.org/lvl3', 'http://reactome.org/triticum'], None),
-		'cavia': (['http://biopax.org/lvl3', 'http://reactome.org/cavia'], None),
-		'escherichia': (['http://biopax.org/lvl3', 'http://reactome.org/escherichia'], None),
-		'cricetulus': (['http://biopax.org/lvl3', 'http://reactome.org/cricetulus'], None),
-		'cricetulusWithoutSmallMolecules': (['http://biopax.org/lvl3', 'http://reactome.org/cricetulus'], DIR_TEST_CASES + 'blacklists/cricetulusSmallMolecules.csv'),
-		'mycobacterium': (['http://biopax.org/lvl3', 'http://reactome.org/mycobacterium'], None),
-		'virtualCase1': (['http://biopax.org/lvl3', 'http://virtualcases.org/1'], None),
-		'virtualCase2': (['http://biopax.org/lvl3', 'http://virtualcases.org/2'], None),
+		#'homarus': (['http://biopax.org/lvl3', 'http://reactome.org/homarus'], None, True),
+		#'crithidia': (['http://biopax.org/lvl3', 'http://reactome.org/crithidia'], None, True),
+		#'vigna': (['http://biopax.org/lvl3', 'http://reactome.org/vigna'], None, True),
+		#'triticum': (['http://biopax.org/lvl3', 'http://reactome.org/triticum'], None, True),
+		#'cavia': (['http://biopax.org/lvl3', 'http://reactome.org/cavia'], None, True),
+		#'escherichia': (['http://biopax.org/lvl3', 'http://reactome.org/escherichia'], None, True),
+		#'cricetulus': (['http://biopax.org/lvl3', 'http://reactome.org/cricetulus'], None, True),
+		#'cricetulusWithoutSmallMolecules': (['http://biopax.org/lvl3', 'http://reactome.org/cricetulus'], DIR_TEST_CASES + 'blacklists/cricetulusSmallMolecules.csv', True),
+		#'mycobacterium': (['http://biopax.org/lvl3', 'http://reactome.org/mycobacterium'], None, True),
+		#'virtualCase1': (['http://biopax.org/lvl3', 'http://virtualcases.org/1'], None, True),
+		#'virtualCase2': (['http://biopax.org/lvl3', 'http://virtualcases.org/2'], None, True),
+		'virtualCase3': (['http://biopax.org/lvl3', 'http://virtualcases.org/3'], None, False),
 	}
 
 
-def t_model(model_name, uris, blacklist_file):
+def t_model(model_name, uris, blacklist_file, convertFullGraph):
 	"""Build model & check it vs a reference model.
 
 	.. note:: convertFullGraph = True: We decompose entities in classes even
@@ -73,7 +74,7 @@ def t_model(model_name, uris, blacklist_file):
 	# Build parameters for biopax2cadbiom
 	params = {
 		'cadbiomFile': DIR_LOGS + 'model.bcx',
-		'convertFullGraph': True,
+		'convertFullGraph': convertFullGraph,
 		'listOfGraphUri': uris,
 		'pickleBackup': False,
 		'pickleDir': DIR_LOGS + 'backup.p', # osef, pickleBackup = False
@@ -132,5 +133,5 @@ def fixture_me():
 for specie, params in test_pool.iteritems():
 	"""Create test functions based on test_pool variable."""
 	func = partial(t_model,
-				   model_name=specie, uris=params[0], blacklist_file=params[1])
+				   model_name=specie, uris=params[0], blacklist_file=params[1], convertFullGraph=params[2])
 	globals()['test_' + specie] = func
