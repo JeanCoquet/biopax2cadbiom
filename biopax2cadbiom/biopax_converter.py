@@ -110,15 +110,14 @@ def detectMembersUsedInEntities(dictPhysicalEntity, convertFullGraph=False):
 	"""
 
 	for entity in dictPhysicalEntity.itervalues():
-		entity.membersUsed = convertFullGraph
-
 		if convertFullGraph:
+			entity.membersUsed = entity.members
 			continue
 
 		# convertFullGraph is False:
 		# Try to detect if members of the current entity
 		# are used elsewhere in the model.
-		# ie: if members of the complex are used in almost 1 reaction
+		# ie: if members of the complex or of the class are used in almost 1 reaction
 		for subEntity in entity.members:
 			# TODO: IL PEUT Y AVOIR DES ENTITY NON REFERENCEE
 			# todo: grave ? on en fait quoi ??
@@ -127,8 +126,12 @@ def detectMembersUsedInEntities(dictPhysicalEntity, convertFullGraph=False):
 				len(dictPhysicalEntity[subEntity].reactions) != 0:
 				# The complex will be "deconstructed" because
 				# it is not elementary.
-				entity.membersUsed = True
+				entity.membersUsed.add(subEntity)
 				break
+
+		# If some members are not used, we had the entity to the membersUsed to represent all the membe not used
+		if len(entity.members) != len(entity.membersUsed):
+			entity.membersUsed.add(entity.uri)
 
 
 # TODO: Test this function
@@ -166,8 +169,8 @@ def developComplexEntity(complexEntity, dictPhysicalEntity):
 				if len(dictPhysicalEntity[component].listOfFlatComponents) == 0:
 					developComplexEntity(component, dictPhysicalEntity)
 				listOfComponentsDevelopped.append(dictPhysicalEntity[component].listOfFlatComponents)
-			elif len(dictPhysicalEntity[component].members) != 0 and dictPhysicalEntity[component].membersUsed:
-				listOfComponentsDevelopped.append(list(dictPhysicalEntity[component].members))
+			elif len(dictPhysicalEntity[component].membersUsed) > 0:
+				listOfComponentsDevelopped.append(list(dictPhysicalEntity[component].membersUsed))
 			else:
 				listOfComponentsDevelopped.append([component])
 
@@ -364,7 +367,7 @@ def addCadbiomNameToEntities(dictPhysicalEntity, dictLocation):
 			# Many sub components
 			# listOfFlatComponents will contain a list of subcomponent's names
 			for flatComponents in entity.listOfFlatComponents:
-				s = entity.cadbiomName + "_".join(
+				s = entity.cadbiomName+"_"+ "_".join(
 					[dictPhysicalEntity[subEntity].cadbiomName
 						for subEntity in flatComponents]
 				)
@@ -488,14 +491,18 @@ def getSetOfCadbiomPossibilities(entity, dictPhysicalEntity):
 	# TODO: pourquoi ces conditions ??!
 	if len(entity.listOfFlatComponents) != 0:
 		cadbiomPossibilities = set(entity.listOfCadbiomNames)
-	elif len(entity.members) != 0 and entity.membersUsed:
+	elif len(entity.membersUsed) > 0:
 		# It's a class with members that are used elsewhere: Destruct it
-		for subEntity in entity.members:
-			cadbiomPossibilities |= \
-				getSetOfCadbiomPossibilities(
-					dictPhysicalEntity[subEntity],
-					dictPhysicalEntity
-				)
+		for subEntity in entity.membersUsed:
+			#/!\ An entity can be in membersUsed of itself because it represents all members not used.
+			if subEntity == entity.uri :
+				cadbiomPossibilities.add(entity.cadbiomName)
+			else:
+				cadbiomPossibilities |= \
+					getSetOfCadbiomPossibilities(
+						dictPhysicalEntity[subEntity],
+						dictPhysicalEntity
+					)
 	else:
 		cadbiomPossibilities.add(entity.cadbiomName)
 
@@ -621,10 +628,14 @@ def getListOfPossibilitiesAndCadbiomNames(entity, dictPhysicalEntity):
 			cadbiomName = entity.listOfCadbiomNames[i]
 			listOfEquivalentsAndCadbiomName.append((flatComponents,cadbiomName))
 
-	elif len(entity.members) != 0 and entity.membersUsed:
-		for subEntity in entity.members:
-			listOfEquivalentsAndCadbiomName += \
-				getListOfPossibilitiesAndCadbiomNames(dictPhysicalEntity[subEntity], dictPhysicalEntity)
+	elif len(entity.membersUsed) > 0:
+		for subEntity in entity.membersUsed:
+			#/!\ An entity can be in membersUsed of itself because it represents all members not used.
+			if subEntity == entity.uri :
+				listOfEquivalentsAndCadbiomName.append((tuple([entity.uri]),entity.cadbiomName))
+			else:
+				listOfEquivalentsAndCadbiomName += \
+					getListOfPossibilitiesAndCadbiomNames(dictPhysicalEntity[subEntity], dictPhysicalEntity)
 	else:
 		listOfEquivalentsAndCadbiomName.append((tuple([entity.uri]),entity.cadbiomName))
 
@@ -755,7 +766,7 @@ def updateTransitions(reaction, dictPhysicalEntity, dictTransition):
 
 	presenceOfMembers = False
 	for entity in leftEntities|rightEntities:
-		if len(dictPhysicalEntity[entity].listOfFlatComponents) > 1 or (len(dictPhysicalEntity[entity].members) > 1 and dictPhysicalEntity[entity].membersUsed):
+		if len(dictPhysicalEntity[entity].listOfFlatComponents) > 1 or (len(dictPhysicalEntity[entity].membersUsed) > 1):
 			presenceOfMembers = True
 			break
 

@@ -38,7 +38,7 @@ class PhysicalEntity(object):
 			members (set)
 			idRefs (set)
 			reactions (set)
-			membersUsed (bool)
+			membersUsed (set)
 			cadbiomName (set)
 			listOfFlatComponents (list)
 			listOfCadbiomNames (list)
@@ -54,7 +54,7 @@ class PhysicalEntity(object):
 		self.members = set()
 		self.idRefs = set()
 		self.reactions = set()
-		self.membersUsed = None
+		self.membersUsed = set()
 		self.cadbiomName = set()
 		self.listOfFlatComponents = []
 		self.listOfCadbiomNames = []
