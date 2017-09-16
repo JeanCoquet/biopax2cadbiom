@@ -192,6 +192,16 @@ __Command__: `python -m biopax2cadbiom model --listOfGraphUri http://biopax.org/
   * [x] No errors
   * [x] No unexpected reactions
 
-![ImageOfVirtualCase2](testCases/img/virtualCase3.png)
+![ImageOfVirtualCase3](testCases/img/virtualCase3.png)
+
+<br/>
+
+### {+ Virtual Cases - virtualCase4.owl +}
+__Command__: `python -m biopax2cadbiom model --listOfGraphUri http://biopax.org/lvl3 http://virtualcases.org/4`
+  * [x] Expected result
+  * [x] No errors
+  * [x] No unexpected reactions
+
+![ImageOfVirtualCase4](testCases/img/virtualCase4.png)
 
 [//]: # (TESTS_END)
