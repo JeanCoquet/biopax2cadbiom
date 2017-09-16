@@ -9,3 +9,4 @@ escherichia	Reactome	Escherichia_coli.owl	http://reactome.org/escherichia
 cricetulus	Reactome	Cricetulus_griseus.owl	http://reactome.org/cricetulus
 mycobacterium	Reactome	Mycobacterium_tuberculosis.owl	http://reactome.org/mycobacterium
 virtualCase3	Virtual Cases	virtualCase3.owl	http://virtualcases.org/3
+virtualCase4	Virtual Cases	virtualCase4.owl	http://virtualcases.org/4

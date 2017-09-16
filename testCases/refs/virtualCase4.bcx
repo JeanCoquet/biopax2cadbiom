@@ -1,0 +1,20 @@
+<model name="['http://biopax.org/lvl3', 'http://virtualcases.org/4']" xmlns="http://cadbiom.genouest.org/">
+  <CSimpleNode name="A" xloc="0.0" yloc="0.0">http://www.reactome.org/biopax/60/62596#A</CSimpleNode>
+  <CSimpleNode name="A1" xloc="0.0" yloc="0.0">http://www.reactome.org/biopax/60/62596#A1</CSimpleNode>
+  <CSimpleNode name="C" xloc="0.0" yloc="0.0">http://www.reactome.org/biopax/60/62596#C</CSimpleNode>
+  <CSimpleNode name="B" xloc="0.0" yloc="0.0">http://www.reactome.org/biopax/60/62596#B</CSimpleNode>
+  <CSimpleNode name="AB_A_B" xloc="0.0" yloc="0.0">http://www.reactome.org/biopax/60/62596#AB</CSimpleNode>
+  <CSimpleNode name="D" xloc="0.0" yloc="0.0">http://www.reactome.org/biopax/60/62596#D</CSimpleNode>
+  <CSimpleNode name="ABD_D_A_B" xloc="0.0" yloc="0.0">http://www.reactome.org/biopax/60/62596#ABD</CSimpleNode>
+  <CSimpleNode name="ABD_D_A1_B" xloc="0.0" yloc="0.0">http://www.reactome.org/biopax/60/62596#ABD</CSimpleNode>
+  <CSimpleNode name="AB_A1_B" xloc="0.0" yloc="0.0">http://www.reactome.org/biopax/60/62596#AB</CSimpleNode>
+  <transition condition="AB_A_B" event="_h_3_1" ext="ABD_D_A_B" ori="D">reaction=http://www.reactome.org/biopax/60/62596#ComplexAssembly2</transition>
+  <transition condition="D" event="_h_3_2" ext="ABD_D_A1_B" ori="AB_A1_B">reaction=http://www.reactome.org/biopax/60/62596#ComplexAssembly2</transition>
+  <transition condition="D" event="_h_3_1" ext="ABD_D_A_B" ori="AB_A_B">reaction=http://www.reactome.org/biopax/60/62596#ComplexAssembly2</transition>
+  <transition condition="(B and C)" event="_h_4_2" ext="AB_A1_B" ori="A1">reaction=http://www.reactome.org/biopax/60/62596#ComplexAssembly1</transition>
+  <transition condition="(B and C)" event="_h_4_1" ext="AB_A_B" ori="A">reaction=http://www.reactome.org/biopax/60/62596#ComplexAssembly1</transition>
+  <transition condition="AB_A1_B" event="_h_3_2" ext="ABD_D_A1_B" ori="D">reaction=http://www.reactome.org/biopax/60/62596#ComplexAssembly2</transition>
+  <transition condition="A1" event="_h_1" ext="D" ori="C">reaction=http://www.reactome.org/biopax/60/62596#BiochemicalReaction1</transition>
+  <transition condition="(A and C)" event="_h_4_1" ext="AB_A_B" ori="B">reaction=http://www.reactome.org/biopax/60/62596#ComplexAssembly1</transition>
+  <transition condition="(A1 and C)" event="_h_4_2" ext="AB_A1_B" ori="B">reaction=http://www.reactome.org/biopax/60/62596#ComplexAssembly1</transition>
+</model>

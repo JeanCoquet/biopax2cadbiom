@@ -49,18 +49,19 @@ from cadbiom_cmd.solution_repr import graph_isomorph_test
 # Tests and params
 # tuple: 0: list of uris, 1: blacklist_file, 2: convertFullGraph
 test_pool = {
-		#'homarus': (['http://biopax.org/lvl3', 'http://reactome.org/homarus'], None, True),
-		#'crithidia': (['http://biopax.org/lvl3', 'http://reactome.org/crithidia'], None, True),
-		#'vigna': (['http://biopax.org/lvl3', 'http://reactome.org/vigna'], None, True),
-		#'triticum': (['http://biopax.org/lvl3', 'http://reactome.org/triticum'], None, True),
-		#'cavia': (['http://biopax.org/lvl3', 'http://reactome.org/cavia'], None, True),
-		#'escherichia': (['http://biopax.org/lvl3', 'http://reactome.org/escherichia'], None, True),
-		#'cricetulus': (['http://biopax.org/lvl3', 'http://reactome.org/cricetulus'], None, True),
-		#'cricetulusWithoutSmallMolecules': (['http://biopax.org/lvl3', 'http://reactome.org/cricetulus'], DIR_TEST_CASES + 'blacklists/cricetulusSmallMolecules.csv', True),
-		#'mycobacterium': (['http://biopax.org/lvl3', 'http://reactome.org/mycobacterium'], None, True),
-		#'virtualCase1': (['http://biopax.org/lvl3', 'http://virtualcases.org/1'], None, True),
-		#'virtualCase2': (['http://biopax.org/lvl3', 'http://virtualcases.org/2'], None, True),
+		'homarus': (['http://biopax.org/lvl3', 'http://reactome.org/homarus'], None, True),
+		'crithidia': (['http://biopax.org/lvl3', 'http://reactome.org/crithidia'], None, True),
+		'vigna': (['http://biopax.org/lvl3', 'http://reactome.org/vigna'], None, True),
+		'triticum': (['http://biopax.org/lvl3', 'http://reactome.org/triticum'], None, True),
+		'cavia': (['http://biopax.org/lvl3', 'http://reactome.org/cavia'], None, True),
+		'escherichia': (['http://biopax.org/lvl3', 'http://reactome.org/escherichia'], None, True),
+		'cricetulus': (['http://biopax.org/lvl3', 'http://reactome.org/cricetulus'], None, True),
+		'cricetulusWithoutSmallMolecules': (['http://biopax.org/lvl3', 'http://reactome.org/cricetulus'], DIR_TEST_CASES + 'blacklists/cricetulusSmallMolecules.csv', True),
+		'mycobacterium': (['http://biopax.org/lvl3', 'http://reactome.org/mycobacterium'], None, True),
+		'virtualCase1': (['http://biopax.org/lvl3', 'http://virtualcases.org/1'], None, True),
+		'virtualCase2': (['http://biopax.org/lvl3', 'http://virtualcases.org/2'], None, True),
 		'virtualCase3': (['http://biopax.org/lvl3', 'http://virtualcases.org/3'], None, False),
+		'virtualCase4': (['http://biopax.org/lvl3', 'http://virtualcases.org/4'], None, False),
 	}
 
 
