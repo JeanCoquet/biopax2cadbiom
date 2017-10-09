@@ -216,32 +216,6 @@ def getPhysicalEntities(listOfGraphUri):
 		if member != None:
 			entity.members.add(member)
 
-	query = """
-		SELECT DISTINCT ?entity ?dbRef ?idRef
-	"""
-	for graphUri in listOfGraphUri:
-		query += "FROM <"+graphUri+">\n"
-	query += """
-		WHERE
-		{
-			?entity rdf:type ?type.
-			?type rdfs:subClassOf* biopax3:PhysicalEntity.
-			{
-				{ ?entityRef biopax3:xref ?ref . }
-				UNION
-				{ ?entity biopax3:xref ?ref .}
-			}
-			?ref biopax3:db ?dbRef .
-			?ref biopax3:id ?idRef .
-		}
-	"""
-
-	for entity_uri, \
-		dbRef, \
-		idRef in sparql_wrapper.order_results(query, orderby='?entity'):
-
-		entity.idRefs.add((idRef,dbRef))
-
 	return dictPhysicalEntity
 
 
