@@ -355,6 +355,12 @@ def get_xref_from_database(listOfGraphUri, database_name):
 					?entityRef biopax3:xref ?ref .
 				}
 				UNION
+				{
+					?entity biopax3:entityReference ?entityRef .
+					?entityRef biopax3:memberEntityReference ?memberEntityRef .
+					?memberEntityRef biopax3:xref ?ref .
+				}
+				UNION
 				{ ?entity biopax3:xref ?ref .}
 			}
 			?ref biopax3:db '""" + database_name + """'^^XMLSchema:string .
