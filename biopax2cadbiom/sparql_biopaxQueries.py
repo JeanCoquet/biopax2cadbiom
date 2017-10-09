@@ -167,7 +167,7 @@ def getReactions(listOfGraphUri):
 def getPhysicalEntities(listOfGraphUri):
 	dictPhysicalEntity = {}
 	query = """
-		SELECT DISTINCT ?entity ?name ?synonym ?location ?type ?component ?member ?entityRef ?dbRef ?idRef
+		SELECT DISTINCT ?entity ?name ?synonym ?location ?type ?component ?member ?entityRef
 	"""
 	for graphUri in listOfGraphUri:
 		query += "FROM <"+graphUri+">\n"
@@ -182,11 +182,6 @@ def getPhysicalEntities(listOfGraphUri):
 			OPTIONAL { ?entity biopax3:component ?component . }
 			OPTIONAL { ?entity biopax3:memberPhysicalEntity ?member . }
 			OPTIONAL { ?entity biopax3:entityReference ?entityRef . }
-			OPTIONAL {
-				?entity biopax3:xref ?ref .
-				?ref biopax3:db ?dbRef .
-				?ref biopax3:id ?idRef .
-			}
 		}
 	"""
 
@@ -212,9 +207,7 @@ def getPhysicalEntities(listOfGraphUri):
 		entityType, \
 		component_uri, \
 		member, \
-		entityRef, \
-		dbRef, \
-		idRef in sparql_wrapper.order_results(query, orderby='?entity'):
+		entityRef in sparql_wrapper.order_results(query, orderby='?entity'):
 
 		# Entity creation if not already met
 		entity = get_entity(entity_uri)
@@ -231,9 +224,6 @@ def getPhysicalEntities(listOfGraphUri):
 
 		if member != None:
 			entity.members.add(member)
-
-		if idRef != None:
-			entity.idRefs.add((idRef,dbRef))
 
 	return dictPhysicalEntity
 
@@ -348,6 +338,12 @@ def get_xref_from_database(listOfGraphUri, database_name):
 					?entityRef biopax3:xref ?ref .
 				}
 				UNION
+				{
+					?entity biopax3:entityReference ?entityRef .
+					?entityRef biopax3:memberEntityReference ?memberEntityRef .
+					?memberEntityRef biopax3:xref ?ref .
+				}
+				UNION
 				{ ?entity biopax3:xref ?ref .}
 			}
 			?ref biopax3:db '""" + database_name + """'^^XMLSchema:string .
@@ -355,7 +351,7 @@ def get_xref_from_database(listOfGraphUri, database_name):
 		}
 	"""
 
-	entityToUniprots = defaultdict(set)
-	for entity, uniprot in sparql_wrapper.sparql_query(query):
-		entityToUniprots[entity].add(uniprot)
-	return entityToUniprots
+	entityToXRefs = defaultdict(set)
+	for entity, xref in sparql_wrapper.sparql_query(query):
+		entityToXRefs[entity].add(xref)
+	return entityToXRefs
