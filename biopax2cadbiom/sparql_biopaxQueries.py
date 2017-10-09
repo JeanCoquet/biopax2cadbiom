@@ -94,8 +94,14 @@ def getPathwayAncestorsHierarchy(listOfGraphUri):
 def getReactions(listOfGraphUri):
 	"""
 		.. warning:: si on fait 'rdfs:subClassOf* biopax3:Interaction'
-		alors on recupere aussi les 'Control', ce qui est doit etre fait
+		alors on recupere aussi les 'Control', ce qui doit etre fait
 		par getControls(listOfGraphUri)
+
+		=> du coup supression des controls des resultats via le MINUS {}
+
+		.. note:: Control class contains (Catalysis, TemplateReactionRegulation,
+			...)
+
 	"""
 
 	dictReaction = {}
@@ -126,6 +132,9 @@ def getReactions(listOfGraphUri):
 			OPTIONAL {
 				?reaction biopax3:participant ?participantComponent .
 				FILTER NOT EXISTS { ?participantComponent rdf:type biopax3:Pathway }
+			}
+			MINUS {
+				?reactionType rdfs:subClassOf* biopax3:Control
 			}
 		}
 	"""

@@ -533,45 +533,51 @@ def get_control_group_condition(controls, dictPhysicalEntity):
 	:rtype: <sympy.core.symbol.Symbol>
 	"""
 
-	activators_conditions = None
-	inhibitors_conditions = None
+	activators_condition = None
+	inhibitors_condition = None
 
 	def glue_conditions(main_condition, child_condition):
 		"""Add the child_condition to the main_condition"""
 		# Init the condition with the first child
-		if main_condition == None:
-			main_condition = child_condition
+		if main_condition is None:
+			return child_condition
 		else:
-			main_condition = sympy.Or(main_condition, child_condition)
+			return sympy.Or(main_condition, child_condition)
 
-	# set of Control objects linked by same evidences => Logical AND
+	# set of Control objects for the same reaction
 	for control in controls:
-		# Set de possibilités cadbiom controlant la réaction
-		possibilities_it = iter(
+		# Set of cadbiom entities that control the reaction
+		possibilities = \
 			getSetOfCadbiomPossibilities(
 				dictPhysicalEntity[control.controller],
 				dictPhysicalEntity
 			)
-		)
 
-		# Init the condition with the first possibility
-		sub_cond = sympy.Or(sympy.Symbol(next(possibilities_it)))
-		for possibilitity in possibilities_it:
-			sub_cond = sympy.Or(sub_cond,
-								sympy.Symbol(possibilitity))
+		conds = [sympy.Symbol(possibility) for possibility in possibilities]
+		sub_cond = sympy.Or(*conds)
 
-		if control.controlType == "ACTIVATION" :
-			glue_conditions(activators_conditions, sub_cond)
+		if control.controlType == 'ACTIVATION':
+			activators_condition = \
+				glue_conditions(activators_condition, sub_cond)
 
-		elif control.controlType == "INHIBITION":
-			glue_conditions(inhibitors_conditions, sub_cond)
+		elif control.controlType == 'INHIBITION':
+			inhibitors_condition = \
+				glue_conditions(inhibitors_condition, sub_cond)
 
 		else:
-			raise AssertionError("You should never have been there ! "
+			raise AssertionError("You should never have been there! "
 								 "Your Controller type is not supported...")
 
 	# Glue activators and inhibitors conditions by a logical and
-	return sympy.And(activators_conditions, sympy.Not(inhibitors_conditions))
+	# and put a Not for all inhibitors
+	if activators_condition and inhibitors_condition:
+		return sympy.And(activators_condition, sympy.Not(inhibitors_condition))
+	elif activators_condition:
+		return activators_condition
+	elif inhibitors_condition:
+		return sympy.Not(inhibitors_condition)
+	else:
+		raise AssertionError("You should never have been there!")
 
 
 def addCadbiomSympyCondToReactions(dictReaction, dictPhysicalEntity):
@@ -590,21 +596,21 @@ def addCadbiomSympyCondToReactions(dictReaction, dictPhysicalEntity):
 	# Begin event's numeration from 1
 	for event_number, (_, reaction) in enumerate(dictReaction.iteritems(), 1):
 
-		# Get groups of controllers that regulate the same reaction
-		# Get condition for the given group of controllers,
-		# Activators are linked by a logical 'OR',
-		# inhibitors are linked by a logical 'OR',
-		# but activators and inhibitors are linked together by a logical 'AND'.
-		cadbiomSympyCond = get_control_group_condition(
-			reaction.controllers,
-			dictPhysicalEntity
-		)
-
-		# No controller ?
-		if cadbiomSympyCond == None:
+		if not reaction.controllers:
+			# If no controllers for this reaction we go to the next
 			reaction.cadbiomSympyCond = sympy.sympify(True)
+
 		else:
-			reaction.cadbiomSympyCond = cadbiomSympyCond
+			# Get all controllers that regulate the same reaction
+			# Get condition for the given group of controllers,
+			# Activators are linked by a logical 'OR',
+			# inhibitors are linked by a logical 'OR',
+			# activators and inhibitors are linked together by a logical 'AND'.
+			reaction.cadbiomSympyCond = \
+				get_control_group_condition(
+					reaction.controllers,
+					dictPhysicalEntity
+				)
 
 		reaction.event = "_h_" + str(event_number)
 
