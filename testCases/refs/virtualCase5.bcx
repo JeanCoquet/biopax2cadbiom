@@ -1,0 +1,11 @@
+<model xmlns="http://cadbiom" name="virtualCase5">
+  <CSimpleNode name="B" xloc="0.3675128123" yloc="0.271649484536"/>
+  <CSimpleNode name="D" xloc="0.364121165672" yloc="0.419879286249"/>
+  <CSimpleNode name="E" xloc="0.208820495186" yloc="0.35"/>
+  <CSimpleNode name="F" xloc="0.444731481425" yloc="0.35"/>
+  <CSimpleNode name="A1" xloc="0.228105473689" yloc="0.272262167582"/>
+  <CSimpleNode name="A2" xloc="0.280635902902" yloc="0.272729021935"/>
+  <CSimpleNode name="C1" xloc="0.225307299134" yloc="0.418653920159"/>
+  <CSimpleNode name="C2" xloc="0.277055684599" yloc="0.419169384077"/>
+  <transition name="E-&gt;F" ori="E" ext="F" event="_h_1" condition="(A1 or A2 or B) and not(C1 or C2 or D)" action="" fact_ids="[]"/>
+</model>

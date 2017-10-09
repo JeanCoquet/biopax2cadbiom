@@ -62,6 +62,7 @@ test_pool = {
 		'virtualCase2': (['http://biopax.org/lvl3', 'http://virtualcases.org/2'], None, True),
 		'virtualCase3': (['http://biopax.org/lvl3', 'http://virtualcases.org/3'], None, False),
 		'virtualCase4': (['http://biopax.org/lvl3', 'http://virtualcases.org/4'], None, False),
+		'virtualCase5': (['http://biopax.org/lvl3', 'http://virtualcases.org/5'], None, True),
 	}
 
 

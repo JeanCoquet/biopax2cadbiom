@@ -197,12 +197,21 @@ __Command__: `python -m biopax2cadbiom model --listOfGraphUri http://biopax.org/
 <br/>
 
 ### {+ Virtual Cases - virtualCase4.owl +}
-(Test the usefulness of the decompilation of the class A in A1, A2, A3, knowing that none of them is used in another reaction)
 __Command__: `python -m biopax2cadbiom model --listOfGraphUri http://biopax.org/lvl3 http://virtualcases.org/4`
   * [x] Expected result
   * [x] No errors
   * [x] No unexpected reactions
 
 ![ImageOfVirtualCase4](testCases/img/virtualCase4.png)
+
+<br/>
+
+### {+ Virtual Cases - virtualCase5.owl +}
+__Command__: `python -m biopax2cadbiom model --convertFullGraph --listOfGraphUri http://biopax.org/lvl3 http://virtualcases.org/5`
+  * [x] Expected result
+  * [x] No errors
+  * [x] No unexpected reactions
+
+![ImageOfVirtualCase5](testCases/img/virtualCase5.png)
 
 [//]: # (TESTS_END)
