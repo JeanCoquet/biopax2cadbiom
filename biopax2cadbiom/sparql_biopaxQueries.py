@@ -158,7 +158,7 @@ def getReactions(listOfGraphUri):
 def getPhysicalEntities(listOfGraphUri):
 	dictPhysicalEntity = {}
 	query = """
-		SELECT DISTINCT ?entity ?name ?synonym ?location ?type ?component ?member ?entityRef ?dbRef ?idRef
+		SELECT DISTINCT ?entity ?name ?synonym ?location ?type ?component ?member ?entityRef
 	"""
 	for graphUri in listOfGraphUri:
 		query += "FROM <"+graphUri+">\n"
@@ -173,11 +173,6 @@ def getPhysicalEntities(listOfGraphUri):
 			OPTIONAL { ?entity biopax3:component ?component . }
 			OPTIONAL { ?entity biopax3:memberPhysicalEntity ?member . }
 			OPTIONAL { ?entity biopax3:entityReference ?entityRef . }
-			OPTIONAL {
-				?entity biopax3:xref ?ref .
-				?ref biopax3:db ?dbRef .
-				?ref biopax3:id ?idRef .
-			}
 		}
 	"""
 
@@ -203,9 +198,7 @@ def getPhysicalEntities(listOfGraphUri):
 		entityType, \
 		component_uri, \
 		member, \
-		entityRef, \
-		dbRef, \
-		idRef in sparql_wrapper.order_results(query, orderby='?entity'):
+		entityRef in sparql_wrapper.order_results(query, orderby='?entity'):
 
 		# Entity creation if not already met
 		entity = get_entity(entity_uri)
@@ -223,8 +216,31 @@ def getPhysicalEntities(listOfGraphUri):
 		if member != None:
 			entity.members.add(member)
 
-		if idRef != None:
-			entity.idRefs.add((idRef,dbRef))
+	query = """
+		SELECT DISTINCT ?entity ?dbRef ?idRef
+	"""
+	for graphUri in listOfGraphUri:
+		query += "FROM <"+graphUri+">\n"
+	query += """
+		WHERE
+		{
+			?entity rdf:type ?type.
+			?type rdfs:subClassOf* biopax3:PhysicalEntity.
+			{
+				{ ?entityRef biopax3:xref ?ref . }
+				UNION
+				{ ?entity biopax3:xref ?ref .}
+			}
+			?ref biopax3:db ?dbRef .
+			?ref biopax3:id ?idRef .
+		}
+	"""
+
+	for entity_uri, \
+		dbRef, \
+		idRef in sparql_wrapper.order_results(query, orderby='?entity'):
+
+		entity.idRefs.add((idRef,dbRef))
 
 	return dictPhysicalEntity
 
