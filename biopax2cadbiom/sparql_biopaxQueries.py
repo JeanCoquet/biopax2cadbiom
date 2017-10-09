@@ -368,7 +368,7 @@ def get_xref_from_database(listOfGraphUri, database_name):
 		}
 	"""
 
-	entityToUniprots = defaultdict(set)
-	for entity, uniprot in sparql_wrapper.sparql_query(query):
-		entityToUniprots[entity].add(uniprot)
-	return entityToUniprots
+	entityToXRefs = defaultdict(set)
+	for entity, xref in sparql_wrapper.sparql_query(query):
+		entityToXRefs[entity].add(xref)
+	return entityToXRefs
