@@ -466,11 +466,17 @@ def getCadbiomName(entity, dictLocation, synonym=None):
 		# Check if name is present, otherwise take the uri
 		name = entity.name if entity.name else entity.uri.rsplit("#", 1)[1]
 
+	name = clean_name(name)
+
 	# Add location id to the name if it exists
-	location_uri = entity.location
-	return \
-		clean_name(name) + "_" + dictLocation[location_uri].cadbiomId \
-			if location_uri else clean_name(name)
+	if entity.location :
+		name += '_'+dictLocation[entity.location].cadbiomId
+
+	# Add '_dna' to the name if the entity is a DNA
+	if entity.entityType == "Dna":
+		name += '_dna'
+
+	return name
 
 
 def getSetOfCadbiomPossibilities(entity, dictPhysicalEntity):
