@@ -197,6 +197,7 @@ __Command__: `python -m biopax2cadbiom model --listOfGraphUri http://biopax.org/
 <br/>
 
 ### {+ Virtual Cases - virtualCase4.owl +}
+(Test the usefulness of the decompilation of the class A in A1, A2, A3, knowing that none of them is used in another reaction)
 __Command__: `python -m biopax2cadbiom model --listOfGraphUri http://biopax.org/lvl3 http://virtualcases.org/4`
   * [x] Expected result
   * [x] No errors
